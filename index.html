@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0047)file:///C:/Users/yotamtr/Downloads/index_9.html -->
+<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_10.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -586,7 +586,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         </div>
         <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
         <div id="stuck-claude-wrap" style="display:none">
-          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_9.html#" target="_blank">Open Claude.ai with my question</a>
+          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_10.html#" target="_blank">Open Claude.ai with my question</a>
         </div>
       </div>
     </div>
@@ -622,12 +622,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
     </div>
     <div class="lv-ln" id="lvl-34" style="background: rgba(255, 255, 255, 0.08);"></div>
     <div class="lvi" id="lvi-4" onclick="goLevel(4)">
-      <div class="lvc" id="lvc-4" style="opacity: 1;">4</div>
+      <div class="lvc" id="lvc-4" style="background: transparent; border-color: rgba(255, 255, 255, 0.15); color: rgba(255, 255, 255, 0.3); opacity: 1;">4</div>
       <div class="lv-lbl">Kitchen Brigade</div>
     </div>
     <div class="lv-ln" id="lvl-45" style="background: rgba(255, 255, 255, 0.08);"></div>
     <div class="lvi" id="lvi-5" onclick="goLevel(5)">
-      <div class="lvc" id="lvc-5" style="opacity: 1;">5</div>
+      <div class="lvc" id="lvc-5" style="background: transparent; border-color: rgba(255, 255, 255, 0.15); color: rgba(255, 255, 255, 0.3); opacity: 1;">5</div>
       <div class="lv-lbl">Your Kitchen</div>
     </div>
   </div>
@@ -1832,14 +1832,14 @@ function renderMissions(level) {
       div.style.borderColor='var(--green)';
       div.innerHTML=`<div class="mh" style="background:var(--green-lt)"><div class="mn" style="background:var(--green);border-color:var(--green);color:white">✓</div><div class="mt">${m.t}</div><div class="mtg" style="background:var(--green-lt);color:#0A4A38">✓ Done</div></div>`;
     } else {
-      const s2=m.do2&&m.say2?`<div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">${m.do2}</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.say2}</span><button class="say-cp" onclick="cpText(this,'${esc(m.say2)}')">Copy</button></div>`:'';
+      const s2=m.do2&&m.say2?`<div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">${m.do2}</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.say2}</span><button class="say-cp" onclick="cpText(this,&apos;${esc(m.say2)}&apos;)">Copy</button></div>`:'';
       const warn=m.warn?`<div class="warn-box">⚠️ ${m.warn}</div>`:'';
       const perm=m.perm?`<div class="info-box">💡 ${m.perm}</div>`:'';
       const mhBg=isCur?`background:${color}20`:isDone?'background:var(--green-lt)':'';
       div.innerHTML=`<div class="mh" style="${mhBg}"><div class="mn" style="${isCur?`background:${color};border-color:${color};color:white`:''}">${i+1}</div><div class="mt">${m.t}</div><div class="mtg" style="${isCur?`background:${color}20;color:${color}`:''}">${m.tag}</div></div>
       <div class="mb"><div class="m-why" style="background:${color}12;border:0.5px solid ${color}40;color:${color}">${m.why}</div>
       <div class="m-do">${m.do}</div>
-      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.say}</span><button class="say-cp" onclick="cpText(this,'${esc(m.say)}');Analytics.commandCopied(${level},${i+1})">Copy</button></div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.say}</span><button class="say-cp" onclick="cpText(this,&apos;${esc(m.say)}&apos;);Analytics.commandCopied(${level},${i+1})">Copy</button></div>
       ${s2}${warn}${perm}
       <div class="m-res">${m.res}</div>
       <button class="btn-dn" style="background:${color}" onclick="completeMission(${level},${i})"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div>`;
@@ -1870,15 +1870,15 @@ function renderL4Missions() {
       const chef=m.chef?`<div class="chef-bub"><div class="chef-hd"><div class="chef-av">🤖</div><div><div class="chef-nm">Chef Claude <span style="font-size:9px;font-weight:400;color:var(--amber)">— talk to me in this chat</span></div><div class="chef-rl">Your AI collaborator</div></div></div><div class="chef-txt">"${m.chef}"</div></div>`:'';
       const info=m.info?`<div class="info-box">💡 ${m.info}</div>`:'';
       const d1id='d1_'+i, d2id='d2_'+i;
-      const deep1=m.deep1?`<div class="deep" id="${d1id}"><div class="deep-head" onclick="toggleDeep('${d1id}')"><span>🗺️</span><span class="deep-lbl">How do branches work? (visual explanation)</span><span class="deep-arr">▶</span></div><div class="deep-body">${MAP1_HTML}</div></div>`:'';
-      const deep2=m.deep2?`<div class="deep" id="${d2id}"><div class="deep-head" onclick="toggleDeep('${d2id}')"><span>🌐</span><span class="deep-lbl">Where do I click on GitHub? (visual guide)</span><span class="deep-arr">▶</span></div><div class="deep-body"><div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px">After pushing your branch, GitHub shows a yellow banner. Click the 📸 screenshot buttons on each step to see exactly where to click.</div></div></div>`:'';
+      const deep1=m.deep1?`<div class="deep" id="${d1id}"><div class="deep-head" onclick="toggleDeep(&apos;${d1id}&apos;)"><span>🗺️</span><span class="deep-lbl">How do branches work? (visual explanation)</span><span class="deep-arr">▶</span></div><div class="deep-body">${MAP1_HTML}</div></div>`:'';
+      const deep2=m.deep2?`<div class="deep" id="${d2id}"><div class="deep-head" onclick="toggleDeep(&apos;${d2id}&apos;)"><span>🌐</span><span class="deep-lbl">Where do I click on GitHub? (visual guide)</span><span class="deep-arr">▶</span></div><div class="deep-body"><div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px">After pushing your branch, GitHub shows a yellow banner. Click the 📸 screenshot buttons on each step to see exactly where to click.</div></div></div>`:'';
       let ghHtml='';
-      (m.ghSteps||[]).forEach(s=>{ghHtml+=`<div class="gh-step"><div class="gh-num">${s.n}</div><div class="gh-step-body"><button class="gh-step-label" onclick="openGHModal('${s.k}')">📸 🌐 ${s.l}</button><div class="gh-step-text">${s.txt}</div></div></div>`;});
+      (m.ghSteps||[]).forEach(s=>{ghHtml+=`<div class="gh-step"><div class="gh-num">${s.n}</div><div class="gh-step-body"><button class="gh-step-label" onclick="openGHModal(&apos;${s.k}&apos;)">📸 🌐 ${s.l}</button><div class="gh-step-text">${s.txt}</div></div></div>`;});
       let gh2Html='';
-      (m.ghSteps2||[]).forEach(s=>{gh2Html+=`<div class="gh-step"><div class="gh-num">${s.n}</div><div class="gh-step-body"><button class="gh-step-label" onclick="openGHModal('${s.k}')">📸 🌐 ${s.l}</button><div class="gh-step-text">${s.txt}</div></div></div>`;});
-      const mainCmd=m.cv_cmd?`<div><span class="where-tag wt-cv">⚡ ${m.cv_label||'Claude Code'}</span></div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.cv_cmd}</span><button class="say-cp" onclick="cpText(this,'${esc(m.cv_cmd)}');Analytics.commandCopied(4,${i+1})">Copy</button></div>`:'';
+      (m.ghSteps2||[]).forEach(s=>{gh2Html+=`<div class="gh-step"><div class="gh-num">${s.n}</div><div class="gh-step-body"><button class="gh-step-label" onclick="openGHModal(&apos;${s.k}&apos;)">📸 🌐 ${s.l}</button><div class="gh-step-text">${s.txt}</div></div></div>`;});
+      const mainCmd=m.cv_cmd?`<div><span class="where-tag wt-cv">⚡ ${m.cv_label||'Claude Code'}</span></div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.cv_cmd}</span><button class="say-cp" onclick="cpText(this,&apos;${esc(m.cv_cmd)}&apos;);Analytics.commandCopied(4,${i+1})">Copy</button></div>`:'';
       const s2lbl=m.cv_cmd2_label?`<div><span class="where-tag wt-cv">⚡ ${m.cv_cmd2_label}</span></div>`:`<div><span class="where-tag wt-cv">⚡ Claude Code</span></div>`;
-      const s2=m.cv_cmd2&&m.cv_cmd2_say?`<div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">${m.cv_cmd2}</div>${s2lbl}<div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.cv_cmd2_say}</span><button class="say-cp" onclick="cpText(this,'${esc(m.cv_cmd2_say)}')">Copy</button></div>`:m.cv_cmd2&&!m.cv_cmd2_say?`<div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">${m.cv_cmd2}</div>${gh2Html}`:'';
+      const s2=m.cv_cmd2&&m.cv_cmd2_say?`<div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">${m.cv_cmd2}</div>${s2lbl}<div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.cv_cmd2_say}</span><button class="say-cp" onclick="cpText(this,&apos;${esc(m.cv_cmd2_say)}&apos;)">Copy</button></div>`:m.cv_cmd2&&!m.cv_cmd2_say?`<div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">${m.cv_cmd2}</div>${gh2Html}`:'';
       div.innerHTML=`<div class="mh" style="${isCur?'background:var(--amber-lt)':''}"><div class="mn" style="${isCur?'background:var(--amber);border-color:var(--amber);color:white':''}">${i+1}</div><div class="mt">${m.t}</div><div class="mtg" style="${isCur?'background:var(--amber-lt);color:var(--amber)':''}">${m.tg}</div></div>
       <div class="mb">${tl}<div class="m-why" style="background:var(--amber-lt);border:0.5px solid var(--amber);color:var(--amber)">${m.why}</div>${chef}${info}${deep1}${ghHtml}${mainCmd}${deep2}${s2}
       <div class="m-res">${m.res}</div>
