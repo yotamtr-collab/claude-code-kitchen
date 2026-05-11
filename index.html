@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0047)file:///C:/Users/yotamtr/Downloads/index_9.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learning Claude Code — The Kitchen</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-<script src="analytics.js" defer></script>
+<link rel="stylesheet" href="./index_files/tabler-icons.min.css">
+<script src="./index_files/analytics.js" defer=""></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -562,7 +562,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
 </div>
 
 <!-- STUCK FAB -->
-<button class="stuck-fab" id="stuck-fab" onclick="openStuck()">🍳 Stuck? Ask the chef</button>
+<button class="stuck-fab" id="stuck-fab" onclick="openStuck()" style="background: rgb(24, 95, 165);">🍳 Stuck? Ask the chef</button>
 <div class="stuck-modal" id="stuck-modal">
   <div class="stuck-box">
     <div class="stuck-hd">
@@ -582,11 +582,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
       <div style="padding:8px 10px 0">
         <div class="stuck-input-row">
           <textarea class="stuck-in" id="stuck-in" placeholder="Describe what is happening..." onkeydown="stuckKey(event)" rows="2"></textarea>
-          <button class="stuck-send" id="stuck-send" onclick="sendStuck()">Send</button>
+          <button class="stuck-send" id="stuck-send" onclick="sendStuck()" style="background: rgb(24, 95, 165);">Send</button>
         </div>
         <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
         <div id="stuck-claude-wrap" style="display:none">
-          <a class="stuck-claude-link" id="stuck-claude-link" href="#" target="_blank">Open Claude.ai with my question</a>
+          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_9.html#" target="_blank">Open Claude.ai with my question</a>
         </div>
       </div>
     </div>
@@ -602,32 +602,32 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
 <div class="level-nav">
   <div class="lv">
     <div class="lvi active" id="lvi-0" onclick="goLevel(0)">
-      <div class="lvc" id="lvc-0">🍳</div>
+      <div class="lvc" id="lvc-0" style="background: rgb(24, 95, 165); border-color: rgb(24, 95, 165); color: white; opacity: 1;">🍳</div>
       <div class="lv-lbl">Start</div>
     </div>
-    <div class="lv-ln" id="lvl-01"></div>
-    <div class="lvi locked" id="lvi-1" onclick="goLevel(1)">
-      <div class="lvc" id="lvc-1">1</div>
+    <div class="lv-ln" id="lvl-01" style="background: rgba(255, 255, 255, 0.08);"></div>
+    <div class="lvi" id="lvi-1" onclick="goLevel(1)">
+      <div class="lvc" id="lvc-1" style="background: transparent; border-color: rgba(255, 255, 255, 0.15); color: rgba(255, 255, 255, 0.3); opacity: 1;">1</div>
       <div class="lv-lbl">Setup the Kitchen</div>
     </div>
-    <div class="lv-ln" id="lvl-12"></div>
-    <div class="lvi locked" id="lvi-2" onclick="goLevel(2)">
-      <div class="lvc" id="lvc-2">2</div>
+    <div class="lv-ln" id="lvl-12" style="background: rgba(255, 255, 255, 0.08);"></div>
+    <div class="lvi" id="lvi-2" onclick="goLevel(2)">
+      <div class="lvc" id="lvc-2" style="background: transparent; border-color: rgba(255, 255, 255, 0.15); color: rgba(255, 255, 255, 0.3); opacity: 1;">2</div>
       <div class="lv-lbl">Open the Restaurant</div>
     </div>
-    <div class="lv-ln" id="lvl-23"></div>
-    <div class="lvi locked" id="lvi-3" onclick="goLevel(3)">
-      <div class="lvc" id="lvc-3">3</div>
+    <div class="lv-ln" id="lvl-23" style="background: rgba(255, 255, 255, 0.08);"></div>
+    <div class="lvi" id="lvi-3" onclick="goLevel(3)">
+      <div class="lvc" id="lvc-3" style="background: transparent; border-color: rgba(255, 255, 255, 0.15); color: rgba(255, 255, 255, 0.3); opacity: 1;">3</div>
       <div class="lv-lbl">Chef's Night Off</div>
     </div>
-    <div class="lv-ln" id="lvl-34"></div>
-    <div class="lvi locked" id="lvi-4" onclick="goLevel(4)">
-      <div class="lvc" id="lvc-4">4</div>
+    <div class="lv-ln" id="lvl-34" style="background: rgba(255, 255, 255, 0.08);"></div>
+    <div class="lvi" id="lvi-4" onclick="goLevel(4)">
+      <div class="lvc" id="lvc-4" style="opacity: 1;">4</div>
       <div class="lv-lbl">Kitchen Brigade</div>
     </div>
-    <div class="lv-ln" id="lvl-45"></div>
-    <div class="lvi locked" id="lvi-5" onclick="goLevel(5)">
-      <div class="lvc" id="lvc-5">5</div>
+    <div class="lv-ln" id="lvl-45" style="background: rgba(255, 255, 255, 0.08);"></div>
+    <div class="lvi" id="lvi-5" onclick="goLevel(5)">
+      <div class="lvc" id="lvc-5" style="opacity: 1;">5</div>
       <div class="lv-lbl">Your Kitchen</div>
     </div>
   </div>
@@ -673,7 +673,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
     </div>
     <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">What your sous-chef can do for you</div>
     <div class="powers-grid">
-      <div class="pw"><div class="pw-ico">📄</div><div><div class="pw-t">Create & edit files</div><div class="pw-d">Write reports, format docs, reorganize folders — in plain language</div></div></div>
+      <div class="pw"><div class="pw-ico">📄</div><div><div class="pw-t">Create &amp; edit files</div><div class="pw-d">Write reports, format docs, reorganize folders — in plain language</div></div></div>
       <div class="pw"><div class="pw-ico">🌍</div><div><div class="pw-t">Publish to the internet</div><div class="pw-d">A real URL for your project — free, in under 5 minutes</div></div></div>
       <div class="pw"><div class="pw-ico">🎮</div><div><div class="pw-t">Build real software</div><div class="pw-d">Games, tools, dashboards — you describe, it builds</div></div></div>
       <div class="pw"><div class="pw-ico">🤝</div><div><div class="pw-t">Collaborate like a pro</div><div class="pw-d">Branches, pull requests, the full team workflow</div></div></div>
@@ -740,7 +740,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
               <div class="to-step" style="color:#8b8baa;font-size:10px;padding-left:26px">Or press <span class="to-step-hl" style="font-size:10px">Ctrl + `</span> (backtick key, above Tab)</div>
             </div>
           </div>
-          <div class="cmd-box"><span class="cmd-t">node --version</span><button class="cbtn" onclick="cpText(this,'node --version')">Copy</button></div>
+          <div class="cmd-box"><span class="cmd-t">node --version</span><button class="cbtn" onclick="cpText(this,&#39;node --version&#39;)">Copy</button></div>
           <div class="cr">
             <button class="by" style="background:var(--blue)" onclick="l1Step(0,2)"><i class="ti ti-check" style="font-size:12px"></i> I see v18 or higher</button>
             <button class="ba" onclick="l1Step(0,1)">I see an error →</button>
@@ -757,7 +757,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
       <div class="step" id="l1-s2">
         <div class="step-head"><div class="step-ico">👨‍🍳</div><div><div class="step-ttl">Hire your sous-chef (Claude Code)</div><div class="step-sub">Downloads it from the terminal</div></div></div>
         <div class="step-body">
-          <div class="cmd-box"><span class="cmd-t">npm install -g @anthropic-ai/claude-code</span><button class="cbtn" onclick="cpText(this,'npm install -g @anthropic-ai/claude-code')">Copy</button></div>
+          <div class="cmd-box"><span class="cmd-t">npm install -g @anthropic-ai/claude-code</span><button class="cbtn" onclick="cpText(this,&#39;npm install -g @anthropic-ai/claude-code&#39;)">Copy</button></div>
           <div class="note">Text will scroll — your sous-chef is getting briefed. Takes about 30 seconds.</div>
           <div class="cr"><button class="by" style="background:var(--blue)" onclick="l1Step(2,3)"><i class="ti ti-check" style="font-size:12px"></i> Done</button></div>
         </div>
@@ -767,7 +767,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         <div class="step-body">
           <div class="note"><b>Step 1:</b> Go to <b>cli.github.com</b> → Download for Windows → run the installer.</div>
           <div class="note"><b>Step 2:</b> Back in the terminal, log in:</div>
-          <div class="cmd-box"><span class="cmd-t">gh auth login</span><button class="cbtn" onclick="cpText(this,'gh auth login')">Copy</button></div>
+          <div class="cmd-box"><span class="cmd-t">gh auth login</span><button class="cbtn" onclick="cpText(this,&#39;gh auth login&#39;)">Copy</button></div>
           <div class="note">Choose: GitHub.com → HTTPS → Login with a web browser → follow the prompts.</div>
           <div class="cr"><button class="by" style="background:var(--blue)" onclick="l1Step(3,4)"><i class="ti ti-check" style="font-size:12px"></i> Logged in to GitHub</button></div>
         </div>
@@ -775,7 +775,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
       <div class="step" id="l1-s4">
         <div class="step-head"><div class="step-ico">🔑</div><div><div class="step-ttl">Give your sous-chef credentials</div><div class="step-sub">Connect Claude Code to your account</div></div></div>
         <div class="step-body">
-          <div class="cmd-box"><span class="cmd-t">claude</span><button class="cbtn" onclick="cpText(this,'claude')">Copy</button></div>
+          <div class="cmd-box"><span class="cmd-t">claude</span><button class="cbtn" onclick="cpText(this,&#39;claude&#39;)">Copy</button></div>
           <div class="note">Opens a browser to log in. Use your Claude.ai email and password.</div>
           <div class="cr"><button class="by" style="background:var(--blue)" onclick="setPhase1(2)"><i class="ti ti-check" style="font-size:12px"></i> Logged in — kitchen tour →</button></div>
         </div>
@@ -812,19 +812,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         <div class="ed-bd" style="color:#6a9955"><div># My Recipes</div><div style="color:#569cd6">## What I cooked</div><div style="color:#ce9178">- Set up Claude Code</div></div>
       </div>
       <div class="vsc-tm"><div class="tt"><div class="ttb on">TERMINAL</div></div><div class="tb2">$ <span class="cur3"></span></div></div>
-      <div class="hs" id="hs-ab" style="left:2px;top:2px;width:40px;height:112px" onclick="vscZone('ab')"><span class="hs-l">Activity Bar</span></div>
-      <div class="hs hs-cc" id="hs-cc" style="left:2px;top:118px;width:40px;height:32px" onclick="vscZone('cc')"><span class="hs-l">Claude Code ✦</span></div>
-      <div class="hs" id="hs-sb" style="left:46px;top:2px;width:158px;height:128px" onclick="vscZone('sb')"><span class="hs-l">Explorer</span></div>
-      <div class="hs" id="hs-ed" style="left:208px;top:2px;right:2px;height:128px" onclick="vscZone('ed')"><span class="hs-l">Editor = Countertop</span></div>
-      <div class="hs" id="hs-term" style="left:46px;bottom:2px;right:2px;height:56px" onclick="vscZone('term')"><span class="hs-l">Terminal = The kitchen</span></div>
+      <div class="hs" id="hs-ab" style="left:2px;top:2px;width:40px;height:112px" onclick="vscZone(&#39;ab&#39;)"><span class="hs-l">Activity Bar</span></div>
+      <div class="hs hs-cc" id="hs-cc" style="left:2px;top:118px;width:40px;height:32px" onclick="vscZone(&#39;cc&#39;)"><span class="hs-l">Claude Code ✦</span></div>
+      <div class="hs" id="hs-sb" style="left:46px;top:2px;width:158px;height:128px" onclick="vscZone(&#39;sb&#39;)"><span class="hs-l">Explorer</span></div>
+      <div class="hs" id="hs-ed" style="left:208px;top:2px;right:2px;height:128px" onclick="vscZone(&#39;ed&#39;)"><span class="hs-l">Editor = Countertop</span></div>
+      <div class="hs" id="hs-term" style="left:46px;bottom:2px;right:2px;height:56px" onclick="vscZone(&#39;term&#39;)"><span class="hs-l">Terminal = The kitchen</span></div>
     </div>
     <div class="info-panel">
       <div class="itabs">
-        <div class="itab" id="it-ab" onclick="vscZone('ab')" title="Activity Bar"><i class="ti ti-layout-sidebar"></i></div>
-        <div class="itab" id="it-sb" onclick="vscZone('sb')" title="Explorer"><i class="ti ti-files"></i></div>
-        <div class="itab" id="it-ed" onclick="vscZone('ed')" title="Editor"><i class="ti ti-file-text"></i></div>
-        <div class="itab" id="it-term" onclick="vscZone('term')" title="Terminal"><i class="ti ti-terminal"></i></div>
-        <div class="itab" id="it-cc" onclick="vscZone('cc')" title="Claude Code"><i class="ti ti-sparkles"></i></div>
+        <div class="itab" id="it-ab" onclick="vscZone(&#39;ab&#39;)" title="Activity Bar"><i class="ti ti-layout-sidebar"></i></div>
+        <div class="itab" id="it-sb" onclick="vscZone(&#39;sb&#39;)" title="Explorer"><i class="ti ti-files"></i></div>
+        <div class="itab" id="it-ed" onclick="vscZone(&#39;ed&#39;)" title="Editor"><i class="ti ti-file-text"></i></div>
+        <div class="itab" id="it-term" onclick="vscZone(&#39;term&#39;)" title="Terminal"><i class="ti ti-terminal"></i></div>
+        <div class="itab" id="it-cc" onclick="vscZone(&#39;cc&#39;)" title="Claude Code"><i class="ti ti-sparkles"></i></div>
       </div>
       <div class="ibody">
         <div class="ib show" id="ib-w"><div class="ib-t">👆 Click any area on the kitchen above</div><div class="ib-x">Each area has a job. Click to learn what it does in kitchen language.</div></div>
@@ -854,7 +854,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
       <div class="sp-dv">⇄</div>
       <div class="sp sp-v"><div class="sp-lb">VS CODE →</div><div class="sp-ln g2"></div><div class="sp-ln" style="width:85%"></div><div class="sp-ln g2" style="width:55%"></div></div>
     </div>
-    <div class="os-tabs"><button class="os-tab on" onclick="setOS(this,'win')">Windows</button><button class="os-tab" onclick="setOS(this,'mac')">Mac</button></div>
+    <div class="os-tabs"><button class="os-tab on" onclick="setOS(this,&#39;win&#39;)">Windows</button><button class="os-tab" onclick="setOS(this,&#39;mac&#39;)">Mac</button></div>
     <div class="sc-box" id="os-win"><div class="sc-row"><kbd class="kbd">⊞ Win</kbd> + <kbd class="kbd">←</kbd> <span style="font-size:12px;color:var(--text2);margin-left:6px">snap this guide to the left half</span></div><div class="sc-row"><kbd class="kbd">⊞ Win</kbd> + <kbd class="kbd">→</kbd> <span style="font-size:12px;color:var(--text2);margin-left:6px">snap VS Code to the right half</span></div></div>
     <div class="sc-box" id="os-mac" style="display:none"><div style="font-size:12px;color:var(--text2)">Hold the green button on this window → "Tile to Left of Screen", then click VS Code on the right.</div></div>
     <button class="btn-big" style="background:var(--blue)" onclick="setPhase1(4)"><i class="ti ti-chef-hat"></i> Pass is set — start cooking</button>
@@ -863,7 +863,43 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
   <!-- Phase 4: Missions -->
   <div id="l1-ph4" style="display:none">
     <div class="prog-row"><div class="prog-track"><div class="prog-bar" id="pb-1" style="background:var(--blue);width:0%"></div></div><div class="prog-lbl" id="pl-1">0 / 6 dishes</div></div>
-    <div class="missions-wrap" id="ml-1"></div>
+    <div class="missions-wrap" id="ml-1"><div class="ms cur" style="border-color: var(--blue);"><div class="mh" style="background:var(--blue)20"><div class="mn" style="background:var(--blue);border-color:var(--blue);color:white">1</div><div class="mt">Take stock of the kitchen</div><div class="mtg" style="background:var(--blue)20;color:var(--blue)">Dish 1 🍳</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--blue)12;border:0.5px solid var(--blue)40;color:var(--blue)">🍳 Every chef starts service by walking the kitchen. Your first mission: ask your sous-chef to do exactly that.</div>
+      <div class="m-do">In VS Code, open the Claude Code panel (click the ✦ sparkle icon). Type this and press Enter:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">what files and folders are in my current directory?</span><button class="say-cp" onclick="cpText(this,&#39;what files and folders are in my current directory?&#39;);Analytics.commandCopied(1,1)">Copy</button></div>
+      
+      <div class="m-res"><b>What to expect:</b> Claude Code lists everything it sees. That's your sous-chef doing the first walk of the kitchen.</div>
+      <button class="btn-dn" style="background:var(--blue)" onclick="completeMission(1,0)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">2</div><div class="mt">Prep your first ingredient</div><div class="mtg" style="">Dish 2 🥘</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--blue)12;border:0.5px solid var(--blue)40;color:var(--blue)">🍳 Time to make something. Your sous-chef will create a real file — and will ask your permission before touching anything.</div>
+      <div class="m-do">Type this in Claude Code:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">create a file called my-notes.md and write a short summary of what Claude Code is</span><button class="say-cp" onclick="cpText(this,&#39;create a file called my-notes.md and write a short summary of what Claude Code is&#39;);Analytics.commandCopied(1,2)">Copy</button></div>
+      
+      <div class="m-res"><b>What to expect:</b> Claude Code describes what it's about to do and asks for confirmation. Say yes. To verify it worked — look at the <b>Explorer panel</b> (📁 icon in the left sidebar). You should see my-notes.md appear there.</div>
+      <button class="btn-dn" style="background:var(--blue)" onclick="completeMission(1,1)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">3</div><div class="mt">Taste and adjust</div><div class="mtg" style="">Dish 3 🧑‍🍳</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--blue)12;border:0.5px solid var(--blue)40;color:var(--blue)">🍳 A great chef doesn't just cook — they taste, critique, and improve. Two steps: get feedback, then act on one suggestion.</div>
+      <div class="m-do"><b>Step 1</b> — ask for a review:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">read my-notes.md and tell me 2 things you'd improve about it</span><button class="say-cp" onclick="cpText(this,&#39;read my-notes.md and tell me 2 things you\&#39;d improve about it&#39;);Analytics.commandCopied(1,3)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do"><b>Step 2</b> — act on the first suggestion:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">now make the first improvement to the file</span><button class="say-cp" onclick="cpText(this,&#39;now make the first improvement to the file&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> First it critiques its own writing. Then it rewrites part of the file. Check the Explorer — the file is updated.</div>
+      <button class="btn-dn" style="background:var(--blue)" onclick="completeMission(1,2)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">4</div><div class="mt">Plan the week's menu</div><div class="mtg" style="">Dish 4 📋</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--blue)12;border:0.5px solid var(--blue)40;color:var(--blue)">🍳 Give your sous-chef something bigger. Ask it to look at your whole kitchen and suggest what to build — then do one of them.</div>
+      <div class="m-do"><b>Step 1</b> — get suggestions first:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">look at my current folder and suggest 3 things I could build or organize this week. Do NOT start building yet — just give me the suggestions first.</span><button class="say-cp" onclick="cpText(this,&#39;look at my current folder and suggest 3 things I could build or organize this week. Do NOT start building yet — just give me the suggestions first.&#39;);Analytics.commandCopied(1,4)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do"><b>Step 2</b> — pick one and start:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">let's do the first one — go ahead and build it</span><button class="say-cp" onclick="cpText(this,&#39;let\&#39;s do the first one — go ahead and build it&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Suggestions based on what's actually in your folder. Then your sous-chef starts on whichever you choose.</div>
+      <button class="btn-dn" style="background:var(--blue)" onclick="completeMission(1,3)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">5</div><div class="mt">File the recipe (save to GitHub)</div><div class="mtg" style="">Dish 5 🗂️</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--blue)12;border:0.5px solid var(--blue)40;color:var(--blue)">🍳 After a good service, you file the recipes so any chef can recreate them. We'll create a dedicated project folder first — never push from Claude's config folder.</div>
+      <div class="m-do"><b>Step 1</b> — set up a clean station:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">create a new folder called my-first-claude-project in my Documents folder and initialize it as a git repository</span><button class="say-cp" onclick="cpText(this,&#39;create a new folder called my-first-claude-project in my Documents folder and initialize it as a git repository&#39;);Analytics.commandCopied(1,5)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do"><b>Step 2</b> — add a README and push to a public repo:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">create a README.md in this folder that says: 'This is my first Claude Code project.' Then commit everything and push to a new public GitHub repository called my-first-claude-project</span><button class="say-cp" onclick="cpText(this,&#39;create a README.md in this folder that says: \&#39;This is my first Claude Code project.\&#39; Then commit everything and push to a new public GitHub repository called my-first-claude-project&#39;)">Copy</button></div><div class="warn-box">⚠️ <b>Why a new folder?</b> Claude Code's config folder contains your private credentials. Never push that to GitHub. Always work in a dedicated project folder.</div><div class="info-box">💡 <b>Why public?</b> Public repos get GitHub Pages for free — no premium account needed.</div>
+      <div class="m-res"><b>What to expect:</b> Claude Code will ask permission at each step. At the end, you get a GitHub link you can share.</div>
+      <button class="btn-dn" style="background:var(--blue)" onclick="completeMission(1,4)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">6</div><div class="mt">Daily closing routine</div><div class="mtg" style="">Dish 6 🔁</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--blue)12;border:0.5px solid var(--blue)40;color:var(--blue)">🍳 Every great kitchen has a closing routine — update the logbook, clean the station, prep for tomorrow.</div>
+      <div class="m-do">At the end of every session, type this:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">summarize what we cooked today, save it to my-notes.md in my-first-claude-project, and commit everything to GitHub with a note about today's session</span><button class="say-cp" onclick="cpText(this,&#39;summarize what we cooked today, save it to my-notes.md in my-first-claude-project, and commit everything to GitHub with a note about today\&#39;s session&#39;);Analytics.commandCopied(1,6)">Copy</button></div>
+      
+      <div class="m-res"><b>What to expect:</b> Your sous-chef writes a session summary, saves it, and commits to GitHub in one go.</div>
+      <button class="btn-dn" style="background:var(--blue)" onclick="completeMission(1,5)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div></div>
     <div class="cheatsheet" id="cs-1">
       <div class="cs-t">🍳 Level 1 complete — your cheatsheet</div>
       <div class="cs-s">Everything you learned. Keep this open whenever you need a reminder.</div>
@@ -919,7 +955,43 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
     </div>
   </div>
   <div class="prog-row"><div class="prog-track"><div class="prog-bar" id="pb-2" style="background:var(--green);width:0%"></div></div><div class="prog-lbl" id="pl-2">0 / 6 dishes</div></div>
-  <div class="missions-wrap" id="ml-2"></div>
+  <div class="missions-wrap" id="ml-2"><div class="ms cur" style="border-color: var(--green);"><div class="mh" style="background:var(--green)20"><div class="mn" style="background:var(--green);border-color:var(--green);color:white">1</div><div class="mt">Design the menu</div><div class="mtg" style="background:var(--green)20;color:var(--green)">Dish 1 🍽️</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--green)12;border:0.5px solid var(--green)40;color:var(--green)">🍽️ No great restaurant opens without a menu. Before writing a single line, you and your sous-chef plan exactly what to build.</div>
+      <div class="m-do">Tell Claude Code what you want to build. Add 'do NOT start building yet':</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">I want to build a simple personal webpage. Help me plan what it should include — who I am, what I do, and how people can reach me. Ask me what you need to know. Do NOT start building yet — just ask your questions first.</span><button class="say-cp" onclick="cpText(this,&#39;I want to build a simple personal webpage. Help me plan what it should include — who I am, what I do, and how people can reach me. Ask me what you need to know. Do NOT start building yet — just ask your questions first.&#39;);Analytics.commandCopied(2,1)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">Answer its questions, then ask for a plan:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">based on what I told you, write a brief plan for the page — sections, content, and visual style</span><button class="say-cp" onclick="cpText(this,&#39;based on what I told you, write a brief plan for the page — sections, content, and visual style&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Claude Code interviews you about your vision, then produces a written plan. No code yet — just the menu.</div>
+      <button class="btn-dn" style="background:var(--green)" onclick="completeMission(2,0)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">2</div><div class="mt">Cook the first dish</div><div class="mtg" style="">Dish 2 🍳</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--green)12;border:0.5px solid var(--green)40;color:var(--green)">🍳 Your sous-chef has the plan. Now it cooks. Claude Code writes all the HTML and CSS — you review what comes out.</div>
+      <div class="m-do">Ask Claude Code to build it:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">build the webpage we planned. Create an index.html file with all the HTML and CSS in one file. Keep it clean and simple.</span><button class="say-cp" onclick="cpText(this,&#39;build the webpage we planned. Create an index.html file with all the HTML and CSS in one file. Keep it clean and simple.&#39;);Analytics.commandCopied(2,2)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">Once it's done, open it:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">open index.html in my default browser so I can see it</span><button class="say-cp" onclick="cpText(this,&#39;open index.html in my default browser so I can see it&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Claude Code creates a real HTML file. When you open it you'll see your webpage in the browser — no internet needed yet, just a local preview.</div>
+      <button class="btn-dn" style="background:var(--green)" onclick="completeMission(2,1)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">3</div><div class="mt">Taste and adjust</div><div class="mtg" style="">Dish 3 🧑‍🍳</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--green)12;border:0.5px solid var(--green)40;color:var(--green)">🧑‍🍳 Even the best sous-chef needs feedback. Look at what was built and tell it what to change.</div>
+      <div class="m-do">Look at your page in the browser. Come back and describe what you want to change:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">I want to change the following things about the page: [describe what you want different — colour, text, layout, anything]</span><button class="say-cp" onclick="cpText(this,&#39;I want to change the following things about the page: [describe what you want different — colour, text, layout, anything]&#39;);Analytics.commandCopied(2,3)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">Keep going until it feels right:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">[describe the next change you want]</span><button class="say-cp" onclick="cpText(this,&#39;[describe the next change you want]&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Every change gets applied immediately. Refresh your browser tab to see it.</div>
+      <button class="btn-dn" style="background:var(--green)" onclick="completeMission(2,2)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">4</div><div class="mt">Set the table</div><div class="mtg" style="">Dish 4 🍽️</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--green)12;border:0.5px solid var(--green)40;color:var(--green)">🍽️ Before the restaurant opens, the table needs to be set. Publishing to GitHub Pages requires your project on GitHub.</div>
+      <div class="m-do">Commit all your current files:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">commit all my current files to GitHub with the message 'ready to publish'</span><button class="say-cp" onclick="cpText(this,&#39;commit all my current files to GitHub with the message \&#39;ready to publish\&#39;&#39;);Analytics.commandCopied(2,4)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">Then enable GitHub Pages:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">tell me step by step exactly how to enable GitHub Pages for my repository so my index.html becomes a live website</span><button class="say-cp" onclick="cpText(this,&#39;tell me step by step exactly how to enable GitHub Pages for my repository so my index.html becomes a live website&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Claude Code commits your files, then gives you exact click-by-click instructions for enabling GitHub Pages.</div>
+      <button class="btn-dn" style="background:var(--green)" onclick="completeMission(2,3)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">5</div><div class="mt">Open the doors</div><div class="mtg" style="">⭐ The big moment</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--green)12;border:0.5px solid var(--green)40;color:var(--green)">🌍 This is the dish everything has been building toward. Your website goes live — a real URL on the internet.</div>
+      <div class="m-do">After enabling GitHub Pages (takes 1-2 minutes), verify your URL:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">what is the GitHub Pages URL for my project? Help me verify it is live.</span><button class="say-cp" onclick="cpText(this,&#39;what is the GitHub Pages URL for my project? Help me verify it is live.&#39;);Analytics.commandCopied(2,5)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">Once it's live — share it:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">my site is live — help me write a short message to share it with someone</span><button class="say-cp" onclick="cpText(this,&#39;my site is live — help me write a short message to share it with someone&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Your site will be live at a real URL. Open it on your phone. Send it to a friend.</div>
+      <button class="btn-dn" style="background:var(--green)" onclick="completeMission(2,4)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">6</div><div class="mt">Daily service</div><div class="mtg" style="">Dish 6 🔁</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--green)12;border:0.5px solid var(--green)40;color:var(--green)">🔁 A restaurant that opens once and never changes doesn't last. This dish sets up your update habit.</div>
+      <div class="m-do">Make one small update to your page, then push it live:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">add a new section to my page called 'What I'm working on' and write one sentence about something I'm currently doing. Then commit and push to GitHub.</span><button class="say-cp" onclick="cpText(this,&#39;add a new section to my page called \&#39;What I\&#39;m working on\&#39; and write one sentence about something I\&#39;m currently doing. Then commit and push to GitHub.&#39;);Analytics.commandCopied(2,6)">Copy</button></div>
+      
+      <div class="m-res"><b>What to expect:</b> Within 30-60 seconds of pushing, your live site updates. Refresh the URL and the new section is there.</div>
+      <button class="btn-dn" style="background:var(--green)" onclick="completeMission(2,5)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div></div>
   <div class="cheatsheet" id="cs-2">
     <div class="cs-t">🌍 Level 2 complete — your cheatsheet</div>
     <div class="cs-s">You built and published a real website. Here's what you now know.</div>
@@ -988,7 +1060,49 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
     </div>
   </div>
   <div class="prog-row"><div class="prog-track"><div class="prog-bar" id="pb-3" style="background:var(--purple);width:0%"></div></div><div class="prog-lbl" id="pl-3">0 / 7 dishes</div></div>
-  <div class="missions-wrap" id="ml-3"></div>
+  <div class="missions-wrap" id="ml-3"><div class="ms cur" style="border-color: var(--purple);"><div class="mh" style="background:var(--purple)20"><div class="mn" style="background:var(--purple);border-color:var(--purple);color:white">1</div><div class="mt">Design the game</div><div class="mtg" style="background:var(--purple)20;color:var(--purple)">Dish 1 🎮</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--purple)12;border:0.5px solid var(--purple)40;color:var(--purple)">🎮 Every great game starts with a brief. Before a single line of code, you're the creative director.</div>
+      <div class="m-do">Tell Claude Code what kind of game you want. Add 'do NOT start building yet':</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">I want to build a browser game called Chef's Chaos. Ingredients fall from the top of the screen and I move a pot left and right to catch the right ones. Wrong ingredients cost a life. Speed increases over time. Ask me anything you need to know. Do NOT start building yet — just ask your questions first.</span><button class="say-cp" onclick="cpText(this,&#39;I want to build a browser game called Chef\&#39;s Chaos. Ingredients fall from the top of the screen and I move a pot left and right to catch the right ones. Wrong ingredients cost a life. Speed increases over time. Ask me anything you need to know. Do NOT start building yet — just ask your questions first.&#39;);Analytics.commandCopied(3,1)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">Answer its questions, then ask for a game plan:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">based on what I told you, write a short game design doc — rules, ingredients list, scoring, and visual style</span><button class="say-cp" onclick="cpText(this,&#39;based on what I told you, write a short game design doc — rules, ingredients list, scoring, and visual style&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Claude Code asks clarifying questions, then produces a game design document that becomes your blueprint.</div>
+      <button class="btn-dn" style="background:var(--purple)" onclick="completeMission(3,0)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">2</div><div class="mt">Cook the engine</div><div class="mtg" style="">Dish 2 ⚙️</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--purple)12;border:0.5px solid var(--purple)40;color:var(--purple)">🍳 The design is ready. Now your sous-chef builds the engine — falling ingredients, a moving pot, collision detection.</div>
+      <div class="m-do">Ask Claude Code to build the core game:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">build the core Chef's Chaos game based on our design doc. Create a single index.html file with all the HTML, CSS and JavaScript inside it. The pot moves with arrow keys. Make it playable but rough — we'll polish next.</span><button class="say-cp" onclick="cpText(this,&#39;build the core Chef\&#39;s Chaos game based on our design doc. Create a single index.html file with all the HTML, CSS and JavaScript inside it. The pot moves with arrow keys. Make it playable but rough — we\&#39;ll polish next.&#39;);Analytics.commandCopied(3,2)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">Once done, open it:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">open the game in my browser so I can test it</span><button class="say-cp" onclick="cpText(this,&#39;open the game in my browser so I can test it&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> A working game opens in your browser. It will look rough. The only question: does it move? Can you catch things? Does the score go up?</div>
+      <button class="btn-dn" style="background:var(--purple)" onclick="completeMission(3,1)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">3</div><div class="mt">Add the drama</div><div class="mtg" style="">Dish 3 🎭</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--purple)12;border:0.5px solid var(--purple)40;color:var(--purple)">🎭 A working game is not yet a fun game. Drama is what makes people keep playing.</div>
+      <div class="m-do">Test the game, then ask Claude Code to add tension:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">add the following to the game: 3 lives shown as heart emojis, a game over screen with my final score and a play again button, speed that increases every 10 points, and one special golden ingredient worth 5 points</span><button class="say-cp" onclick="cpText(this,&#39;add the following to the game: 3 lives shown as heart emojis, a game over screen with my final score and a play again button, speed that increases every 10 points, and one special golden ingredient worth 5 points&#39;);Analytics.commandCopied(3,3)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">If something doesn't feel right:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">the game feels [too fast / too slow / too easy / too hard] — adjust it so it feels satisfying to play</span><button class="say-cp" onclick="cpText(this,&#39;the game feels [too fast / too slow / too easy / too hard] — adjust it so it feels satisfying to play&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Each addition makes the game feel more real. Describe what feels off in plain language — it gets fixed.</div>
+      <button class="btn-dn" style="background:var(--purple)" onclick="completeMission(3,2)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">4</div><div class="mt">Plate it beautifully</div><div class="mtg" style="">Dish 4 🎨</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--purple)12;border:0.5px solid var(--purple)40;color:var(--purple)">🎨 The game works. Now make it look like something you'd actually want to play.</div>
+      <div class="m-do">Describe the visual style you want:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">make the game look polished and fun. Add: a start screen with the game title and a big play button, a kitchen background, emoji ingredients that wiggle as they fall, and a sound effect when you catch something correctly. Keep it fast to load.</span><button class="say-cp" onclick="cpText(this,&#39;make the game look polished and fun. Add: a start screen with the game title and a big play button, a kitchen background, emoji ingredients that wiggle as they fall, and a sound effect when you catch something correctly. Keep it fast to load.&#39;);Analytics.commandCopied(3,4)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">Keep adjusting until it feels right:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">change the [colour / font / background / animation speed] to [what you want]</span><button class="say-cp" onclick="cpText(this,&#39;change the [colour / font / background / animation speed] to [what you want]&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> The game starts looking like a real product. These are the details that make someone say 'did you actually build this?'</div>
+      <button class="btn-dn" style="background:var(--purple)" onclick="completeMission(3,3)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">5</div><div class="mt">Open the arcade</div><div class="mtg" style="">Dish 5 🌍</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--purple)12;border:0.5px solid var(--purple)40;color:var(--purple)">🌍 The game is ready. Time to publish. GitHub Pages gives it a real URL in under 5 minutes.</div>
+      <div class="m-do"><b>Step 1</b> — push to a new public repo:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">create a new public GitHub repository called chefs-chaos, add all my game files, commit with the message 'launch: Chef's Chaos v1', and push</span><button class="say-cp" onclick="cpText(this,&#39;create a new public GitHub repository called chefs-chaos, add all my game files, commit with the message \&#39;launch: Chef\&#39;s Chaos v1\&#39;, and push&#39;);Analytics.commandCopied(3,5)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do"><b>Step 2</b> — enable GitHub Pages:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">tell me how to enable GitHub Pages for my chefs-chaos repository so the game goes live</span><button class="say-cp" onclick="cpText(this,&#39;tell me how to enable GitHub Pages for my chefs-chaos repository so the game goes live&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Claude Code pushes the files, walks you through GitHub Pages. Within 1-2 minutes your game is live. Open it on your phone.</div>
+      <button class="btn-dn" style="background:var(--purple)" onclick="completeMission(3,4)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">6</div><div class="mt">Add a secret ingredient</div><div class="mtg" style="">Dish 6 🧪</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--purple)12;border:0.5px solid var(--purple)40;color:var(--purple)">🧪 The most important lesson: shipping is not the end — it's the beginning. Add a feature and watch it appear on the live URL.</div>
+      <div class="m-do">Pick one thing to add:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">add a [high score that saves between sessions / a bomb ingredient that ends the game instantly / an easy-medium-hard difficulty selector] to the game</span><button class="say-cp" onclick="cpText(this,&#39;add a [high score that saves between sessions / a bomb ingredient that ends the game instantly / an easy-medium-hard difficulty selector] to the game&#39;);Analytics.commandCopied(3,6)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">Push the update live:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">commit this update with the message 'feat: [your feature]' and push to GitHub</span><button class="say-cp" onclick="cpText(this,&#39;commit this update with the message \&#39;feat: [your feature]\&#39; and push to GitHub&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> Refresh your live URL 30-60 seconds after pushing. The new feature is there.</div>
+      <button class="btn-dn" style="background:var(--purple)" onclick="completeMission(3,5)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div><div class="ms lk"><div class="mh" style=""><div class="mn" style="">7</div><div class="mt">First player</div><div class="mtg" style="">Dish 7 🏆</div></div>
+      <div class="mb"><div class="m-why" style="background:var(--purple)12;border:0.5px solid var(--purple)40;color:var(--purple)">🏆 A game no one plays is just a file. Send it to one real person today.</div>
+      <div class="m-do">Ask Claude Code to help you write the launch message:</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">help me write a short fun message to send my first player — include the game URL, a one-line description of how to play, and a challenge to beat a score of 50</span><button class="say-cp" onclick="cpText(this,&#39;help me write a short fun message to send my first player — include the game URL, a one-line description of how to play, and a challenge to beat a score of 50&#39;);Analytics.commandCopied(3,7)">Copy</button></div>
+      <div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">After they play, improve one thing based on what you saw:</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">my first player [struggled with X / loved Y / asked about Z] — update the game based on this</span><button class="say-cp" onclick="cpText(this,&#39;my first player [struggled with X / loved Y / asked about Z] — update the game based on this&#39;)">Copy</button></div>
+      <div class="m-res"><b>What to expect:</b> You'll notice something the moment someone else plays. That feedback is your next improvement — and now you know exactly how to ship it.</div>
+      <button class="btn-dn" style="background:var(--purple)" onclick="completeMission(3,6)"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div></div></div>
   <div class="cheatsheet" id="cs-3">
     <div class="cs-t">🕹️ Level 3 complete — your cheatsheet</div>
     <div class="cs-s">You shipped a real game. Here's what you now know.</div>
@@ -1034,7 +1148,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
   </div>
   <div style="padding:14px 22px;display:flex;flex-direction:column;gap:8px;border-bottom:0.5px solid var(--border)">
     <div class="opt-acc" id="opt-diff">
-      <div class="opt-head" onclick="toggleAcc('opt-diff')"><span style="font-size:15px">⚠️</span><span class="opt-lbl">What makes this level different? <span style="font-size:10px;color:var(--text2)">(optional)</span></span><span class="opt-arr">▶</span></div>
+      <div class="opt-head" onclick="toggleAcc(&#39;opt-diff&#39;)"><span style="font-size:15px">⚠️</span><span class="opt-lbl">What makes this level different? <span style="font-size:10px;color:var(--text2)">(optional)</span></span><span class="opt-arr">▶</span></div>
       <div class="opt-body">
         <div class="og-grid">
           <div class="og-card"><div class="og-ico">🌐</div><div class="og-t">Three tools</div><div class="og-d">VS Code, GitHub website, and this guide — all labelled clearly.</div></div>
@@ -1045,7 +1159,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
       </div>
     </div>
     <div class="opt-acc" id="opt-players">
-      <div class="opt-head" onclick="toggleAcc('opt-players')"><span style="font-size:15px">👥</span><span class="opt-lbl">Who are the three players? <span style="font-size:10px;color:var(--text2)">(optional)</span></span><span class="opt-arr">▶</span></div>
+      <div class="opt-head" onclick="toggleAcc(&#39;opt-players&#39;)"><span style="font-size:15px">👥</span><span class="opt-lbl">Who are the three players? <span style="font-size:10px;color:var(--text2)">(optional)</span></span><span class="opt-arr">▶</span></div>
       <div class="opt-body">
         <div class="pc you"><span class="pc-ico">👤</span><div><div class="pc-nm">You — the Head Chef</div><span class="pc-where">Everywhere</span><div class="pc-d">You make all decisions. Both other players answer to you.</div></div></div>
         <div class="pc cc"><span class="pc-ico">🤖</span><div><div class="pc-nm">Chef Claude — your second chef</div><span class="pc-where">🗣️ In this chat only</span><div class="pc-d">I play the collaborator. Talk to me here. <b style="color:#FCD34D">Never mention me to Claude Code in VS Code.</b></div></div></div>
@@ -1058,14 +1172,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
     <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">🎮 Choose your brigade</div>
     <div style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6">Same skills, same GitHub mechanics. Switch at any point.</div>
     <div class="tracks">
-      <div class="tc" id="tc-h" onclick="l4Sel('h')">
+      <div class="tc" id="tc-h" onclick="l4Sel(&#39;h&#39;)">
         <span class="tc-ico">👤</span><div class="tc-nm">Real Chef</div>
         <div class="tc-r"><span class="tc-rl">Who</span><span class="tc-rv">A real person you invite</span></div>
         <div class="tc-r"><span class="tc-rl">Pace</span><span class="tc-rv">When they're available</span></div>
         <span class="tc-bg bh">Most realistic</span>
         <div class="tc-sel h">✓ Selected</div>
       </div>
-      <div class="tc" id="tc-a" onclick="l4Sel('a')">
+      <div class="tc" id="tc-a" onclick="l4Sel(&#39;a&#39;)">
         <span class="tc-ico">🤖</span><div class="tc-nm">Chef Claude</div>
         <div class="tc-r"><span class="tc-rl">Who</span><span class="tc-rv">I play the second chef</span></div>
         <div class="tc-r"><span class="tc-rl">Pace</span><span class="tc-rv">Instant — always here</span></div>
@@ -1073,8 +1187,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         <div class="tc-sel a">✓ Selected</div>
       </div>
     </div>
-    <button class="sbtn sbh" id="sb-h" onclick="l4Go('h')"><i class="ti ti-users" style="font-size:14px"></i> Start with a Real Chef</button>
-    <button class="sbtn sba" id="sb-a" onclick="l4Go('a')"><i class="ti ti-robot" style="font-size:14px"></i> Start with Chef Claude</button>
+    <button class="sbtn sbh" id="sb-h" onclick="l4Go(&#39;h&#39;)"><i class="ti ti-users" style="font-size:14px"></i> Start with a Real Chef</button>
+    <button class="sbtn sba" id="sb-a" onclick="l4Go(&#39;a&#39;)"><i class="ti ti-robot" style="font-size:14px"></i> Start with Chef Claude</button>
     <div class="sw-note">You can switch tracks at any point.</div>
   </div>
   <div class="prog-row" id="pb-row-4" style="display:none"><div class="prog-track"><div class="prog-bar" id="pb-4" style="background:var(--amber);width:0%"></div></div><div class="prog-lbl" id="pl-4">0 / 5 dishes</div></div>
@@ -1085,7 +1199,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
     <div class="cs-grid">
       <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">git checkout -b feature/name</div><div class="cs-desc">Open a new prep station (branch)</div></div>
       <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">git push origin feature/name</div><div class="cs-desc">Push your branch to GitHub</div></div>
-      <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">Compare & pull request</div><div class="cs-desc">Submit your dish for tasting on GitHub</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">Compare &amp; pull request</div><div class="cs-desc">Submit your dish for tasting on GitHub</div></div>
       <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">Merge pull request</div><div class="cs-desc">Bring your dish to the main menu</div></div>
       <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">git pull origin main</div><div class="cs-desc">Update your local main after a merge</div></div>
       <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">&lt;&lt;&lt; === &gt;&gt;&gt; markers</div><div class="cs-desc">Conflict markers — choose the final version</div></div>
@@ -1191,7 +1305,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
       <div class="lp-step-head"><div class="lp-step-num">1</div><div class="lp-step-lbl">Clear your terminal</div></div>
       <div class="lp-step-body">
         <div class="lp-step-txt">In VS Code, open the terminal and type:</div>
-        <div class="prompt-box" style="margin-bottom:0"><div class="prompt-text">/clear</div><button class="prompt-copy" onclick="cpText(this,'/clear')">Copy</button></div>
+        <div class="prompt-box" style="margin-bottom:0"><div class="prompt-text">/clear</div><button class="prompt-copy" onclick="cpText(this,&#39;/clear&#39;)">Copy</button></div>
       </div>
     </div>
     <div class="lp-step">
@@ -1201,7 +1315,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         <div class="prompt-box">
           <div class="prompt-label">Your starting prompt — paste this into Claude Code</div>
           <div class="prompt-text" id="l5-prompt-text">Come back here after getting your suggestions from the chat above and click "I have my prompt — launch".</div>
-          <button class="prompt-copy" onclick="cpText(this, document.getElementById('l5-prompt-text').textContent)">Copy</button>
+          <button class="prompt-copy" onclick="cpText(this, document.getElementById(&#39;l5-prompt-text&#39;).textContent)">Copy</button>
         </div>
       </div>
     </div>
@@ -1222,7 +1336,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         <div class="cmsg ai">I'm here if you need me. But try to solve it in VS Code first — that's the whole point of this level. Ask me when you're really stuck.</div>
       </div>
       <div class="chat-in-row">
-        <textarea class="chat-in" id="l5-chat-in" placeholder="Describe what's happening..." rows="1" onkeydown="l5ChatKey(event)"></textarea>
+        <textarea class="chat-in" id="l5-chat-in" placeholder="Describe what&#39;s happening..." rows="1" onkeydown="l5ChatKey(event)"></textarea>
         <button class="chat-send" onclick="l5SendChat()">Send</button>
       </div>
     </div>
@@ -1235,7 +1349,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
     <span class="grad-ico">🎓</span>
     <div class="grad-t">Chef. Not student. Chef.</div>
     <div class="grad-s">You went from zero to shipping real software in five levels.<br>You built websites, games, collaborated on GitHub, and flew solo.<br><br>Most people who start learning to code never get here.<br>You did — and you did it by cooking.</div>
-    <button class="btn-big" style="background:var(--green)" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="ti ti-home" style="font-size:14px"></i> Back to the beginning</button>
+    <button class="btn-big" style="background:var(--green)" onclick="window.scrollTo({top:0,behavior:&#39;smooth&#39;})"><i class="ti ti-home" style="font-size:14px"></i> Back to the beginning</button>
   </div>
 </div>
 
@@ -1970,7 +2084,7 @@ function renderFeedback(level){
       </div>
     </div>
     <div class="star-row" id="stars-${level}" style="margin-bottom:12px">
-      ${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setRating(${level},${n})" data-val="${n}" title="${['','Didn't help','OK','Good','Great','Loved it'][n]}">⭐</button>`).join('')}
+      ${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setRating(${level},${n})" data-val="${n}" title="${['','Did not help','OK','Good','Great','Loved it'][n]}">⭐</button>`).join('')}
       <span id="star-lbl-${level}" style="font-size:12px;color:var(--text2);margin-left:8px;align-self:center"></span>
     </div>
     <textarea class="fw-ta" id="fw-ta-${level}" placeholder="What was the clearest moment? What was the most confusing? Any command that felt wrong? (optional — but really helpful)"></textarea>
@@ -2145,5 +2259,6 @@ window.addEventListener('DOMContentLoaded', ()=>{
   });
 });
 </script>
-</body>
-</html>
+
+
+</body></html>
