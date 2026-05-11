@@ -30,11 +30,12 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
 .lv{display:flex;align-items:flex-start}
 .lvi{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
 .lvc{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid rgba(255,255,255,.12);color:rgba(255,255,255,.25);background:transparent;cursor:pointer;transition:all .2s}
-.lvc:hover{border-color:rgba(255,255,255,.3)}
+.lvc:hover{transform:scale(1.12)}
+.lvc{transition:all .2s}
 .lvi.done .lvc{background:var(--green);border-color:var(--green);color:white;cursor:pointer}
 .lvi.done .lvc:hover{opacity:.85}
 .lvi.active .lvc{background:var(--blue);border-color:#79C0FF;color:white;box-shadow:0 0 0 3px rgba(88,166,255,.2)}
-.lvi.locked .lvc{cursor:not-allowed}
+.lvi.locked .lvc{cursor:pointer;opacity:.6}.lvi.locked .lvc:hover{opacity:.9;border-color:rgba(255,255,255,.5)}
 .lv-lbl{font-size:9px;color:rgba(255,255,255,.3);text-align:center;line-height:1.3;max-width:70px}
 .lvi.done .lv-lbl{color:rgba(255,255,255,.6)}
 .lvi.active .lv-lbl{color:white;font-weight:600}
@@ -485,28 +486,53 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
 .gh-list-item{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px 12px;margin-bottom:6px}
 
 /* ── WIN OVERLAY ── */
-.win-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:100;border-radius:inherit}
+.win-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:100}
 .win-overlay.show{display:flex}
 .win-box{background:var(--bg);border-radius:var(--radius);padding:2rem;text-align:center;max-width:300px;border:0.5px solid var(--border);margin:0 16px}
 .win-ico{font-size:44px;margin-bottom:10px}
 .win-t{font-size:17px;font-weight:500;color:var(--text);margin-bottom:6px}
 .win-s{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
-.win-btn-next{padding:9px 22px;color:white;border:none;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
+.win-btn-next{padding:10px 28px;color:white;border:none;border-radius:var(--radius);font-size:14px;cursor:pointer;font-family:inherit;font-weight:600;background:var(--blue);display:inline-block}
 
 /* ── STUCK FAB ── */
 .stuck-fab{position:fixed;bottom:20px;right:20px;color:white;border:none;border-radius:30px;padding:10px 16px;font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(0,0,0,.25);z-index:50;font-weight:500}
 .stuck-fab:hover{opacity:.9}
 .stuck-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:flex-end;padding:20px;z-index:99}
 .stuck-modal.show{display:flex}
-.stuck-box{background:var(--bg);border-radius:var(--radius);width:320px;border:0.5px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.stuck-box{background:var(--bg);border-radius:var(--radius);width:360px;max-height:90vh;overflow-y:auto;border:0.5px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.2)}
 .stuck-hd{padding:12px 14px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .stuck-ttl{font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:6px}
 .stuck-cl{background:none;border:none;cursor:pointer;color:var(--text2);font-size:18px;padding:2px 6px}
 .stuck-cl:hover{color:var(--text)}
-.stuck-bd{padding:14px;display:flex;flex-direction:column;gap:10px}
-.stuck-info{font-size:12px;color:var(--text2);line-height:1.65}
-.stuck-in{width:100%;background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text);outline:none;resize:none;min-height:70px}
-.stuck-send{width:100%;padding:9px;color:white;border:none;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
+.stuck-bd{padding:10px;display:flex;flex-direction:column;gap:8px}
+.stuck-msgs{display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;padding:4px 2px;min-height:60px}
+.stuck-msg{padding:8px 10px;border-radius:var(--radius);font-size:12px;line-height:1.6;max-width:92%}
+.stuck-msg.ai{background:var(--bg2);color:var(--text);align-self:flex-start}
+.stuck-msg.user{color:white;align-self:flex-end}
+.stuck-msg.thinking{background:var(--bg2);color:var(--text2);align-self:flex-start;font-style:italic}
+.stuck-input-row{display:flex;gap:6px;align-items:flex-end}
+.stuck-in{flex:1;background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:8px 10px;font-size:12px;font-family:inherit;color:var(--text);outline:none;resize:none;min-height:36px;max-height:80px}
+.stuck-send{padding:8px 14px;color:white;border:none;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;font-weight:600;flex-shrink:0;align-self:flex-end}
+.stuck-faq{display:flex;flex-direction:column;gap:6px;padding:10px 10px 0}
+.stuck-faq-t{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:2px}
+.faq-item{border:0.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.faq-q{padding:8px 10px;font-size:12px;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--bg2);user-select:none;line-height:1.4}
+.faq-q:hover{background:var(--bg3)}
+.faq-arr{font-size:10px;color:var(--text3);flex-shrink:0;transition:transform .2s}
+.faq-item.open .faq-arr{transform:rotate(90deg)}
+.faq-a{display:none;padding:8px 10px;font-size:12px;color:var(--text2);line-height:1.6;border-top:0.5px solid var(--border);background:var(--bg)}
+.faq-item.open .faq-a{display:block}
+.stuck-divider{display:flex;align-items:center;gap:8px;padding:10px 10px 0}
+.stuck-divider-line{flex:1;height:0.5px;background:var(--border)}
+.stuck-divider-t{font-size:10px;font-weight:600;color:var(--text3);white-space:nowrap}
+.stuck-copied{font-size:11px;color:var(--green);margin-top:6px;display:none;padding:0 2px}
+.stuck-claude-link{display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:6px 12px;color:white;text-decoration:none;border-radius:var(--radius-sm);font-weight:600;font-size:12px}
+.stuck-claude-link:hover{opacity:.88}
+.level-selector{display:flex;gap:6px;flex-wrap:wrap;padding:12px 22px;border-bottom:0.5px solid var(--border);background:var(--bg2)}
+.lvsel-lbl{font-size:11px;color:var(--text2);display:flex;align-items:center;margin-right:4px;white-space:nowrap}
+.lvsel-btn{padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;border:1px solid var(--border2);color:var(--text2);background:var(--bg);font-family:inherit;transition:all .15s;white-space:nowrap}
+.lvsel-btn:hover{border-color:var(--blue);color:var(--blue)}
+.lvsel-btn.cur{font-weight:600;cursor:default}
 .level-color-1{background:var(--blue)}
 .level-color-2{background:var(--green)}
 .level-color-3{background:var(--purple)}
@@ -543,10 +569,26 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
       <div class="stuck-ttl">🍳 Ask the chef anything</div>
       <button class="stuck-cl" onclick="closeStuck()">✕</button>
     </div>
-    <div class="stuck-bd">
-      <div class="stuck-info">Describe what happened — I'll help you.</div>
-      <textarea class="stuck-in" id="stuck-in" placeholder="What's going on?"></textarea>
-      <button class="stuck-send" id="stuck-send" onclick="sendStuck()">Send →</button>
+    <div class="stuck-bd" style="padding:0 0 10px">
+      <div class="stuck-faq">
+        <div class="stuck-faq-t">Common questions for this level</div>
+        <div id="faq-items"></div>
+      </div>
+      <div class="stuck-divider">
+        <div class="stuck-divider-line"></div>
+        <div class="stuck-divider-t">Not answered above? Ask directly</div>
+        <div class="stuck-divider-line"></div>
+      </div>
+      <div style="padding:8px 10px 0">
+        <div class="stuck-input-row">
+          <textarea class="stuck-in" id="stuck-in" placeholder="Describe what is happening..." onkeydown="stuckKey(event)" rows="2"></textarea>
+          <button class="stuck-send" id="stuck-send" onclick="sendStuck()">Send</button>
+        </div>
+        <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
+        <div id="stuck-claude-wrap" style="display:none">
+          <a class="stuck-claude-link" id="stuck-claude-link" href="#" target="_blank">Open Claude.ai with my question</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -655,6 +697,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
      SCREEN 1 — SETUP THE KITCHEN
 ═══════════════════════════════════════ -->
 <div class="screen" id="screen-1">
+  <div class="level-selector">
+    <span class="lvsel-lbl">Skip to:</span>
+    <button class="lvsel-btn cur" style="border-color:var(--blue);color:var(--blue)">1 — Setup</button>
+    <button class="lvsel-btn" onclick="goLevel(2)">2 — Restaurant</button>
+    <button class="lvsel-btn" onclick="goLevel(3)">3 — Game</button>
+    <button class="lvsel-btn" onclick="goLevel(4)">4 — Brigade</button>
+    <button class="lvsel-btn" onclick="goLevel(5)">5 — Your Kitchen</button>
+  </div>
   <div class="time-badge" style="background:var(--blue)">
     <span>⏱️</span><span class="tb-txt">Total time for this level</span><span class="tb-val">~2 hours · spread over sessions</span>
   </div>
@@ -815,7 +865,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
     <div class="prog-row"><div class="prog-track"><div class="prog-bar" id="pb-1" style="background:var(--blue);width:0%"></div></div><div class="prog-lbl" id="pl-1">0 / 6 dishes</div></div>
     <div class="missions-wrap" id="ml-1"></div>
     <div class="cheatsheet" id="cs-1">
-      <div class="cs-t">🎸 Level 1 complete — your cheatsheet</div>
+      <div class="cs-t">🍳 Level 1 complete — your cheatsheet</div>
       <div class="cs-s">Everything you learned. Keep this open whenever you need a reminder.</div>
       <div class="cs-grid">
         <div class="cs-card"><div class="cs-cmd" style="color:var(--blue)">what files are in my directory?</div><div class="cs-desc">Inventory your current folder</div></div>
@@ -838,6 +888,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
      SCREEN 2 — OPEN THE RESTAURANT
 ═══════════════════════════════════════ -->
 <div class="screen" id="screen-2">
+  <div class="level-selector">
+    <span class="lvsel-lbl">Skip to:</span>
+    <button class="lvsel-btn" onclick="goLevel(1)">1 — Setup</button>
+    <button class="lvsel-btn cur" style="border-color:var(--green);color:var(--green)">2 — Restaurant</button>
+    <button class="lvsel-btn" onclick="goLevel(3)">3 — Game</button>
+    <button class="lvsel-btn" onclick="goLevel(4)">4 — Brigade</button>
+    <button class="lvsel-btn" onclick="goLevel(5)">5 — Your Kitchen</button>
+  </div>
   <div class="time-badge" style="background:var(--green)">
     <span>⏱️</span><span class="tb-txt">Total time for this level</span><span class="tb-val">~90 minutes</span>
   </div>
@@ -885,6 +943,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
      SCREEN 3 — CHEF'S NIGHT OFF
 ═══════════════════════════════════════ -->
 <div class="screen" id="screen-3">
+  <div class="level-selector">
+    <span class="lvsel-lbl">Skip to:</span>
+    <button class="lvsel-btn" onclick="goLevel(1)">1 — Setup</button>
+    <button class="lvsel-btn" onclick="goLevel(2)">2 — Restaurant</button>
+    <button class="lvsel-btn cur" style="border-color:var(--purple);color:var(--purple)">3 — Game</button>
+    <button class="lvsel-btn" onclick="goLevel(4)">4 — Brigade</button>
+    <button class="lvsel-btn" onclick="goLevel(5)">5 — Your Kitchen</button>
+  </div>
   <div class="time-badge" style="background:var(--purple)">
     <span>⏱️</span><span class="tb-txt">Total time for this level</span><span class="tb-val">~2 hours</span>
   </div>
@@ -946,6 +1012,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
      SCREEN 4 — KITCHEN BRIGADE
 ═══════════════════════════════════════ -->
 <div class="screen" id="screen-4">
+  <div class="level-selector">
+    <span class="lvsel-lbl">Skip to:</span>
+    <button class="lvsel-btn" onclick="goLevel(1)">1 — Setup</button>
+    <button class="lvsel-btn" onclick="goLevel(2)">2 — Restaurant</button>
+    <button class="lvsel-btn" onclick="goLevel(3)">3 — Game</button>
+    <button class="lvsel-btn cur" style="border-color:var(--amber);color:var(--amber)">4 — Brigade</button>
+    <button class="lvsel-btn" onclick="goLevel(5)">5 — Your Kitchen</button>
+  </div>
   <div class="time-badge" style="background:var(--amber)">
     <span>⏱️</span><span class="tb-txt">Total time for this level</span><span class="tb-val">~45–60 minutes</span>
   </div>
@@ -1028,6 +1102,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
      SCREEN 5 — YOUR KITCHEN
 ═══════════════════════════════════════ -->
 <div class="screen" id="screen-5">
+  <div class="level-selector">
+    <span class="lvsel-lbl">Skip to:</span>
+    <button class="lvsel-btn" onclick="goLevel(1)">1 — Setup</button>
+    <button class="lvsel-btn" onclick="goLevel(2)">2 — Restaurant</button>
+    <button class="lvsel-btn" onclick="goLevel(3)">3 — Game</button>
+    <button class="lvsel-btn" onclick="goLevel(4)">4 — Brigade</button>
+    <button class="lvsel-btn cur" style="border-color:var(--green);color:var(--green)">5 — Your Kitchen</button>
+  </div>
   <div class="hero" style="background:linear-gradient(135deg,#051C12,#0A3020,#051C12)">
     <span class="hero-ico">🍽️✨</span>
     <div class="hero-t">Your Kitchen, Your Menu</div>
@@ -1167,35 +1249,35 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
 
 const MISSIONS = {
   1: [
-    {t:"Take stock of the kitchen",tag:"First note 🎵",
+    {t:"Take stock of the kitchen",tag:"Dish 1 🍳",
      why:"🍳 Every chef starts service by walking the kitchen. Your first mission: ask your sous-chef to do exactly that.",
      do:"In VS Code, open the Claude Code panel (click the ✦ sparkle icon). Type this and press Enter:",
      say:"what files and folders are in my current directory?",
      res:"<b>What to expect:</b> Claude Code lists everything it sees. That's your sous-chef doing the first walk of the kitchen.",
-     wi:"🎵",wt:"First note played!",ws:"You asked an AI to inventory your workspace. That's how every developer starts a new project."},
-    {t:"Prep your first ingredient",tag:"Second note 🎵",
+     wi:"🍳",wt:"First dish tasted!",ws:"You asked an AI to inventory your workspace. That's how every chef starts their first service."},
+    {t:"Prep your first ingredient",tag:"Dish 2 🥘",
      why:"🍳 Time to make something. Your sous-chef will create a real file — and will ask your permission before touching anything.",
      do:"Type this in Claude Code:",
      say:"create a file called my-notes.md and write a short summary of what Claude Code is",
      res:"<b>What to expect:</b> Claude Code describes what it's about to do and asks for confirmation. Say yes. To verify it worked — look at the <b>Explorer panel</b> (📁 icon in the left sidebar). You should see my-notes.md appear there.",
-     wi:"🎵🎵",wt:"Second note!",ws:"A real file exists on your machine, created by AI from a plain English instruction. That never gets old."},
-    {t:"Taste and adjust",tag:"Song 1 🎸",
+     wi:"🥘",wt:"First ingredient prepped!",ws:"A real file exists on your machine, created by AI from a plain English instruction. That never gets old."},
+    {t:"Taste and adjust",tag:"Dish 3 🧑‍🍳",
      why:"🍳 A great chef doesn't just cook — they taste, critique, and improve. Two steps: get feedback, then act on one suggestion.",
      do:"<b>Step 1</b> — ask for a review:",
      say:"read my-notes.md and tell me 2 things you'd improve about it",
      do2:"<b>Step 2</b> — act on the first suggestion:",
      say2:"now make the first improvement to the file",
      res:"<b>What to expect:</b> First it critiques its own writing. Then it rewrites part of the file. Check the Explorer — the file is updated.",
-     wi:"🎸",wt:"First song — dish of the day!",ws:"You ran a full creative loop: create → review → improve. Real professionals do this every single day."},
-    {t:"Plan the week's menu",tag:"Third note 🎵",
+     wi:"🧑‍🍳",wt:"Dish of the day — tasted and adjusted!",ws:"You ran a full creative loop: create → review → improve. Real chefs do this every single service."},
+    {t:"Plan the week's menu",tag:"Dish 4 📋",
      why:"🍳 Give your sous-chef something bigger. Ask it to look at your whole kitchen and suggest what to build — then do one of them.",
      do:"<b>Step 1</b> — get suggestions first:",
      say:"look at my current folder and suggest 3 things I could build or organize this week. Do NOT start building yet — just give me the suggestions first.",
      do2:"<b>Step 2</b> — pick one and start:",
      say2:"let's do the first one — go ahead and build it",
      res:"<b>What to expect:</b> Suggestions based on what's actually in your folder. Then your sous-chef starts on whichever you choose.",
-     wi:"🎵🎵🎵",wt:"Third note!",ws:"Claude Code knows your kitchen now — suggestions based on YOUR ingredients, not a template."},
-    {t:"File the recipe (save to GitHub)",tag:"Song 2 🎸",
+     wi:"📋",wt:"Menu planned!",ws:"Claude Code knows your kitchen now — suggestions based on YOUR ingredients, not a template."},
+    {t:"File the recipe (save to GitHub)",tag:"Dish 5 🗂️",
      why:"🍳 After a good service, you file the recipes so any chef can recreate them. We'll create a dedicated project folder first — never push from Claude's config folder.",
      do:"<b>Step 1</b> — set up a clean station:",
      say:"create a new folder called my-first-claude-project in my Documents folder and initialize it as a git repository",
@@ -1204,13 +1286,13 @@ const MISSIONS = {
      res:"<b>What to expect:</b> Claude Code will ask permission at each step. At the end, you get a GitHub link you can share.",
      warn:"<b>Why a new folder?</b> Claude Code's config folder contains your private credentials. Never push that to GitHub. Always work in a dedicated project folder.",
      perm:"<b>Why public?</b> Public repos get GitHub Pages for free — no premium account needed.",
-     wi:"🎸🎸",wt:"Song 2 — recipe is in the vault!",ws:"Your project is on GitHub. That link works from any device, anywhere in the world. Welcome to the cloud."},
-    {t:"Daily closing routine",tag:"Full performance 🎼",
+     wi:"🗂️",wt:"Recipe filed — it's in the vault!",ws:"Your project is on GitHub. That link works from any device, anywhere in the world. Welcome to the cloud."},
+    {t:"Daily closing routine",tag:"Dish 6 🔁",
      why:"🍳 Every great kitchen has a closing routine — update the logbook, clean the station, prep for tomorrow.",
      do:"At the end of every session, type this:",
      say:"summarize what we cooked today, save it to my-notes.md in my-first-claude-project, and commit everything to GitHub with a note about today's session",
      res:"<b>What to expect:</b> Your sous-chef writes a session summary, saves it, and commits to GitHub in one go.",
-     wi:"🎼",wt:"Full service — kitchen closed!",ws:"You have a daily workflow now. Open VS Code → Claude Code → cook → confirm → save. It gets more natural every session."}
+     wi:"🔁",wt:"Kitchen closed — see you tomorrow!",ws:"You have a daily workflow now. Open VS Code → Claude Code → cook → confirm → save. It gets more natural every session."}
   ],
   2: [
     {t:"Design the menu",tag:"Dish 1 🍽️",
@@ -1253,12 +1335,12 @@ const MISSIONS = {
      say2:"my site is live — help me write a short message to share it with someone",
      res:"<b>What to expect:</b> Your site will be live at a real URL. Open it on your phone. Send it to a friend.",
      wi:"🌍",wt:"The restaurant is open!",ws:"You shipped a website to the internet. No hosting fees, no developer, no agency. Just you, Claude Code, and a terminal."},
-    {t:"Daily service",tag:"Full menu 🎼",
+    {t:"Daily service",tag:"Dish 6 🔁",
      why:"🔁 A restaurant that opens once and never changes doesn't last. This dish sets up your update habit.",
      do:"Make one small update to your page, then push it live:",
      say:"add a new section to my page called 'What I'm working on' and write one sentence about something I'm currently doing. Then commit and push to GitHub.",
      res:"<b>What to expect:</b> Within 30-60 seconds of pushing, your live site updates. Refresh the URL and the new section is there.",
-     wi:"🎼",wt:"Daily service — the restaurant stays open!",ws:"Every update you make from now on: describe it, push it, it's live. That's the complete web publishing workflow."}
+     wi:"🔁",wt:"Daily service — the restaurant stays open!",ws:"Every update you make from now on: describe it, push it, it's live. That's the complete web publishing workflow."}
   ],
   3: [
     {t:"Design the game",tag:"Dish 1 🎮",
@@ -1458,9 +1540,7 @@ const levelState = {
 // NAVIGATION
 // ═══════════════════════════════════════
 function goLevel(n) {
-  // Allow going back to previous levels or current
-  const maxUnlocked = getMaxUnlocked();
-  if(n > maxUnlocked) return;
+  // All levels are freely navigable — no locking
   currentLevel = n;
   document.querySelectorAll('.screen').forEach(s=>s.className='screen');
   document.getElementById('screen-'+n).className='screen show';
@@ -1468,6 +1548,21 @@ function goLevel(n) {
   updateFAB(n);
   window.scrollTo({top:0,behavior:'smooth'});
   if(n>0) Analytics.levelStart(n);
+  // If jumping ahead, show a gentle skip note
+  const maxSeen = getMaxUnlocked();
+  if(n > maxSeen && n > 0) showSkipNote(n);
+}
+
+function showSkipNote(n) {
+  const lvlNames=['','Setup the Kitchen','Open the Restaurant',"Chef's Night Off",'Kitchen Brigade','Your Kitchen'];
+  const existing = document.getElementById('skip-note-banner');
+  if(existing) existing.remove();
+  const banner = document.createElement('div');
+  banner.id = 'skip-note-banner';
+  banner.style.cssText='background:#1C1500;border-bottom:1px solid #78350F;padding:9px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px';
+  banner.innerHTML=`<span style="font-size:12px;color:#FDE68A">⏭️ You skipped ahead to <b>${lvlNames[n]}</b>. That's fine — you can always go back.</span><button onclick="this.parentElement.remove()" style="background:none;border:none;color:#FDE68A;cursor:pointer;font-size:16px;padding:0 4px">✕</button>`;
+  const screen = document.getElementById('screen-'+n);
+  screen.insertBefore(banner, screen.firstChild);
 }
 
 function getMaxUnlocked() {
@@ -1481,31 +1576,68 @@ function getMaxUnlocked() {
 }
 
 function updateNavBar() {
+  const LEVEL_COLORS = {
+    0:'#185FA5',1:'#185FA5',2:'#0E6B4F',
+    3:'#6D28D9',4:'#B45309',5:'#0E6B4F'
+  };
   const levels = [0,1,2,3,4,5];
   levels.forEach(l => {
     const lvi = document.getElementById('lvi-'+l);
     const lvc = document.getElementById('lvc-'+l);
-    if(!lvi) return;
-    lvi.className = 'lvi';
-    if(l===currentLevel) {
+    if(!lvi || !lvc) return;
+    const color = LEVEL_COLORS[l];
+    const s = levelState[l];
+    const isDone = s && s.done && s.done.size>0 &&
+      s.done.size>=(MISSIONS[l]?MISSIONS[l].length:(l===4?5:0));
+
+    if(l === currentLevel) {
+      // Active level — full accent color
       lvi.className = 'lvi active';
+      lvc.style.background = color;
+      lvc.style.borderColor = color;
+      lvc.style.color = 'white';
+      lvc.style.opacity = '1';
+      lvc.textContent = l===0?'🍳':l;
+
+    } else if(isDone) {
+      // Completed — green checkmark
+      lvi.className = 'lvi done';
+      lvc.style.background = '#0E6B4F';
+      lvc.style.borderColor = '#0E6B4F';
+      lvc.style.color = 'white';
+      lvc.style.opacity = '1';
+      lvc.textContent = '✓';
+
+    } else if(l < currentLevel) {
+      // Visited / skipped past — show level color, dimmed
+      lvi.className = 'lvi';
+      lvc.style.background = color+'55';
+      lvc.style.borderColor = color+'99';
+      lvc.style.color = 'white';
+      lvc.style.opacity = '0.85';
+      lvc.textContent = l===0?'🍳':l;
+
     } else {
-      const s=levelState[l];
-      const isDone = s && s.done && s.done.size>0 && s.done.size>=(MISSIONS[l]?MISSIONS[l].length:(l===4?5:0));
-      if(isDone || l < currentLevel) {
-        lvi.className = 'lvi done';
-        if(l>0) lvc.textContent='✓';
-      } else if(l <= getMaxUnlocked()) {
-        lvi.className = 'lvi';
-      } else {
-        lvi.className = 'lvi locked';
-      }
+      // Future level — unlit
+      lvi.className = 'lvi';
+      lvc.style.background = 'transparent';
+      lvc.style.borderColor = 'rgba(255,255,255,.15)';
+      lvc.style.color = 'rgba(255,255,255,.3)';
+      lvc.style.opacity = '1';
+      lvc.textContent = l===0?'🍳':l;
     }
   });
-  // Update connector lines
+
+  // Connector lines — lit up to current level in level color
+  const LINE_COLORS = ['#185FA5','#0E6B4F','#6D28D9','#B45309','#0E6B4F'];
   for(let l=0;l<5;l++) {
     const ln = document.getElementById('lvl-'+l+(l+1));
-    if(ln) ln.className = 'lv-ln'+(l<currentLevel?' done':'');
+    if(!ln) continue;
+    if(l < currentLevel) {
+      ln.style.background = LINE_COLORS[l];
+    } else {
+      ln.style.background = 'rgba(255,255,255,.08)';
+    }
   }
 }
 
@@ -1557,8 +1689,8 @@ function setOS(btn,os) {
 // GENERIC MISSION RENDERER
 // ═══════════════════════════════════════
 const WIN_MSGS = {
-  1:[{wi:"🎵",wt:"First note played!",ws:"You asked an AI to inventory your workspace. That's how every developer starts a new project."},{wi:"🎵🎵",wt:"Second note!",ws:"A real file exists on your machine, created by AI from a plain English instruction."},{wi:"🎸",wt:"First song!",ws:"You ran a full creative loop: create → review → improve. Real professionals do this every single day."},{wi:"🎵🎵🎵",wt:"Third note!",ws:"Claude Code knows your kitchen now — suggestions based on YOUR ingredients, not a template."},{wi:"🎸🎸",wt:"Song 2 — recipe in the vault!",ws:"Your project is on GitHub. That link works from any device, anywhere in the world."},{wi:"🎼",wt:"Full service — kitchen closed!",ws:"You have a daily workflow now. It gets more natural every session."}],
-  2:[{wi:"🍽️",wt:"Menu designed!",ws:"You just briefed your AI like a creative director. That's how real product teams start every project."},{wi:"🍳🍳",wt:"First dish is plated!",ws:"A real webpage exists on your machine. You described it — your AI wrote it."},{wi:"🧑‍🍳",wt:"Tasting complete!",ws:"You directed a design revision in plain language. No Figma, no CSS knowledge needed."},{wi:"🍽️",wt:"Table is set!",ws:"Your project is connected to GitHub Pages. The doors open next."},{wi:"🌍",wt:"The restaurant is open!",ws:"You shipped a website to the internet. No hosting fees, no developer needed."},{wi:"🎼",wt:"Daily service — the restaurant stays open!",ws:"Every update: describe it, push it, it's live. That's the complete web publishing workflow."}],
+  1:[{wi:"🍳",wt:"First dish tasted!",ws:"You asked an AI to inventory your workspace. That's how every chef starts their first service."},{wi:"🥘",wt:"First ingredient prepped!",ws:"A real file exists on your machine, created by AI from a plain English instruction. That never gets old."},{wi:"🧑‍🍳",wt:"Tasted and adjusted!",ws:"You ran a full creative loop: create → review → improve. Real chefs do this every single service."},{wi:"📋",wt:"Menu planned!",ws:"Claude Code knows your kitchen now — suggestions based on YOUR ingredients, not a template."},{wi:"🗂️",wt:"Recipe filed — it's in the vault!",ws:"Your project is on GitHub. That link works from any device, anywhere in the world. Welcome to the cloud."},{wi:"🔁",wt:"Kitchen closed — see you tomorrow!",ws:"You have a daily workflow now. It gets more natural every session."}],
+  2:[{wi:"🍽️",wt:"Menu designed!",ws:"You just briefed your AI like a creative director. That's how real product teams start every project."},{wi:"🍳🍳",wt:"First dish is plated!",ws:"A real webpage exists on your machine. You described it — your AI wrote it."},{wi:"🧑‍🍳",wt:"Tasting complete!",ws:"You directed a design revision in plain language. No Figma, no CSS knowledge needed."},{wi:"🍽️",wt:"Table is set!",ws:"Your project is connected to GitHub Pages. The doors open next."},{wi:"🌍",wt:"The restaurant is open!",ws:"You shipped a website to the internet. No hosting fees, no developer needed."},{wi:"🔁",wt:"Daily service — the restaurant stays open!",ws:"Every update: describe it, push it, it's live. That's the complete web publishing workflow."}],
   3:[{wi:"🎮",wt:"Game design locked in!",ws:"You just wrote a game design document. That's the first thing every studio does."},{wi:"⚙️⚙️",wt:"The engine is running!",ws:"You went from a conversation to a playable game in one dish."},{wi:"🎭",wt:"Now it's actually fun to play!",ws:"You just added 'game juice' — the emotional layer that makes a mechanic feel like an experience."},{wi:"🎨",wt:"It looks like a real game!",ws:"Visual polish is 10% of the work and 90% of the first impression."},{wi:"🌍",wt:"The arcade is open!",ws:"Go open it on your phone right now. That URL works for anyone, anywhere on earth."},{wi:"🧪",wt:"Live update shipped!",ws:"You changed a live product in real time. That feedback loop is the most addictive thing in software."},{wi:"🏆",wt:"First player in the books!",ws:"You observed a real user, spotted a problem, and shipped a fix. That's the complete product cycle."}]
 };
 const L4_WINS = [
@@ -1806,9 +1938,11 @@ function showGrad(){
 // ═══════════════════════════════════════
 let winCallback = null;
 function showWin(ico, title, sub, cb) {
+  const LEVEL_COLORS = {0:'#185FA5',1:'#185FA5',2:'#0E6B4F',3:'#6D28D9',4:'#B45309',5:'#0E6B4F'};
   document.getElementById('win-ico').textContent=ico;
   document.getElementById('win-t').textContent=title;
   document.getElementById('win-s').textContent=sub;
+  document.getElementById('win-btn').style.background=LEVEL_COLORS[currentLevel]||'#185FA5';
   winCallback=cb;
   document.getElementById('win-overlay').className='win-overlay show';
 }
@@ -1821,33 +1955,54 @@ function closeWin() {
 // FEEDBACK WIDGET
 // ═══════════════════════════════════════
 function renderFeedback(level){
-  const colors={1:'var(--blue)',2:'var(--green)',3:'var(--purple)',4:'var(--amber)',5:'var(--green)'};
-  const c=colors[level]||'var(--blue)';
+  const COLORS={1:'var(--blue)',2:'var(--green)',3:'var(--purple)',4:'var(--amber)',5:'var(--green)'};
+  const LEVEL_NAMES={1:'Setup the Kitchen',2:'Open the Restaurant',3:"Chef's Night Off",4:'Kitchen Brigade',5:'Your Kitchen'};
+  const c=COLORS[level]||'var(--blue)';
   const el=document.getElementById('fw-'+level);
   if(!el)return;
-  let rating=0;
-  el.innerHTML=`<div class="feedback-widget">
-    <div class="fw-t">How was Level ${level}? <span style="font-size:11px;color:var(--text2);font-weight:400">(optional)</span></div>
-    <div class="star-row" id="stars-${level}">
-      ${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setRating(${level},${n})" data-val="${n}">⭐</button>`).join('')}
+  el.innerHTML=`
+  <div class="feedback-widget" style="border:1.5px solid ${c}30;margin-top:16px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <div style="width:36px;height:36px;border-radius:50%;background:${c}18;border:1.5px solid ${c}40;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">👨‍🍳</div>
+      <div>
+        <div class="fw-t" style="margin-bottom:2px">How was Level ${level} — ${LEVEL_NAMES[level]}?</div>
+        <div style="font-size:11px;color:var(--text2)">Takes 30 seconds · helps improve the course</div>
+      </div>
     </div>
-    <textarea class="fw-ta" id="fw-ta-${level}" placeholder="Anything you'd change? Any moment that was confusing? (optional)"></textarea>
-    <button class="fw-send" style="background:${c}" onclick="submitFeedback(${level})">Send feedback</button>
-    <div class="fw-thanks" id="fw-thanks-${level}">✅ Thank you — this helps improve the course!</div>
+    <div class="star-row" id="stars-${level}" style="margin-bottom:12px">
+      ${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setRating(${level},${n})" data-val="${n}" title="${['','Didn't help','OK','Good','Great','Loved it'][n]}">⭐</button>`).join('')}
+      <span id="star-lbl-${level}" style="font-size:12px;color:var(--text2);margin-left:8px;align-self:center"></span>
+    </div>
+    <textarea class="fw-ta" id="fw-ta-${level}" placeholder="What was the clearest moment? What was the most confusing? Any command that felt wrong? (optional — but really helpful)"></textarea>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+      <button class="fw-send" style="background:${c}" onclick="submitFeedback(${level})">Send feedback →</button>
+      <div style="font-size:11px;color:var(--text2)">Goes directly to the course author</div>
+    </div>
+    <div class="fw-thanks" id="fw-thanks-${level}">✅ Feedback sent — thank you! Every response makes the course better.</div>
   </div>`;
 }
 const ratings={};
+const STAR_LABELS=['','Did not help','It was OK','Pretty good','Great level','Loved it — keep going!'];
 function setRating(level,n){
   ratings[level]=n;
   document.querySelectorAll(`#stars-${level} .star-btn`).forEach(b=>{
     b.className='star-btn'+(parseInt(b.dataset.val)<=n?' active':'');
   });
+  const lbl=document.getElementById('star-lbl-'+level);
+  if(lbl) lbl.textContent=STAR_LABELS[n]||'';
 }
 function submitFeedback(level){
   const r=ratings[level]||0;
-  const c=document.getElementById('fw-ta-'+level).value.trim();
+  const c=document.getElementById('fw-ta-'+level)?.value.trim()||'';
+  if(!r && !c){
+    const lbl=document.getElementById('star-lbl-'+level);
+    if(lbl){lbl.textContent='Pick a star rating first ↑';lbl.style.color='var(--amber)';}
+    return;
+  }
   Analytics.feedback(level,r,c);
-  document.getElementById('fw-thanks-'+level).style.display='block';
+  const thanks=document.getElementById('fw-thanks-'+level);
+  if(thanks) thanks.style.display='block';
+  const sendBtn=document.querySelector(`#fw-${level} .fw-send`)||document.querySelector(`.fw-send`);
 }
 
 // ═══════════════════════════════════════
@@ -1865,17 +2020,84 @@ function bgCloseModal(e){if(e.target===document.getElementById('gh-modal'))close
 // ═══════════════════════════════════════
 // STUCK
 // ═══════════════════════════════════════
-function openStuck(){document.getElementById('stuck-modal').className='stuck-modal show';setTimeout(()=>document.getElementById('stuck-in').focus(),100);}
+const STUCK_FAQ = {
+  0:[
+    {q:"What exactly is Claude Code?",a:"Claude Code is like a sous-chef that lives in your computer's terminal. You give it instructions in plain English — 'create a file', 'push to GitHub' — and it does the actual work. Unlike Claude chat, it can touch your real files."},
+    {q:"Do I need to know how to code?",a:"Not at all. That's the whole point of this course. You direct in plain language, Claude Code does the technical parts. You'll pick up the concepts naturally as you go."}
+  ],
+  1:[
+    {q:"Terminal won't open in VS Code",a:"Click View in the top menu bar → Terminal → New Terminal. Or press Ctrl + ` (the backtick key, above Tab on the left). A panel should appear at the bottom of the screen."},
+    {q:"'node' is not recognized / node --version gives an error",a:"Node.js isn't installed yet. Go to nodejs.org → download the LTS version → run the installer → click Next all the way through. Then close and reopen VS Code and try again."},
+    {q:"Claude Code installed but I can't find it in VS Code",a:"Press Ctrl+Shift+P, type 'Claude' and look for it in the list. Or check the Activity Bar on the left — look for a sparkle ✦ icon. If it's not there, right-click the Activity Bar and check if Claude is hidden."},
+    {q:"GitHub CLI login isn't working",a:"Make sure you chose: GitHub.com → HTTPS → Login with a web browser. A browser window should open automatically. If it doesn't, copy the URL it shows and paste it manually into your browser."},
+    {q:"Claude Code asks for permission on everything — is that normal?",a:"Yes — and it's a feature, not a bug. Claude Code always shows you what it's about to do and asks before acting. Just read what it says and type 'yes' to approve. You're always in control."}
+  ],
+  2:[
+    {q:"My page opened but it looks completely broken",a:"That's normal for a first build — Claude Code made the file but the styling might need work. Describe what looks wrong in plain language: 'the text is too big', 'there's no colour', 'everything is in a single column'. It will fix it."},
+    {q:"GitHub Pages shows a 404 after I enabled it",a:"It takes 1-2 minutes to activate the first time. Wait, then refresh. Also check: Settings → Pages — make sure Source is set to 'Deploy from a branch' and Branch is set to 'main'. If it still shows 404 after 5 minutes, check the Actions tab for errors."},
+    {q:"I pushed changes but the live site hasn't updated",a:"GitHub Pages usually updates within 60 seconds of a push. Wait a moment and do a hard refresh (Ctrl+Shift+R). If it still hasn't updated, check the Actions tab in your GitHub repo — it shows the build status."},
+    {q:"Claude Code says it can't push to GitHub",a:"This usually means GitHub CLI isn't authenticated. In the terminal type: gh auth status — if it shows an error, run gh auth login and follow the prompts again."}
+  ],
+  3:[
+    {q:"The game opens but nothing moves",a:"Tell Claude Code exactly what you see: 'the ingredients don't fall' or 'the pot doesn't respond to arrow keys'. It will diagnose and fix the specific issue. Be as literal as possible."},
+    {q:"The game works in my browser but looks different than expected",a:"Describe what you want it to look like: 'the background should be darker', 'the ingredients are too small', 'I want a score counter in the top right'. Claude Code will adjust it to match your description."},
+    {q:"I published the game but the URL shows a blank page",a:"Make sure your file is called exactly index.html (lowercase). GitHub Pages looks for that specific filename. Ask Claude Code: 'what is my main game file called and is it in the root of the repository?'"},
+    {q:"The game is too hard / too easy",a:"Tell Claude Code: 'the game feels too fast — slow down the falling speed' or 'the game is too easy — make ingredients fall faster every 5 points'. Difficulty is just numbers — it can tune them instantly."}
+  ],
+  4:[
+    {q:"I can't see the 'Compare & pull request' yellow banner",a:"The banner only appears if you pushed a branch (not main) to GitHub. Ask Claude Code: 'which branch am I on and have I pushed it to GitHub?' If you're on main, create a branch first."},
+    {q:"GitHub says I can't merge because of a conflict",a:"That's Dish 5 — it's supposed to happen! Ask Claude Code: 'I have a merge conflict — show me what the conflicting file looks like and explain what each side changed.' It will walk you through resolving it."},
+    {q:"I merged the PR but my local files haven't changed",a:"After merging on GitHub, your local computer doesn't update automatically. Ask Claude Code: 'pull the latest changes from main so my local copy is up to date.'"},
+    {q:"The branch protection rule is blocking me from pushing",a:"That's it working correctly — branch protection means you can't push directly to main. Create a branch first, work on it, then open a pull request. Ask Claude Code: 'create a new branch for my changes'."}
+  ],
+  5:[
+    {q:"Claude Code is suggesting something too big / complex",a:"You're the head chef — you set the scope. Say: 'that's too complex for today. Let's do the simplest possible version that works. No backend, no APIs, no database. What's the minimum useful version?' Claude Code will scale back."},
+    {q:"I don't know how to start after pasting the prompt",a:"Claude Code will ask you questions first — just answer them naturally. Don't worry about saying the 'right' thing. The more honestly you describe what you want, the better it builds. If you're unsure, say 'I'm not sure — what would you suggest?'"},
+    {q:"Claude Code built something but it's not what I imagined",a:"Completely normal. Say: 'this isn't quite what I had in mind — let me describe it differently' and explain what's off. Think of it like directing a contractor: the first draft is rarely the final version."},
+    {q:"Something went wrong and I want to start over",a:"Type /clear in Claude Code to reset the session. Then describe what you want to build from scratch. Nothing is permanent until you commit to GitHub — so starting over is always safe."}
+  ]
+};
+
+function openStuck(){
+  document.getElementById('stuck-modal').className='stuck-modal show';
+  const colors={0:'#185FA5',1:'#185FA5',2:'#0E6B4F',3:'#6D28D9',4:'#B45309',5:'#0E6B4F'};
+  const c=colors[currentLevel]||'#185FA5';
+  document.getElementById('stuck-send').style.background=c;
+  // render FAQ for current level
+  const faqs=STUCK_FAQ[currentLevel]||STUCK_FAQ[0];
+  const container=document.getElementById('faq-items');
+  container.innerHTML='';
+  faqs.forEach((item,i)=>{
+    const div=document.createElement('div');
+    div.className='faq-item';
+    div.innerHTML=`<div class="faq-q" onclick="toggleFAQ(this)"><span>${item.q}</span><span class="faq-arr">▶</span></div><div class="faq-a">${item.a}</div>`;
+    container.appendChild(div);
+  });
+  // reset input area
+  document.getElementById('stuck-copied').style.display='none';
+  document.getElementById('stuck-claude-wrap').style.display='none';
+  setTimeout(()=>document.getElementById('stuck-in').focus(),100);
+}
+function toggleFAQ(el){el.parentElement.classList.toggle('open');}
 function closeStuck(){document.getElementById('stuck-modal').className='stuck-modal';}
+function stuckKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendStuck();}}
 function sendStuck(){
   const inp=document.getElementById('stuck-in');
   const msg=inp.value.trim();if(!msg)return;
-  const lvlNames=['Start','Level 1','Level 2','Level 3','Level 4','Level 5'];
-  const m=`🍳 Stuck on ${lvlNames[currentLevel]}: ${msg}`;
-  if(typeof sendPrompt==='function') sendPrompt(m);
-  else alert('Please describe your issue in the main chat above.');
   Analytics.stuckClicked(currentLevel, levelState[currentLevel]?.cur||0);
-  inp.value='';closeStuck();
+  const lvlNames=['the introduction','Level 1 — Setup the Kitchen','Level 2 — Open the Restaurant','Level 3 — Chef\'s Night Off','Level 4 — The Kitchen Brigade','Level 5 — Your Kitchen'];
+  const colors={0:'#185FA5',1:'#185FA5',2:'#0E6B4F',3:'#6D28D9',4:'#B45309',5:'#0E6B4F'};
+  const fullPrompt=`I am learning Claude Code using a guided course called "The Kitchen". I am currently on ${lvlNames[currentLevel]} and I am stuck.\n\nHere is what is happening:\n${msg}\n\nPlease help me understand what went wrong and how to fix it. Use simple, plain language — I am not a developer. Keep the answer short and practical.`;
+  // copy to clipboard
+  navigator.clipboard.writeText(fullPrompt).catch(()=>{});
+  // show copied confirmation
+  document.getElementById('stuck-copied').style.display='block';
+  // show Claude.ai link
+  const link=document.getElementById('stuck-claude-link');
+  link.href='https://claude.ai/new?q='+encodeURIComponent(fullPrompt);
+  link.style.background=colors[currentLevel]||'#185FA5';
+  document.getElementById('stuck-claude-wrap').style.display='block';
+  inp.value='';
 }
 
 // ═══════════════════════════════════════
@@ -1897,6 +2119,30 @@ window.addEventListener('DOMContentLoaded', ()=>{
   renderMissions(1);
   renderMissions(2);
   renderMissions(3);
+  // Wire hover colors on level nav circles
+  const NAV_COLORS = {
+    'lvc-0':'#185FA5','lvc-1':'#185FA5','lvc-2':'#0E6B4F',
+    'lvc-3':'#6D28D9','lvc-4':'#B45309','lvc-5':'#0E6B4F'
+  };
+  Object.entries(NAV_COLORS).forEach(([id, color]) => {
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener('mouseenter', () => {
+      if(!el.closest('.lvi').classList.contains('active')) {
+        el.style.borderColor = color;
+        el.style.background = color+'33';
+        el.style.color = 'white';
+      }
+    });
+    el.addEventListener('mouseleave', () => {
+      if(!el.closest('.lvi').classList.contains('active') &&
+         !el.closest('.lvi').classList.contains('done')) {
+        el.style.borderColor = '';
+        el.style.background = '';
+        el.style.color = '';
+      }
+    });
+  });
 });
 </script>
 </body>

@@ -6,7 +6,7 @@
 
 const Analytics = (() => {
 
-  const ENDPOINT = 'https://script.google.com/a/macros/wix.com/s/AKfycbx__mLxC5EwsdxUqQkLRd2bNLGxNUhgF2LH25erpSC3KYsNEyCWqsy61t-abBCyQONW/exec';
+  const ENDPOINT = 'https://script.google.com/a/macros/wix.com/s/AKfycbxkJCi4--EP33Cz64nhtgTz40OjUGZ3RxYYa10ydkA_IdfgmusCCWWv15XypussSr5U/exec';
 
   // ── Session ID — persists across page reloads ─────────
   function getSessionId() {
