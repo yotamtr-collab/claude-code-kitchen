@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Claude Code — The Kitchen</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<script src="analytics.js" defer></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#FAFAF8;--bg2:#F2F0EB;--bg3:#E8E5DE;
+  --border:#D8D4CB;--border2:#C8C3B8;
+  --text:#1A1916;--text2:#5A574F;--text3:#8A877F;
+  --blue:#185FA5;--blue-lt:#EAF1FB;--blue-mid:#C5DAFA;
+  --green:#0E6B4F;--green-lt:#E4F5EE;--green-mid:#BBE8D5;
+  --purple:#6D28D9;--purple-lt:#EDE9FE;
+  --amber:#B45309;--amber-lt:#FEF3C7;
+  --term:#0C0F14;--term-green:#3DD68C;--term-blue:#79C0FF;
+  --radius:10px;--radius-sm:6px;
+}
+html{font-size:16px}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var(--text);min-height:100vh}
+.app-wrap{position:relative}
+.app{max-width:740px;margin:0 auto;background:var(--bg);border-radius:0;min-height:100vh}
+@media(min-width:780px){.app{border-radius:16px;margin:24px auto;min-height:auto;border:0.5px solid var(--border)}}
+
+/* ── LEVEL NAV ── */
+.level-nav{background:var(--term);padding:14px 20px}
+.lv{display:flex;align-items:flex-start}
+.lvi{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.lvc{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;border:2px solid rgba(255,255,255,.12);color:rgba(255,255,255,.25);background:transparent;cursor:pointer;transition:all .2s}
+.lvc:hover{border-color:rgba(255,255,255,.3)}
+.lvi.done .lvc{background:var(--green);border-color:var(--green);color:white;cursor:pointer}
+.lvi.done .lvc:hover{opacity:.85}
+.lvi.active .lvc{background:var(--blue);border-color:#79C0FF;color:white;box-shadow:0 0 0 3px rgba(88,166,255,.2)}
+.lvi.locked .lvc{cursor:not-allowed}
+.lv-lbl{font-size:9px;color:rgba(255,255,255,.3);text-align:center;line-height:1.3;max-width:70px}
+.lvi.done .lv-lbl{color:rgba(255,255,255,.6)}
+.lvi.active .lv-lbl{color:white;font-weight:600}
+.lv-ln{flex:1;height:2px;background:rgba(255,255,255,.08);margin-top:14px;transition:background .3s}
+.lv-ln.done{background:var(--green)}
+
+/* ── SCREENS ── */
+.screen{display:none;padding-bottom:80px}
+.screen.show{display:block}
+
+/* ── TIME BADGE ── */
+.time-badge{display:flex;align-items:center;gap:8px;padding:8px 20px}
+.tb-txt{font-size:12px;color:rgba(255,255,255,.85);flex:1}
+.tb-val{font-size:12px;font-weight:700;color:white;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:10px}
+
+/* ── CLEAR BANNER ── */
+.clr-banner{display:flex;align-items:center;gap:10px;padding:10px 20px;border-bottom:1px solid}
+.clr-cmd{font-family:'Consolas',monospace;font-size:12px;padding:3px 8px;border-radius:5px;border:0.5px solid}
+.clr-txt{font-size:12px;flex:1;line-height:1.5}
+
+/* ── HERO ── */
+.hero{padding:28px 24px;text-align:center}
+.hero-ico{font-size:44px;margin-bottom:10px;display:block}
+.hero-t{font-size:21px;font-weight:700;color:white;margin-bottom:8px}
+.hero-s{font-size:13px;color:rgba(255,255,255,.75);line-height:1.7;max-width:460px;margin:0 auto 14px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:6px 14px;font-size:12px;margin-top:4px}
+.skip-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border:none;border-radius:20px;font-size:12px;cursor:pointer;font-family:inherit;margin-top:10px}
+.skip-btn:hover{background:rgba(255,255,255,.18)}
+
+/* ── PHASE 0 ── */
+.invite-hero{background:var(--term);padding:36px 28px 28px;text-align:center}
+.invite-ico{font-size:52px;margin-bottom:14px;display:block}
+.invite-t{font-size:24px;font-weight:600;color:white;margin-bottom:10px;line-height:1.3}
+.invite-s{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;max-width:480px;margin:0 auto}
+.invite-body{padding:28px}
+.story-lede{font-size:15px;color:var(--text);line-height:1.8;margin-bottom:24px;font-style:italic;border-left:3px solid var(--blue);padding-left:16px}
+.three-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.mode-card{border:0.5px solid var(--border);border-radius:var(--radius);padding:14px;background:var(--bg)}
+.mode-card.highlight{border-color:var(--blue);background:var(--blue-lt)}
+.mode-ico{font-size:24px;margin-bottom:8px}
+.mode-nm{font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px}
+.mode-row{display:flex;gap:6px;margin-bottom:4px;font-size:11px}
+.mode-rl{font-weight:600;color:var(--text3);min-width:36px;flex-shrink:0;text-transform:uppercase;font-size:9px;padding-top:1px;letter-spacing:.04em}
+.mode-rv{color:var(--text);line-height:1.4}
+.mode-badge{margin-top:8px;display:inline-block;font-size:10px;padding:3px 9px;border-radius:10px;font-weight:500}
+.powers-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+.pw{border:0.5px solid var(--border);border-radius:var(--radius);padding:11px 12px;display:flex;gap:10px;align-items:flex-start}
+.pw-ico{font-size:20px;flex-shrink:0}
+.pw-t{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.pw-d{font-size:11px;color:var(--text2);line-height:1.5}
+.promise-box{background:linear-gradient(135deg,var(--blue-lt),var(--green-lt));border-radius:var(--radius);padding:20px 22px}
+.promise-t{font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.promise-items{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.pi{display:flex;align-items:flex-start;gap:10px}
+.pi-n{width:22px;height:22px;border-radius:50%;color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.pi-txt{font-size:13px;color:var(--text);line-height:1.6}
+.pi-txt b{font-weight:600}
+.pi-txt span{font-size:11px;color:var(--text2);display:block;margin-top:1px}
+.cta{width:100%;padding:13px;color:white;border:none;border-radius:var(--radius);font-size:14px;cursor:pointer;font-family:inherit;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px}
+.cta:hover{opacity:.9}
+.cta-sub{text-align:center;font-size:11px;color:var(--text2);margin-top:8px}
+
+/* ── COMMON MISSION STYLES ── */
+.section-pad{padding:20px 22px}
+.ph-t{font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px}
+.ph-s{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:16px}
+.skip-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--blue);cursor:pointer;margin-bottom:18px;background:none;border:none;font-family:inherit}
+.skip-link:hover{text-decoration:underline}
+.wyb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:0}
+.wyb-card{border:0.5px solid var(--border);border-radius:var(--radius);padding:10px;text-align:center}
+.wyb-ico{font-size:18px;margin-bottom:4px}
+.wyb-t{font-size:11px;font-weight:600;color:var(--text);margin-bottom:2px}
+.wyb-d{font-size:10px;color:var(--text2);line-height:1.4}
+.prog-row{display:flex;align-items:center;gap:10px;padding:14px 22px 8px}
+.prog-track{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.prog-bar{height:100%;border-radius:3px;transition:width .5s}
+.prog-lbl{font-size:11px;color:var(--text2);white-space:nowrap}
+.missions-wrap{padding:0 22px 22px;display:flex;flex-direction:column;gap:10px}
+.ms{border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg)}
+.ms.cur{border-width:2px}
+.ms.dn{opacity:.85}
+.ms.lk{opacity:.4;pointer-events:none;background:var(--bg2)}
+.mh{padding:12px 14px;display:flex;align-items:center;gap:10px}
+.ms.lk .mh{background:var(--bg2)}
+.mn{width:27px;height:27px;border-radius:50%;background:var(--bg3);border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;color:var(--text2)}
+.mt{font-size:13px;font-weight:500;color:var(--text);flex:1}
+.mtg{font-size:10px;padding:2px 8px;border-radius:10px;white-space:nowrap;color:var(--text2);background:var(--bg3)}
+.mb{padding:14px;display:none;border-top:1px solid var(--border)}
+.ms.cur .mb{display:block}
+.m-why{border-radius:var(--radius);padding:9px 12px;font-size:13px;margin-bottom:10px;line-height:1.65}
+.m-do{font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.6}
+.m-do b{color:var(--text);font-weight:500}
+.say-box{background:#0d1117;border-radius:var(--radius);padding:10px 12px;margin-bottom:10px;display:flex;gap:8px;align-items:flex-start}
+.say-l{font-size:9px;color:#8b949e;white-space:nowrap;padding-top:2px;flex-shrink:0}
+.say-t{font-family:'Consolas',monospace;font-size:12px;color:#a5d6ff;flex:1;line-height:1.5}
+.say-cp{background:#21262d;border:0.5px solid #30363d;color:#8b949e;border-radius:5px;padding:4px 0;font-size:10px;cursor:pointer;font-family:inherit;flex-shrink:0;width:52px;text-align:center}
+.say-cp:hover{background:#30363d;color:#e6edf3}
+.m-res{background:var(--bg2);border-radius:var(--radius);padding:9px 12px;font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.65}
+.m-res b{font-weight:500;color:var(--text)}
+.info-box{background:var(--blue-lt);border-radius:var(--radius);padding:9px 12px;font-size:12px;color:#0C447C;margin-bottom:10px;line-height:1.65}
+.warn-box{background:var(--amber-lt);border:0.5px solid #E8A800;border-radius:var(--radius);padding:9px 12px;font-size:12px;color:#7A4F00;margin-bottom:10px;line-height:1.65}
+.step-div{display:flex;align-items:center;gap:8px;margin:12px 0 10px}
+.step-div-l{flex:1;height:0.5px;background:var(--border)}
+.step-div-t{font-size:11px;font-weight:600;color:var(--text2);white-space:nowrap;background:var(--bg2);padding:3px 10px;border-radius:10px}
+.btn-dn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;color:white;border:none;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
+.btn-dn:hover{opacity:.88}
+.btn-big{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;color:white;border:none;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
+.btn-big:hover{opacity:.88}
+
+/* ── STEPS (setup) ── */
+.setup-steps{display:flex;flex-direction:column;gap:10px}
+.step{border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.step.cur{border-color:var(--blue)}
+.step.dn{border-color:var(--green);opacity:.7}
+.step-head{padding:11px 14px;display:flex;align-items:center;gap:10px}
+.step-ico{width:30px;height:30px;border-radius:50%;background:var(--bg2);border:0.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.step.cur .step-ico{background:var(--blue-lt);border-color:var(--blue)}
+.step.dn .step-ico{background:var(--green-lt);border-color:var(--green)}
+.step-ttl{font-size:13px;font-weight:500;color:var(--text)}
+.step-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.step-body{padding:0 14px 14px;display:none}
+.step.cur .step-body{display:block}
+.why-box{background:var(--amber-lt);border-radius:var(--radius);padding:8px 12px;font-size:12px;color:#633806;margin-bottom:10px;line-height:1.6}
+.note{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:8px;padding:7px 10px;background:var(--bg2);border-radius:var(--radius)}
+.cmd-box{background:#0d1117;border-radius:var(--radius);padding:9px 12px;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cmd-t{font-family:'Consolas',monospace;font-size:12px;color:#3fb950;flex:1}
+.cbtn{background:#21262d;border:0.5px solid #30363d;color:#8b949e;border-radius:5px;padding:4px 0;font-size:11px;cursor:pointer;font-family:inherit;flex-shrink:0;width:52px;text-align:center}
+.cbtn:hover{background:#30363d;color:#e6edf3}
+.cr{display:flex;gap:8px;flex-wrap:wrap}
+.by{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;color:white;border:none;border-radius:var(--radius);font-size:12px;cursor:pointer;font-family:inherit}
+.by:hover{opacity:.88}
+.ba{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:transparent;color:var(--text2);border:0.5px solid var(--border2);border-radius:var(--radius);font-size:12px;cursor:pointer;font-family:inherit}
+.ba:hover{background:var(--bg2)}
+.term-open{background:#1a1a2e;border-radius:var(--radius);overflow:hidden;margin-bottom:10px}
+.to-bar{background:#252540;padding:6px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #333}
+.to-dot{width:10px;height:10px;border-radius:50%}
+.to-label{font-size:10px;color:#8b8baa;flex:1;text-align:center}
+.to-steps{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.to-step{display:flex;align-items:center;gap:8px;font-size:11px;color:#c8c8e8}
+.to-step-num{width:18px;height:18px;border-radius:50%;background:var(--blue);color:white;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.to-step-hl{background:#2a2a4a;border:1px solid var(--blue);border-radius:4px;padding:1px 7px;font-size:11px;color:#79C0FF;font-weight:500}
+
+/* ── VSCODE DIAGRAM ── */
+.vsc-disclaimer{font-size:11px;color:var(--text2);margin-bottom:10px;padding:7px 10px;background:var(--bg2);border-radius:var(--radius);display:flex;align-items:center;gap:6px}
+.vsc{display:flex;border-radius:8px 8px 0 0;overflow:hidden;border:1px solid #333;border-bottom:none;background:#1e1e1e;height:185px;position:relative}
+.vsc-ab{width:44px;background:#333;display:flex;flex-direction:column;align-items:center;padding:6px 0;gap:2px;flex-shrink:0}
+.ab-i{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:6px;color:#858585;font-size:18px}
+.ab-i.on{color:#fff;border-left:2px solid #fff}
+.ab-i.hl{color:#3fb950;animation:glow 1.5s infinite}
+@keyframes glow{0%,100%{box-shadow:none}50%{box-shadow:0 0 8px 2px rgba(63,185,80,.3)}}
+.vsc-sb{width:160px;background:#252526;flex-shrink:0}
+.sb-hd{padding:7px 12px;font-size:10px;color:#bbb;font-weight:600;letter-spacing:.08em;border-bottom:0.5px solid #333}
+.sb-it{padding:4px 12px 4px 18px;font-size:11px;color:#ccc;display:flex;align-items:center;gap:6px}
+.sf{color:#dcb67a}.sc2{color:#4ec9b0}
+.vsc-ed{flex:1;background:#1e1e1e;display:flex;flex-direction:column;min-width:0}
+.ed-tb{background:#2d2d2d;display:flex;height:26px;align-items:center;border-bottom:0.5px solid #333}
+.ed-t{padding:0 12px;height:100%;display:flex;align-items:center;font-size:11px;color:#969696;border-right:0.5px solid #333}
+.ed-t.on{background:#1e1e1e;color:#ccc}
+.ed-bd{flex:1;padding:8px 12px;font-family:'Consolas',monospace;font-size:11px;line-height:1.6;overflow:hidden}
+.vsc-tm{position:absolute;bottom:0;left:44px;right:0;height:58px;background:#1e1e1e;border-top:1px solid #333}
+.tt{background:#252526;display:flex;height:24px;align-items:center;padding:0 10px;gap:8px;border-bottom:0.5px solid #333}
+.ttb{font-size:10px;color:#969696;padding:2px 6px;border-radius:3px}
+.ttb.on{background:rgba(255,255,255,.08);color:#ccc}
+.tb2{padding:5px 10px;font-family:'Consolas',monospace;font-size:11px;color:#3fb950}
+.cur3{display:inline-block;width:7px;height:12px;background:#ccc;vertical-align:text-bottom;animation:cur .8s infinite}
+@keyframes cur{0%,100%{opacity:1}50%{opacity:0}}
+.hs{position:absolute;border:2px solid transparent;border-radius:4px;cursor:pointer;transition:all .2s;z-index:10}
+.hs:hover,.hs.sel{border-color:rgba(88,166,255,.6);background:rgba(88,166,255,.08)}
+.hs.sel{border-color:#58a6ff}
+.hs-l{position:absolute;background:var(--blue);color:white;font-size:9px;font-weight:600;padding:2px 6px;border-radius:3px;white-space:nowrap;top:-20px;left:0;opacity:0;transition:opacity .15s;pointer-events:none}
+.hs:hover .hs-l,.hs.sel .hs-l{opacity:1}
+.hs-cc{border-color:rgba(63,185,80,.4)!important}
+.hs-cc:hover,.hs-cc.sel{border-color:#3fb950!important;background:rgba(63,185,80,.1)!important}
+.hs-cc .hs-l{background:var(--green)!important}
+.info-panel{border:1px solid #333;border-top:none;border-radius:0 0 8px 8px;display:flex;background:var(--bg);margin-bottom:14px;min-height:110px}
+.itabs{width:44px;background:var(--bg);border-right:0.5px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:4px}
+.itab{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;color:var(--text2);transition:all .15s}
+.itab:hover{background:var(--bg2)}
+.itab.on{background:var(--blue-lt);color:var(--blue)}
+.ibody{flex:1;padding:11px 13px;min-width:0}
+.ib{display:none}.ib.show{display:block}
+.ib-t{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px}
+.ib-x{font-size:12px;color:var(--text2);line-height:1.65;margin-bottom:7px}
+.ib-a{background:var(--bg2);border-radius:var(--radius);padding:7px 10px;font-size:12px;line-height:1.6;color:var(--text)}
+.kbd{background:var(--bg2);border:0.5px solid var(--border2);border-radius:3px;padding:1px 6px;font-family:'Consolas',monospace;font-size:11px}
+.vocab{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.gl-row{display:flex;align-items:flex-start;gap:10px;padding:8px 10px;background:var(--bg2);border-radius:var(--radius)}
+.gl-term{font-family:'Consolas',monospace;font-size:11px;font-weight:600;color:var(--blue);min-width:72px;flex-shrink:0;padding-top:1px}
+.gl-arrow{color:var(--text2);font-size:12px;flex-shrink:0;padding-top:1px}
+.gl-meaning{font-size:12px;color:var(--text);line-height:1.5}
+.gl-chef{font-size:11px;color:#633806;margin-top:2px}
+.cust-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.ccard{border:0.5px solid var(--border);border-radius:var(--radius);padding:9px 11px}
+.ccard-t{font-size:12px;font-weight:500;color:var(--text);margin-bottom:2px}
+.ccard-d{font-size:11px;color:var(--text2);line-height:1.5}
+.ccard-k{font-size:11px;color:var(--blue);margin-top:5px}
+.split-vis{background:#0d1117;border-radius:var(--radius);padding:14px;margin-bottom:14px;display:flex;gap:8px;align-items:stretch}
+.sp{flex:1;border-radius:6px;padding:10px}
+.sp-g{background:#161b22;border:1px solid var(--blue)}
+.sp-v{background:#1e1e1e;border:1px solid var(--green)}
+.sp-lb{font-size:10px;font-weight:600;margin-bottom:6px;letter-spacing:.05em}
+.sp-g .sp-lb{color:#58a6ff}
+.sp-v .sp-lb{color:#3fb950}
+.sp-ln{height:5px;border-radius:3px;margin-bottom:4px;background:rgba(255,255,255,.07)}
+.sp-ln.b{background:rgba(88,166,255,.25)}
+.sp-ln.g2{background:rgba(63,185,80,.25)}
+.sp-dv{width:2px;background:var(--border);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text2)}
+.os-tabs{display:flex;gap:8px;margin-bottom:10px}
+.os-tab{padding:5px 14px;border-radius:20px;font-size:12px;cursor:pointer;border:0.5px solid var(--border2);color:var(--text2);background:transparent;font-family:inherit}
+.os-tab.on{background:var(--blue);color:white;border-color:var(--blue)}
+.sc-box{background:var(--bg2);border-radius:var(--radius);padding:10px 14px;margin-bottom:14px}
+.sc-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);margin-bottom:6px}
+.sc-row:last-child{margin-bottom:0}
+
+/* ── CHEATSHEET ── */
+.cheatsheet{padding:20px 22px;display:none}
+.cs-t{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px}
+.cs-s{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6}
+.cs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.cs-card{background:var(--bg2);border-radius:var(--radius);padding:10px 12px}
+.cs-cmd{font-family:'Consolas',monospace;font-size:12px;font-weight:600;margin-bottom:3px}
+.cs-desc{font-size:11px;color:var(--text2);line-height:1.45}
+.cs-actions{display:flex;gap:10px;flex-wrap:wrap}
+.cs-btn-p{padding:10px 20px;color:white;border:none;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
+.cs-btn-s{padding:10px 20px;background:transparent;border:1.5px solid;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
+
+/* ── FEEDBACK WIDGET ── */
+.feedback-widget{background:var(--bg2);border-radius:var(--radius);padding:16px;margin-top:20px;border:0.5px solid var(--border)}
+.fw-t{font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px}
+.star-row{display:flex;gap:6px;margin-bottom:10px}
+.star-btn{font-size:24px;cursor:pointer;background:none;border:none;line-height:1;transition:transform .1s;filter:grayscale(1);opacity:.4}
+.star-btn:hover,.star-btn.active{filter:none;opacity:1;transform:scale(1.15)}
+.fw-ta{width:100%;background:var(--bg);border:0.5px solid var(--border2);border-radius:var(--radius);padding:9px 12px;font-size:12px;font-family:inherit;color:var(--text);outline:none;resize:none;min-height:60px;margin-bottom:10px}
+.fw-ta:focus{border-color:var(--blue)}
+.fw-send{padding:8px 18px;color:white;border:none;border-radius:var(--radius);font-size:12px;cursor:pointer;font-family:inherit;font-weight:500}
+.fw-send:hover{opacity:.88}
+.fw-thanks{font-size:12px;color:var(--green);margin-top:6px;display:none}
+
+/* ── L4 SPECIFICS ── */
+.opt-acc{border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:8px}
+.opt-head{padding:10px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;background:var(--bg2)}
+.opt-head:hover{background:var(--bg)}
+.opt-lbl{font-size:12px;font-weight:500;color:var(--text);flex:1}
+.opt-arr{font-size:12px;color:var(--text2);transition:transform .2s}
+.opt-acc.open .opt-arr{transform:rotate(90deg)}
+.opt-body{display:none;padding:12px 14px;border-top:0.5px solid var(--border)}
+.opt-acc.open .opt-body{display:block}
+.og-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.og-card{border:0.5px solid var(--border);border-radius:var(--radius);padding:9px 11px}
+.og-ico{font-size:16px;margin-bottom:4px}
+.og-t{font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px}
+.og-d{font-size:11px;color:var(--text2);line-height:1.45}
+.pc{border-radius:var(--radius);padding:10px 12px;display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.pc:last-child{margin-bottom:0}
+.pc.you{background:var(--blue-lt);border:1px solid var(--blue)}
+.pc.cc{background:#1C1500;border:1px solid #78350F}
+.pc.cv{background:#1a0f2e;border:1px solid var(--purple)}
+.pc-ico{font-size:20px;flex-shrink:0;margin-top:2px}
+.pc-nm{font-size:12px;font-weight:700;margin-bottom:2px}
+.pc.you .pc-nm{color:#0C447C}
+.pc.cc .pc-nm{color:#FDE68A}
+.pc.cv .pc-nm{color:#d8b4fe}
+.pc-where{font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;display:inline-block;margin-bottom:4px}
+.pc.you .pc-where{background:var(--blue-mid);color:#0C447C}
+.pc.cc .pc-where{background:#292400;color:#FCD34D}
+.pc.cv .pc-where{background:#2d1458;color:#d8b4fe}
+.pc-d{font-size:11px;line-height:1.55}
+.pc.you .pc-d{color:var(--blue)}
+.pc.cc .pc-d{color:#FEF3C7}
+.pc.cv .pc-d{color:#ede9fe}
+.tracks{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.tc{border:2px solid var(--border);border-radius:var(--radius);padding:16px;cursor:pointer;transition:all .2s;background:var(--bg)}
+.tc:hover{border-color:var(--border2)}
+.tc.sh{border-color:var(--blue);background:var(--blue-lt)}
+.tc.sa{border-color:var(--amber);background:var(--amber-lt)}
+.tc-ico{font-size:28px;margin-bottom:8px;display:block}
+.tc-nm{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px}
+.tc-r{display:flex;gap:6px;margin-bottom:4px}
+.tc-rl{font-weight:600;color:var(--text3);min-width:44px;flex-shrink:0;text-transform:uppercase;font-size:9px;padding-top:2px;letter-spacing:.04em}
+.tc-rv{font-size:11px;color:var(--text);line-height:1.4}
+.tc-bg{margin-top:8px;display:inline-block;font-size:10px;padding:3px 9px;border-radius:10px;font-weight:500}
+.bh{background:var(--blue-mid);color:#0C447C}
+.ba2{background:var(--amber-lt);color:#78350F;border:1px solid #E8A800}
+.tc-sel{display:none;margin-top:8px;font-size:12px;font-weight:600;align-items:center;gap:5px}
+.tc.sh .tc-sel.h{display:flex;color:var(--blue)}
+.tc.sa .tc-sel.a{display:flex;color:var(--amber)}
+.sbtn{width:100%;padding:12px;font-size:14px;font-weight:600;color:white;border:none;border-radius:var(--radius);cursor:pointer;font-family:inherit;align-items:center;justify-content:center;gap:8px;display:none}
+.sbtn.vis{display:flex}.sbtn:hover{opacity:.88}
+.sbh{background:var(--blue)}.sba{background:var(--amber)}
+.sw-note{text-align:center;font-size:11px;color:var(--text2);margin-top:8px}
+.where-tag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:3px 9px;border-radius:8px;margin-bottom:6px}
+.wt-cv{background:#2d1458;color:#d8b4fe}
+.wt-gh{background:var(--green-lt);color:#085041}
+.deep{border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:10px}
+.deep-head{padding:9px 12px;display:flex;align-items:center;gap:7px;cursor:pointer;background:var(--bg2);user-select:none}
+.deep-head:hover{background:var(--bg)}
+.deep-lbl{font-size:11px;color:var(--text2);flex:1}
+.deep-arr{font-size:11px;color:var(--text2);transition:transform .2s}
+.deep.open .deep-arr{transform:rotate(90deg)}
+.deep-body{display:none;padding:12px;border-top:0.5px solid var(--border)}
+.deep.open .deep-body{display:block}
+.mm-flow{display:flex;align-items:center;gap:4px;margin-bottom:10px;flex-wrap:wrap}
+.mm-node{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);padding:5px 9px;font-size:11px;text-align:center;line-height:1.4}
+.mm-node.main-n{border-color:var(--green);background:var(--green-lt);color:#085041;font-weight:600}
+.mm-node.branch-n{border-color:var(--blue);background:var(--blue-lt);color:#0C447C}
+.mm-node.pr-n{border-color:var(--amber);background:var(--amber-lt);color:#78350F}
+.mm-arrow{font-size:14px;color:var(--text2)}
+.mm-legend{display:flex;flex-direction:column;gap:5px}
+.mm-leg-row{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:var(--text2);line-height:1.5}
+.mm-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.gh-step{background:var(--bg2);border-radius:var(--radius);padding:10px 12px;display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.gh-num{width:22px;height:22px;border-radius:50%;background:var(--green);color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.gh-step-body{flex:1}
+.gh-step-label{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:700;color:#085041;background:var(--green-lt);padding:3px 10px;border-radius:8px;margin-bottom:4px;cursor:pointer;border:none;font-family:inherit}
+.gh-step-label:hover{background:var(--green-mid)}
+.gh-step-text{font-size:12px;color:var(--text);line-height:1.6}
+.gh-btn-i{display:inline-block;background:#238636;color:white;border-radius:4px;padding:1px 8px;font-size:11px;font-weight:600;margin:0 2px}
+.gh-btn-i.blue{background:#1f6feb}
+.tl-b{display:inline-flex;align-items:center;gap:6px;font-size:10px;padding:2px 9px;border-radius:10px;margin-bottom:8px}
+.tl-h{background:var(--blue-mid);color:#0C447C}
+.tl-a{background:var(--amber-lt);color:#78350F;border:1px solid #E8A800}
+.tl-sw{cursor:pointer;text-decoration:underline;margin-left:4px}
+.chef-bub{background:#1C1500;border:1px solid #78350F;border-radius:var(--radius);padding:12px 14px;margin-bottom:10px}
+.chef-hd{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.chef-av{width:28px;height:28px;border-radius:50%;background:var(--amber);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.chef-nm{font-size:12px;font-weight:600;color:#FDE68A}
+.chef-rl{font-size:10px;color:var(--amber)}
+.chef-txt{font-size:12px;color:#FEF3C7;line-height:1.65;font-style:italic}
+
+/* ── L5 ── */
+.disc-progress{display:flex;gap:6px;margin-bottom:20px}
+.dp{flex:1;height:3px;border-radius:3px;background:var(--bg3);transition:background .4s}
+.dp.done-dp{background:var(--green)}
+.dp.active-dp{background:var(--term-green)}
+.question{display:none}
+.question.show{display:block}
+.q-num{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.q-text{font-size:17px;font-weight:600;color:var(--text);margin-bottom:6px;line-height:1.4}
+.q-sub{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6}
+.opt-btns{display:flex;flex-direction:column;gap:8px}
+.opt-b{padding:12px 16px;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--bg);text-align:left;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:12px}
+.opt-b:hover{border-color:var(--green);background:var(--green-lt)}
+.opt-b.selected{border-color:var(--green);background:var(--green-lt)}
+.opt-b-ico{font-size:20px;flex-shrink:0}
+.opt-b-body{flex:1}
+.opt-b-label{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px}
+.opt-b-desc{font-size:11px;color:var(--text2);line-height:1.45}
+.opt-b-check{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:white;transition:all .15s}
+.opt-b.selected .opt-b-check{background:var(--green);border-color:var(--green)}
+.next-q-btn{margin-top:14px;padding:10px 22px;color:white;border:none;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;display:none;align-items:center;gap:6px}
+.next-q-btn.show{display:inline-flex}
+.next-q-btn:hover{opacity:.88}
+.q4-box{background:var(--bg2);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.q4-examples{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.q4-ex{background:var(--bg);border:0.5px solid var(--border);border-radius:var(--radius);padding:8px 12px;font-size:12px;color:var(--text2);line-height:1.5;cursor:pointer;transition:border-color .15s}
+.q4-ex:hover{border-color:var(--green);color:var(--text)}
+.ex-lbl{font-size:10px;font-weight:600;color:var(--green);margin-bottom:2px;text-transform:uppercase;letter-spacing:.05em}
+.q4-input{width:100%;background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--radius);padding:10px 13px;font-size:13px;font-family:inherit;color:var(--text);outline:none;resize:none;min-height:70px;line-height:1.6}
+.q4-input:focus{border-color:var(--green)}
+.q4-input::placeholder{color:var(--text2)}
+.waiting-state{padding:28px 22px;text-align:center;display:none}
+.waiting-ico{font-size:40px;margin-bottom:12px;animation:bounce 1.5s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.waiting-note{background:var(--green-lt);border:0.5px solid var(--green);border-radius:var(--radius);padding:12px 14px;font-size:12px;color:#065F46;line-height:1.7;text-align:left;margin-bottom:16px}
+.launchpad{padding:22px;display:none}
+.lp-step{border:0.5px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:12px}
+.lp-step-head{background:var(--bg2);padding:10px 14px;display:flex;align-items:center;gap:8px}
+.lp-step-num{width:22px;height:22px;border-radius:50%;background:var(--green);color:white;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lp-step-lbl{font-size:12px;font-weight:600;color:var(--text)}
+.lp-step-body{padding:12px 14px}
+.lp-step-txt{font-size:12px;color:var(--text2);line-height:1.65;margin-bottom:10px}
+.prompt-box{background:#0d1117;border-radius:var(--radius);padding:14px;position:relative}
+.prompt-label{font-size:9px;color:#8b949e;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;font-weight:600}
+.prompt-text{font-family:'Consolas',monospace;font-size:12px;color:#a5d6ff;line-height:1.7;white-space:pre-wrap;word-break:break-word}
+.prompt-copy{position:absolute;top:10px;right:10px;background:#21262d;border:0.5px solid #30363d;color:#8b949e;border-radius:5px;padding:4px 0;font-size:10px;cursor:pointer;font-family:inherit;width:52px;text-align:center}
+.prompt-copy:hover{background:#30363d;color:#e6edf3}
+.flying-box{background:linear-gradient(135deg,#051C12,#0A3020);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px}
+.flying-t{font-size:14px;font-weight:700;color:white;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.flying-s{font-size:12px;color:rgba(255,255,255,.7);line-height:1.7}
+.flying-rules{margin-top:10px;display:flex;flex-direction:column;gap:5px}
+.fr{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:rgba(255,255,255,.8);line-height:1.5}
+.chat-section{border:1.5px solid var(--green);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.chat-head{background:var(--green);padding:10px 14px;font-size:12px;font-weight:600;color:white;display:flex;align-items:center;gap:7px}
+.chat-msgs{padding:12px;display:flex;flex-direction:column;gap:8px;min-height:80px;max-height:240px;overflow-y:auto}
+.cmsg{padding:8px 10px;border-radius:var(--radius);font-size:12px;line-height:1.6;max-width:90%}
+.cmsg.ai{background:var(--bg2);color:var(--text);align-self:flex-start}
+.cmsg.user{background:var(--green);color:white;align-self:flex-end}
+.cmsg.thinking{background:var(--bg2);color:var(--text2);align-self:flex-start;font-style:italic}
+.chat-in-row{padding:10px;border-top:0.5px solid var(--border);display:flex;gap:8px}
+.chat-in{flex:1;background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:7px 10px;font-size:12px;font-family:inherit;color:var(--text);outline:none;resize:none;min-height:36px;max-height:80px}
+.chat-in:focus{border-color:var(--green)}
+.chat-send{background:var(--green);color:white;border:none;border-radius:var(--radius);padding:7px 14px;font-size:12px;cursor:pointer;font-family:inherit;flex-shrink:0;align-self:flex-end}
+.done-solo-btn{width:100%;padding:12px;background:transparent;border:1.5px solid var(--border2);border-radius:var(--radius);font-size:13px;color:var(--text2);cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}
+.done-solo-btn:hover{border-color:var(--green);color:var(--green)}
+.grad-screen{text-align:center;padding:40px 24px}
+.grad-ico{font-size:64px;margin-bottom:16px;display:block;animation:pop .6s ease-out}
+@keyframes pop{0%{transform:scale(.5);opacity:0}80%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.grad-t{font-size:24px;font-weight:700;color:var(--text);margin-bottom:10px}
+.grad-s{font-size:14px;color:var(--text2);line-height:1.8;max-width:480px;margin:0 auto 20px}
+
+/* ── MODALS ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
+.modal-overlay.show{display:flex}
+.modal-box{background:#0d1117;border-radius:10px;overflow:hidden;max-width:600px;width:100%;max-height:88vh;display:flex;flex-direction:column;border:1px solid #30363d;position:relative}
+.modal-close-btn{position:absolute;top:10px;right:12px;width:32px;height:32px;background:#21262d;border:1px solid #30363d;border-radius:50%;color:#e6edf3;font-size:18px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:background .15s;font-family:inherit}
+.modal-close-btn:hover{background:#f85149;border-color:#f85149}
+.modal-header{background:#161b22;padding:12px 50px 12px 16px;border-bottom:1px solid #21262d;flex-shrink:0}
+.modal-title{font-size:13px;font-weight:600;color:#e6edf3}
+.modal-body{overflow-y:auto;flex:1}
+.gh-screen{background:#0d1117}
+.gh-topnav{background:#161b22;border-bottom:1px solid #21262d;padding:10px 16px;display:flex;align-items:center;gap:12px}
+.gh-topnav-logo{color:#e6edf3;font-size:18px;font-weight:700}
+.gh-repo-header{padding:12px 16px 0}
+.gh-repo-name{font-size:15px;color:#79c0ff;margin-bottom:8px}
+.gh-repo-tabs{display:flex;gap:2px;border-bottom:1px solid #21262d;margin:0 -16px;padding:0 16px}
+.gh-tab{padding:8px 12px;font-size:12px;color:#8b949e;cursor:default;border-bottom:2px solid transparent;white-space:nowrap}
+.gh-tab.active{color:#e6edf3;border-bottom-color:#f78166}
+.hl-box{border:2px solid #f78166;border-radius:6px;padding:2px;animation:hl-p 1.5s infinite;display:inline-flex}
+@keyframes hl-p{0%,100%{box-shadow:0 0 0 0 rgba(247,129,102,.4)}50%{box-shadow:0 0 0 6px rgba(247,129,102,0)}}
+.hl-green{border-color:#3fb950;animation:hl-g 1.5s infinite}
+@keyframes hl-g{0%,100%{box-shadow:0 0 0 0 rgba(63,185,80,.4)}50%{box-shadow:0 0 0 6px rgba(63,185,80,0)}}
+.hl-blue{border-color:#58a6ff;animation:hl-b 1.5s infinite}
+@keyframes hl-b{0%,100%{box-shadow:0 0 0 0 rgba(88,166,255,.4)}50%{box-shadow:0 0 0 6px rgba(88,166,255,0)}}
+.callout{background:#FCD34D;color:#1C1500;font-size:11px;font-weight:600;padding:6px 10px;border-radius:6px;display:inline-flex;align-items:flex-start;gap:5px;line-height:1.5;max-width:100%}
+.callout-arrow{font-size:18px;color:#FCD34D;flex-shrink:0}
+.gh-page-body{padding:14px 16px}
+.gh-banner{background:#1d2d22;border:1px solid #238636;border-radius:6px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.gh-banner-txt{font-size:11px;color:#3fb950}
+.gh-btn-sm{background:#238636;color:white;border:none;border-radius:5px;padding:5px 10px;font-size:11px;font-weight:600;cursor:default;white-space:nowrap}
+.gh-btn-sm.blue{background:#1f6feb}
+.gh-btn-sm.grey{background:#21262d;border:1px solid #30363d;color:#c9d1d9}
+.gh-form-label{font-size:11px;color:#8b949e;margin-bottom:4px}
+.gh-form-input{background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px 10px;font-size:12px;color:#e6edf3;width:100%}
+.gh-form-textarea{background:#161b22;border:1px solid #30363d;border-radius:5px;padding:6px 10px;font-size:12px;color:#8b949e;width:100%;height:50px;resize:none}
+.gh-checkbox-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.gh-checkbox{width:14px;height:14px;border:1px solid #8b949e;border-radius:3px;background:#161b22;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:10px}
+.gh-checkbox.checked{background:#1f6feb;border-color:#1f6feb;color:white}
+.gh-checkbox-lbl{font-size:12px;color:#e6edf3;line-height:1.4}
+.gh-checkbox-desc{font-size:10px;color:#8b949e;margin-top:2px;line-height:1.4}
+.gh-settings-layout{display:flex}
+.gh-settings-nav{width:130px;flex-shrink:0;padding:10px;border-right:1px solid #21262d}
+.gh-nav-item{padding:5px 8px;font-size:11px;color:#8b949e;border-radius:5px;cursor:default;margin-bottom:2px}
+.gh-nav-item.hl-nav{background:#1C1500;color:#FCD34D;border:1px solid #78350F}
+.gh-settings-body{flex:1;padding:12px}
+.gh-conflict-box{background:#2d1d00;border:1px solid #9e6a03;border-radius:6px;padding:10px 12px}
+.gh-conflict-title{font-size:12px;color:#d29922;font-weight:600;margin-bottom:4px}
+.gh-conflict-txt{font-size:11px;color:#d29922;line-height:1.5}
+.gh-list-item{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px 12px;margin-bottom:6px}
+
+/* ── WIN OVERLAY ── */
+.win-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:100;border-radius:inherit}
+.win-overlay.show{display:flex}
+.win-box{background:var(--bg);border-radius:var(--radius);padding:2rem;text-align:center;max-width:300px;border:0.5px solid var(--border);margin:0 16px}
+.win-ico{font-size:44px;margin-bottom:10px}
+.win-t{font-size:17px;font-weight:500;color:var(--text);margin-bottom:6px}
+.win-s{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:16px}
+.win-btn-next{padding:9px 22px;color:white;border:none;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
+
+/* ── STUCK FAB ── */
+.stuck-fab{position:fixed;bottom:20px;right:20px;color:white;border:none;border-radius:30px;padding:10px 16px;font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;box-shadow:0 4px 16px rgba(0,0,0,.25);z-index:50;font-weight:500}
+.stuck-fab:hover{opacity:.9}
+.stuck-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:flex-end;padding:20px;z-index:99}
+.stuck-modal.show{display:flex}
+.stuck-box{background:var(--bg);border-radius:var(--radius);width:320px;border:0.5px solid var(--border);box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.stuck-hd{padding:12px 14px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.stuck-ttl{font-size:13px;font-weight:500;color:var(--text);display:flex;align-items:center;gap:6px}
+.stuck-cl{background:none;border:none;cursor:pointer;color:var(--text2);font-size:18px;padding:2px 6px}
+.stuck-cl:hover{color:var(--text)}
+.stuck-bd{padding:14px;display:flex;flex-direction:column;gap:10px}
+.stuck-info{font-size:12px;color:var(--text2);line-height:1.65}
+.stuck-in{width:100%;background:var(--bg2);border:0.5px solid var(--border2);border-radius:var(--radius);padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text);outline:none;resize:none;min-height:70px}
+.stuck-send{width:100%;padding:9px;color:white;border:none;border-radius:var(--radius);font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
+.level-color-1{background:var(--blue)}
+.level-color-2{background:var(--green)}
+.level-color-3{background:var(--purple)}
+.level-color-4{background:var(--amber)}
+.level-color-5{background:var(--green)}
+</style>
+</head>
+<body>
+
+<!-- GITHUB SCREENSHOT MODAL -->
+<div class="modal-overlay" id="gh-modal" onclick="bgCloseModal(event)">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeGHModal()">✕</button>
+    <div class="modal-header"><div class="modal-title" id="gh-modal-title">📸 GitHub screen</div></div>
+    <div class="modal-body" id="gh-modal-body"></div>
+  </div>
+</div>
+
+<!-- WIN OVERLAY -->
+<div class="win-overlay" id="win-overlay">
+  <div class="win-box">
+    <div class="win-ico" id="win-ico">✨</div>
+    <div class="win-t" id="win-t">Dish served!</div>
+    <div class="win-s" id="win-s"></div>
+    <button class="win-btn-next" id="win-btn" onclick="closeWin()">Next →</button>
+  </div>
+</div>
+
+<!-- STUCK FAB -->
+<button class="stuck-fab" id="stuck-fab" onclick="openStuck()">🍳 Stuck? Ask the chef</button>
+<div class="stuck-modal" id="stuck-modal">
+  <div class="stuck-box">
+    <div class="stuck-hd">
+      <div class="stuck-ttl">🍳 Ask the chef anything</div>
+      <button class="stuck-cl" onclick="closeStuck()">✕</button>
+    </div>
+    <div class="stuck-bd">
+      <div class="stuck-info">Describe what happened — I'll help you.</div>
+      <textarea class="stuck-in" id="stuck-in" placeholder="What's going on?"></textarea>
+      <button class="stuck-send" id="stuck-send" onclick="sendStuck()">Send →</button>
+    </div>
+  </div>
+</div>
+
+<div class="app-wrap">
+<div class="app" id="main-app">
+
+<!-- ═══════════════════════════════════════
+     LEVEL NAV
+═══════════════════════════════════════ -->
+<div class="level-nav">
+  <div class="lv">
+    <div class="lvi active" id="lvi-0" onclick="goLevel(0)">
+      <div class="lvc" id="lvc-0">🍳</div>
+      <div class="lv-lbl">Start</div>
+    </div>
+    <div class="lv-ln" id="lvl-01"></div>
+    <div class="lvi locked" id="lvi-1" onclick="goLevel(1)">
+      <div class="lvc" id="lvc-1">1</div>
+      <div class="lv-lbl">Setup the Kitchen</div>
+    </div>
+    <div class="lv-ln" id="lvl-12"></div>
+    <div class="lvi locked" id="lvi-2" onclick="goLevel(2)">
+      <div class="lvc" id="lvc-2">2</div>
+      <div class="lv-lbl">Open the Restaurant</div>
+    </div>
+    <div class="lv-ln" id="lvl-23"></div>
+    <div class="lvi locked" id="lvi-3" onclick="goLevel(3)">
+      <div class="lvc" id="lvc-3">3</div>
+      <div class="lv-lbl">Chef's Night Off</div>
+    </div>
+    <div class="lv-ln" id="lvl-34"></div>
+    <div class="lvi locked" id="lvi-4" onclick="goLevel(4)">
+      <div class="lvc" id="lvc-4">4</div>
+      <div class="lv-lbl">Kitchen Brigade</div>
+    </div>
+    <div class="lv-ln" id="lvl-45"></div>
+    <div class="lvi locked" id="lvi-5" onclick="goLevel(5)">
+      <div class="lvc" id="lvc-5">5</div>
+      <div class="lv-lbl">Your Kitchen</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCREEN 0 — INVITATION
+═══════════════════════════════════════ -->
+<div class="screen show" id="screen-0">
+  <div class="invite-hero">
+    <span class="invite-ico">🍳</span>
+    <div class="invite-t">What if AI could work in your kitchen?</div>
+    <div class="invite-s">Not answer your questions. Not watch over your shoulder. Actually work — write files, run code, push to GitHub — while you direct in plain language.</div>
+  </div>
+  <div class="invite-body">
+    <div class="story-lede">"I used to spend 20 minutes formatting meeting notes. Now I describe the format once, Claude Code does it in seconds. Every time. Without being asked again."</div>
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">Three ways to work with Claude. Only one works in your kitchen.</div>
+    <div class="three-modes">
+      <div class="mode-card">
+        <div class="mode-ico">💬</div>
+        <div class="mode-nm">Claude Chat</div>
+        <div class="mode-row"><span class="mode-rl">Like</span><span class="mode-rv">A phone call with a brilliant friend</span></div>
+        <div class="mode-row"><span class="mode-rl">Does</span><span class="mode-rv">Answers, writes, explains</span></div>
+        <div class="mode-row"><span class="mode-rl">Can't</span><span class="mode-rv">Touch your files or computer</span></div>
+        <span class="mode-badge" style="background:var(--bg2);color:var(--text2)">What you use now</span>
+      </div>
+      <div class="mode-card">
+        <div class="mode-ico">👀</div>
+        <div class="mode-nm">Cowork</div>
+        <div class="mode-row"><span class="mode-rl">Like</span><span class="mode-rv">A chef watching over your shoulder</span></div>
+        <div class="mode-row"><span class="mode-rl">Does</span><span class="mode-rv">Sees your screen, guides you</span></div>
+        <div class="mode-row"><span class="mode-rl">Can't</span><span class="mode-rv">Actually make the moves</span></div>
+        <span class="mode-badge" style="background:var(--bg2);color:var(--text2)">You still do the cooking</span>
+      </div>
+      <div class="mode-card highlight">
+        <div class="mode-ico">⚡</div>
+        <div class="mode-nm">Claude Code</div>
+        <div class="mode-row"><span class="mode-rl">Like</span><span class="mode-rv">A sous-chef IN your kitchen</span></div>
+        <div class="mode-row"><span class="mode-rl">Does</span><span class="mode-rv">Creates files, runs commands, pushes code</span></div>
+        <div class="mode-row"><span class="mode-rl">Always</span><span class="mode-rv">Asks permission first</span></div>
+        <span class="mode-badge" style="background:var(--blue);color:white">What this teaches you</span>
+      </div>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px">What your sous-chef can do for you</div>
+    <div class="powers-grid">
+      <div class="pw"><div class="pw-ico">📄</div><div><div class="pw-t">Create & edit files</div><div class="pw-d">Write reports, format docs, reorganize folders — in plain language</div></div></div>
+      <div class="pw"><div class="pw-ico">🌍</div><div><div class="pw-t">Publish to the internet</div><div class="pw-d">A real URL for your project — free, in under 5 minutes</div></div></div>
+      <div class="pw"><div class="pw-ico">🎮</div><div><div class="pw-t">Build real software</div><div class="pw-d">Games, tools, dashboards — you describe, it builds</div></div></div>
+      <div class="pw"><div class="pw-ico">🤝</div><div><div class="pw-t">Collaborate like a pro</div><div class="pw-d">Branches, pull requests, the full team workflow</div></div></div>
+    </div>
+    <div class="promise-box">
+      <div class="promise-t">🗺️ Your journey — five levels</div>
+      <div class="promise-items">
+        <div class="pi"><div class="pi-n" style="background:var(--blue)">1</div><div class="pi-txt"><b>Setup the Kitchen</b> — install Claude Code, learn VS Code, first six missions<span>~2 hours · spread over sessions</span></div></div>
+        <div class="pi"><div class="pi-n" style="background:var(--green)">2</div><div class="pi-txt"><b>Open the Restaurant</b> — build and publish a real webpage<span>~90 minutes</span></div></div>
+        <div class="pi"><div class="pi-n" style="background:var(--purple)">3</div><div class="pi-txt"><b>Chef's Night Off</b> — build and ship a browser game<span>~2 hours</span></div></div>
+        <div class="pi"><div class="pi-n" style="background:var(--amber)">4</div><div class="pi-txt"><b>The Kitchen Brigade</b> — real GitHub collaboration<span>~45–60 minutes</span></div></div>
+        <div class="pi"><div class="pi-n" style="background:var(--green)">5</div><div class="pi-txt"><b>Your Kitchen, Your Menu</b> — build something for your real life<span>One session · your pace</span></div></div>
+      </div>
+      <button class="cta" style="background:var(--blue)" onclick="goLevel(1)"><i class="ti ti-chef-hat" style="font-size:16px"></i> Start cooking — Level 1</button>
+      <div class="cta-sub">No coding experience needed · Takes about 2 hours total</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCREEN 1 — SETUP THE KITCHEN
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-1">
+  <div class="time-badge" style="background:var(--blue)">
+    <span>⏱️</span><span class="tb-txt">Total time for this level</span><span class="tb-val">~2 hours · spread over sessions</span>
+  </div>
+  <div class="clr-banner" style="background:#1C1500;border-color:#78350F">
+    <span style="font-size:16px">🧹</span>
+    <div class="clr-txt" style="color:#FDE68A">Before starting — clear your terminal:<br>In Claude Code type <span class="clr-cmd" style="background:#292400;color:#FCD34D;border-color:#78350F">/clear</span> and press Enter</div>
+  </div>
+  <!-- Phase nav -->
+  <div style="display:flex;border-bottom:0.5px solid var(--border);background:var(--bg2)" id="ph-nav-1">
+    <div class="pn-btn active" id="pn1-1" onclick="setPhase1(1)" style="flex:1;padding:9px 4px;text-align:center;font-size:11px;border-bottom:2px solid var(--blue);color:var(--blue);cursor:pointer;font-weight:500">1 Setup</div>
+    <div class="pn-btn" id="pn1-2" onclick="setPhase1(2)" style="flex:1;padding:9px 4px;text-align:center;font-size:11px;border-bottom:2px solid transparent;color:var(--text2);cursor:pointer;font-weight:500">2 Kitchen</div>
+    <div class="pn-btn" id="pn1-3" onclick="setPhase1(3)" style="flex:1;padding:9px 4px;text-align:center;font-size:11px;border-bottom:2px solid transparent;color:var(--text2);cursor:pointer;font-weight:500">3 Split Screen</div>
+    <div class="pn-btn" id="pn1-4" onclick="setPhase1(4)" style="flex:1;padding:9px 4px;text-align:center;font-size:11px;border-bottom:2px solid transparent;color:var(--text2);cursor:pointer;font-weight:500">4 Missions</div>
+  </div>
+
+  <!-- Phase 1: Setup -->
+  <div id="l1-ph1" class="section-pad">
+    <div class="ph-t">🍳 Setting up the kitchen</div>
+    <div class="ph-s">Four tools to install — takes about 10 minutes. You only do this once.</div>
+    <button class="skip-link" onclick="setPhase1(2)"><i class="ti ti-player-skip-forward" style="font-size:12px"></i> Already installed — skip to kitchen tour</button>
+    <div class="setup-steps">
+      <div class="step cur" id="l1-s0">
+        <div class="step-head"><div class="step-ico">⛽</div><div><div class="step-ttl">Check the stove (Node.js)</div><div class="step-sub">Does the kitchen already have gas?</div></div></div>
+        <div class="step-body">
+          <div class="why-box">Node.js is the fuel Claude Code runs on. Let's check if it's already installed.</div>
+          <div class="note"><b>How to open the terminal in VS Code:</b></div>
+          <div class="term-open">
+            <div class="to-bar"><div class="to-dot" style="background:#ff5f57"></div><div class="to-dot" style="background:#febc2e"></div><div class="to-dot" style="background:#28c840"></div><div class="to-label">VS Code — opening the terminal</div></div>
+            <div class="to-steps">
+              <div class="to-step"><div class="to-step-num">1</div>Click <span class="to-step-hl">View</span> in the top menu bar</div>
+              <div class="to-step"><div class="to-step-num">2</div>Click <span class="to-step-hl">Terminal</span> in the dropdown</div>
+              <div class="to-step"><div class="to-step-num">3</div>Click <span class="to-step-hl">New Terminal</span> — a panel opens at the bottom</div>
+              <div class="to-step" style="color:#8b8baa;font-size:10px;padding-left:26px">Or press <span class="to-step-hl" style="font-size:10px">Ctrl + `</span> (backtick key, above Tab)</div>
+            </div>
+          </div>
+          <div class="cmd-box"><span class="cmd-t">node --version</span><button class="cbtn" onclick="cpText(this,'node --version')">Copy</button></div>
+          <div class="cr">
+            <button class="by" style="background:var(--blue)" onclick="l1Step(0,2)"><i class="ti ti-check" style="font-size:12px"></i> I see v18 or higher</button>
+            <button class="ba" onclick="l1Step(0,1)">I see an error →</button>
+          </div>
+        </div>
+      </div>
+      <div class="step" id="l1-s1">
+        <div class="step-head"><div class="step-ico">🔧</div><div><div class="step-ttl">Install Node.js</div><div class="step-sub">Only needed if step 1 showed an error</div></div></div>
+        <div class="step-body">
+          <div class="why-box">Go to <b>nodejs.org</b> → download the LTS version → run the installer → click Next all the way through → come back here.</div>
+          <div class="cr"><button class="by" style="background:var(--blue)" onclick="l1Step(1,2)"><i class="ti ti-check" style="font-size:12px"></i> Installed — node --version works now</button></div>
+        </div>
+      </div>
+      <div class="step" id="l1-s2">
+        <div class="step-head"><div class="step-ico">👨‍🍳</div><div><div class="step-ttl">Hire your sous-chef (Claude Code)</div><div class="step-sub">Downloads it from the terminal</div></div></div>
+        <div class="step-body">
+          <div class="cmd-box"><span class="cmd-t">npm install -g @anthropic-ai/claude-code</span><button class="cbtn" onclick="cpText(this,'npm install -g @anthropic-ai/claude-code')">Copy</button></div>
+          <div class="note">Text will scroll — your sous-chef is getting briefed. Takes about 30 seconds.</div>
+          <div class="cr"><button class="by" style="background:var(--blue)" onclick="l1Step(2,3)"><i class="ti ti-check" style="font-size:12px"></i> Done</button></div>
+        </div>
+      </div>
+      <div class="step" id="l1-s3">
+        <div class="step-head"><div class="step-ico">🗂️</div><div><div class="step-ttl">Connect the recipe vault (GitHub CLI)</div><div class="step-sub">So your kitchen can talk to GitHub directly</div></div></div>
+        <div class="step-body">
+          <div class="note"><b>Step 1:</b> Go to <b>cli.github.com</b> → Download for Windows → run the installer.</div>
+          <div class="note"><b>Step 2:</b> Back in the terminal, log in:</div>
+          <div class="cmd-box"><span class="cmd-t">gh auth login</span><button class="cbtn" onclick="cpText(this,'gh auth login')">Copy</button></div>
+          <div class="note">Choose: GitHub.com → HTTPS → Login with a web browser → follow the prompts.</div>
+          <div class="cr"><button class="by" style="background:var(--blue)" onclick="l1Step(3,4)"><i class="ti ti-check" style="font-size:12px"></i> Logged in to GitHub</button></div>
+        </div>
+      </div>
+      <div class="step" id="l1-s4">
+        <div class="step-head"><div class="step-ico">🔑</div><div><div class="step-ttl">Give your sous-chef credentials</div><div class="step-sub">Connect Claude Code to your account</div></div></div>
+        <div class="step-body">
+          <div class="cmd-box"><span class="cmd-t">claude</span><button class="cbtn" onclick="cpText(this,'claude')">Copy</button></div>
+          <div class="note">Opens a browser to log in. Use your Claude.ai email and password.</div>
+          <div class="cr"><button class="by" style="background:var(--blue)" onclick="setPhase1(2)"><i class="ti ti-check" style="font-size:12px"></i> Logged in — kitchen tour →</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 2: Kitchen tour -->
+  <div id="l1-ph2" class="section-pad" style="display:none">
+    <div class="ph-t">🍳 Know your kitchen</div>
+    <div class="ph-s">Before cooking — understand the space. Every concept maps to something in a professional kitchen.</div>
+    <button class="skip-link" onclick="setPhase1(3)"><i class="ti ti-player-skip-forward" style="font-size:12px"></i> Already know VS Code — skip</button>
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">Kitchen vocabulary</div>
+    <div class="vocab">
+      <div class="gl-row"><span class="gl-term">Terminal</span><span class="gl-arrow">→</span><div><div class="gl-meaning">Your kitchen — where everything happens</div><div class="gl-chef">🍳 Looks empty at first. Once you know it, it's home.</div></div></div>
+      <div class="gl-row"><span class="gl-term">directory</span><span class="gl-arrow">→</span><div><div class="gl-meaning">A folder — your current prep station</div><div class="gl-chef">🍳 "What's in my current directory?" = "What's on my prep station?"</div></div></div>
+      <div class="gl-row"><span class="gl-term">git commit</span><span class="gl-arrow">→</span><div><div class="gl-meaning">Write the recipe in the logbook</div><div class="gl-chef">🍳 Save a snapshot with a note. You can always return to this moment.</div></div></div>
+      <div class="gl-row"><span class="gl-term">git push</span><span class="gl-arrow">→</span><div><div class="gl-meaning">File the recipe in the vault</div><div class="gl-chef">🍳 Send your logbook entry to GitHub — safe and shareable.</div></div></div>
+      <div class="gl-row"><span class="gl-term">branch</span><span class="gl-arrow">→</span><div><div class="gl-meaning">A parallel prep station</div><div class="gl-chef">🍳 Cook something new without touching the main menu.</div></div></div>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px">Your kitchen layout (VS Code)</div>
+    <div class="vsc-disclaimer"><i class="ti ti-info-circle" style="font-size:13px;flex-shrink:0"></i> Your VS Code might look slightly different — that's fine. The 5 areas are always the same.</div>
+    <div class="vsc">
+      <div class="vsc-ab">
+        <div class="ab-i on"><i class="ti ti-files"></i></div>
+        <div class="ab-i"><i class="ti ti-search"></i></div>
+        <div class="ab-i"><i class="ti ti-git-branch"></i></div>
+        <div class="ab-i"><i class="ti ti-puzzle"></i></div>
+        <div class="ab-i hl"><i class="ti ti-sparkles"></i></div>
+      </div>
+      <div class="vsc-sb"><div class="sb-hd">EXPLORER</div><div class="sb-it"><i class="ti ti-folder sf"></i> my-kitchen</div><div class="sb-it" style="padding-left:26px"><i class="ti ti-file-text sc2"></i> recipes.md</div></div>
+      <div class="vsc-ed">
+        <div class="ed-tb"><div class="ed-t on">recipes.md</div></div>
+        <div class="ed-bd" style="color:#6a9955"><div># My Recipes</div><div style="color:#569cd6">## What I cooked</div><div style="color:#ce9178">- Set up Claude Code</div></div>
+      </div>
+      <div class="vsc-tm"><div class="tt"><div class="ttb on">TERMINAL</div></div><div class="tb2">$ <span class="cur3"></span></div></div>
+      <div class="hs" id="hs-ab" style="left:2px;top:2px;width:40px;height:112px" onclick="vscZone('ab')"><span class="hs-l">Activity Bar</span></div>
+      <div class="hs hs-cc" id="hs-cc" style="left:2px;top:118px;width:40px;height:32px" onclick="vscZone('cc')"><span class="hs-l">Claude Code ✦</span></div>
+      <div class="hs" id="hs-sb" style="left:46px;top:2px;width:158px;height:128px" onclick="vscZone('sb')"><span class="hs-l">Explorer</span></div>
+      <div class="hs" id="hs-ed" style="left:208px;top:2px;right:2px;height:128px" onclick="vscZone('ed')"><span class="hs-l">Editor = Countertop</span></div>
+      <div class="hs" id="hs-term" style="left:46px;bottom:2px;right:2px;height:56px" onclick="vscZone('term')"><span class="hs-l">Terminal = The kitchen</span></div>
+    </div>
+    <div class="info-panel">
+      <div class="itabs">
+        <div class="itab" id="it-ab" onclick="vscZone('ab')" title="Activity Bar"><i class="ti ti-layout-sidebar"></i></div>
+        <div class="itab" id="it-sb" onclick="vscZone('sb')" title="Explorer"><i class="ti ti-files"></i></div>
+        <div class="itab" id="it-ed" onclick="vscZone('ed')" title="Editor"><i class="ti ti-file-text"></i></div>
+        <div class="itab" id="it-term" onclick="vscZone('term')" title="Terminal"><i class="ti ti-terminal"></i></div>
+        <div class="itab" id="it-cc" onclick="vscZone('cc')" title="Claude Code"><i class="ti ti-sparkles"></i></div>
+      </div>
+      <div class="ibody">
+        <div class="ib show" id="ib-w"><div class="ib-t">👆 Click any area on the kitchen above</div><div class="ib-x">Each area has a job. Click to learn what it does in kitchen language.</div></div>
+        <div class="ib" id="ib-ab"><div class="ib-t">🗂️ Activity Bar — station selector</div><div class="ib-x">The strip on the far left. Each icon switches to a different panel.</div></div>
+        <div class="ib" id="ib-sb"><div class="ib-t">📁 Explorer — your prep station</div><div class="ib-x">All your files visible at a glance. Check here to verify a new file was created — no need to leave VS Code.</div></div>
+        <div class="ib" id="ib-ed"><div class="ib-t">✏️ Editor — the countertop</div><div class="ib-x">Where files open for reading and editing. <kbd class="kbd">Ctrl+Z</kbd> undoes any change instantly.</div></div>
+        <div class="ib" id="ib-term"><div class="ib-t">⌨️ Terminal — the kitchen itself</div><div class="ib-x">Where you talk to Claude Code. Open with <kbd class="kbd">Ctrl + `</kbd> or View → Terminal → New Terminal.</div></div>
+        <div class="ib" id="ib-cc"><div class="ib-t">✦ Claude Code — your sous-chef</div><div class="ib-x">The glowing sparkle icon. Click it to open Claude Code. Can't find it? Press <kbd class="kbd">Ctrl+Shift+P</kbd> and type "Claude".</div></div>
+      </div>
+    </div>
+    <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">🎨 Make the kitchen yours</div>
+    <div class="cust-grid">
+      <div class="ccard"><div class="ccard-t">🎨 Color theme</div><div class="ccard-d">Dark or light — your choice.</div><div class="ccard-k">View → Color Theme</div></div>
+      <div class="ccard"><div class="ccard-t">🔍 Font size</div><div class="ccard-d">Make text comfortable.</div><div class="ccard-k"><kbd class="kbd">Ctrl++</kbd> / <kbd class="kbd">Ctrl+-</kbd></div></div>
+      <div class="ccard"><div class="ccard-t">📐 Zoom</div><div class="ccard-d">Scales everything at once.</div><div class="ccard-k">View → Appearance → Zoom</div></div>
+      <div class="ccard"><div class="ccard-t">🔲 Hide clutter</div><div class="ccard-d">Right-click any Activity Bar icon.</div><div class="ccard-k">Right-click → Hide from Activity Bar</div></div>
+    </div>
+    <button class="btn-big" style="background:var(--green)" onclick="setPhase1(3)"><i class="ti ti-layout-columns"></i> Kitchen feels like mine — next</button>
+  </div>
+
+  <!-- Phase 3: Split screen -->
+  <div id="l1-ph3" class="section-pad" style="display:none">
+    <div class="ph-t">Set up the pass</div>
+    <div class="ph-s">This guide on the left, VS Code on the right. Every mission sends you to cook something real, then you come back here to mark it done.</div>
+    <div class="split-vis">
+      <div class="sp sp-g"><div class="sp-lb">← THIS GUIDE</div><div class="sp-ln b"></div><div class="sp-ln" style="width:80%"></div><div class="sp-ln b" style="width:65%"></div></div>
+      <div class="sp-dv">⇄</div>
+      <div class="sp sp-v"><div class="sp-lb">VS CODE →</div><div class="sp-ln g2"></div><div class="sp-ln" style="width:85%"></div><div class="sp-ln g2" style="width:55%"></div></div>
+    </div>
+    <div class="os-tabs"><button class="os-tab on" onclick="setOS(this,'win')">Windows</button><button class="os-tab" onclick="setOS(this,'mac')">Mac</button></div>
+    <div class="sc-box" id="os-win"><div class="sc-row"><kbd class="kbd">⊞ Win</kbd> + <kbd class="kbd">←</kbd> <span style="font-size:12px;color:var(--text2);margin-left:6px">snap this guide to the left half</span></div><div class="sc-row"><kbd class="kbd">⊞ Win</kbd> + <kbd class="kbd">→</kbd> <span style="font-size:12px;color:var(--text2);margin-left:6px">snap VS Code to the right half</span></div></div>
+    <div class="sc-box" id="os-mac" style="display:none"><div style="font-size:12px;color:var(--text2)">Hold the green button on this window → "Tile to Left of Screen", then click VS Code on the right.</div></div>
+    <button class="btn-big" style="background:var(--blue)" onclick="setPhase1(4)"><i class="ti ti-chef-hat"></i> Pass is set — start cooking</button>
+  </div>
+
+  <!-- Phase 4: Missions -->
+  <div id="l1-ph4" style="display:none">
+    <div class="prog-row"><div class="prog-track"><div class="prog-bar" id="pb-1" style="background:var(--blue);width:0%"></div></div><div class="prog-lbl" id="pl-1">0 / 6 dishes</div></div>
+    <div class="missions-wrap" id="ml-1"></div>
+    <div class="cheatsheet" id="cs-1">
+      <div class="cs-t">🎸 Level 1 complete — your cheatsheet</div>
+      <div class="cs-s">Everything you learned. Keep this open whenever you need a reminder.</div>
+      <div class="cs-grid">
+        <div class="cs-card"><div class="cs-cmd" style="color:var(--blue)">what files are in my directory?</div><div class="cs-desc">Inventory your current folder</div></div>
+        <div class="cs-card"><div class="cs-cmd" style="color:var(--blue)">create a file called X.md</div><div class="cs-desc">Create a new file with that name</div></div>
+        <div class="cs-card"><div class="cs-cmd" style="color:var(--blue)">read X.md and suggest improvements</div><div class="cs-desc">Get feedback on a file's content</div></div>
+        <div class="cs-card"><div class="cs-cmd" style="color:var(--blue)">git commit -m "message"</div><div class="cs-desc">Save a snapshot with a note</div></div>
+        <div class="cs-card"><div class="cs-cmd" style="color:var(--blue)">git push</div><div class="cs-desc">Send changes to GitHub</div></div>
+        <div class="cs-card"><div class="cs-cmd" style="color:var(--blue)">/clear</div><div class="cs-desc">Reset Claude Code's memory</div></div>
+      </div>
+      <div id="fw-1"></div>
+      <div class="cs-actions" style="margin-top:16px">
+        <button class="cs-btn-p" style="background:var(--blue)" onclick="goLevel(2)">Go to Level 2 →</button>
+        <button class="cs-btn-s" style="color:var(--blue);border-color:var(--blue)" onclick="retryLevel(1)">↩ Try it solo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCREEN 2 — OPEN THE RESTAURANT
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-2">
+  <div class="time-badge" style="background:var(--green)">
+    <span>⏱️</span><span class="tb-txt">Total time for this level</span><span class="tb-val">~90 minutes</span>
+  </div>
+  <div class="clr-banner" style="background:#1C1500;border-color:#78350F">
+    <span style="font-size:16px">🧹</span>
+    <div class="clr-txt" style="color:#FDE68A">Fresh kitchen before we start:<br>In Claude Code type <span class="clr-cmd" style="background:#292400;color:#FCD34D;border-color:#78350F">/clear</span> and press Enter</div>
+  </div>
+  <div class="hero" style="background:linear-gradient(135deg,#0A2A1A,#1A4A2A,#0A2A1A)">
+    <span class="hero-ico">🍽️</span>
+    <div class="hero-t">Open the Restaurant</div>
+    <div class="hero-s">In Level 1 you mastered your kitchen. Now you serve real guests. By the end you'll have a live webpage — a real URL you can send to anyone.</div>
+    <div class="hero-badge" style="background:rgba(61,214,140,.15);border:1px solid rgba(61,214,140,.3);color:#3DD68C">🌍 By the end: a live site with a real URL</div>
+    <button class="skip-btn" onclick="goLevel(3)"><i class="ti ti-player-skip-forward" style="font-size:12px"></i> Already built a site — skip to Level 3</button>
+  </div>
+  <div style="padding:14px 22px 0">
+    <div class="wyb-grid">
+      <div class="wyb-card"><div class="wyb-ico">📐</div><div class="wyb-t">Plan</div><div class="wyb-d">Decide before building a line</div></div>
+      <div class="wyb-card"><div class="wyb-ico">🍳</div><div class="wyb-t">Cook</div><div class="wyb-d">Claude Code builds from your words</div></div>
+      <div class="wyb-card"><div class="wyb-ico">👀</div><div class="wyb-t">Taste</div><div class="wyb-d">Preview locally, refine in plain language</div></div>
+      <div class="wyb-card"><div class="wyb-ico">🌍</div><div class="wyb-t">Serve</div><div class="wyb-d">Publish to GitHub Pages — real URL</div></div>
+    </div>
+  </div>
+  <div class="prog-row"><div class="prog-track"><div class="prog-bar" id="pb-2" style="background:var(--green);width:0%"></div></div><div class="prog-lbl" id="pl-2">0 / 6 dishes</div></div>
+  <div class="missions-wrap" id="ml-2"></div>
+  <div class="cheatsheet" id="cs-2">
+    <div class="cs-t">🌍 Level 2 complete — your cheatsheet</div>
+    <div class="cs-s">You built and published a real website. Here's what you now know.</div>
+    <div class="cs-grid">
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--green)">build a webpage for me</div><div class="cs-desc">Claude Code writes all the HTML and CSS</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--green)">open index.html in my browser</div><div class="cs-desc">Preview locally before publishing</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--green)">change the colour / layout / text</div><div class="cs-desc">Iterate on design in plain language</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--green)">push to GitHub</div><div class="cs-desc">Send changes to the live site</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--green)">GitHub Pages</div><div class="cs-desc">Free hosting — turns your repo into a live URL</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--green)">commit + push after changes</div><div class="cs-desc">Two steps to update your live site</div></div>
+    </div>
+    <div id="fw-2"></div>
+    <div class="cs-actions" style="margin-top:16px">
+      <button class="cs-btn-p" style="background:var(--green)" onclick="goLevel(3)">Go to Level 3 →</button>
+      <button class="cs-btn-s" style="color:var(--green);border-color:var(--green)" onclick="retryLevel(2)">↩ Try it solo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCREEN 3 — CHEF'S NIGHT OFF
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-3">
+  <div class="time-badge" style="background:var(--purple)">
+    <span>⏱️</span><span class="tb-txt">Total time for this level</span><span class="tb-val">~2 hours</span>
+  </div>
+  <div class="clr-banner" style="background:#1a0a2e;border-color:#4c1d95">
+    <span style="font-size:16px">🧹</span>
+    <div class="clr-txt" style="color:#d8b4fe">Fresh kitchen before we start:<br>In Claude Code type <span class="clr-cmd" style="background:#2d1458;color:#a78bfa;border-color:#4c1d95">/clear</span> and press Enter</div>
+  </div>
+  <div class="hero" style="background:linear-gradient(135deg,#1a0a2e,#2d1458,#1a0a2e);position:relative;overflow:hidden">
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:120px;opacity:.04;pointer-events:none">🎮</div>
+    <span class="hero-ico" style="position:relative;z-index:1">🎮🍳</span>
+    <div class="hero-t" style="position:relative;z-index:1">Chef's Night Off — build a game</div>
+    <div class="hero-s" style="position:relative;z-index:1">On their night off, great chefs cook something completely different — just for joy. Tonight you're building Chef's Chaos: ingredients fall from the sky, you catch the right ones. Real game. Real URL.</div>
+    <div class="hero-badge" style="background:rgba(167,139,250,.2);border:1px solid rgba(167,139,250,.3);color:#d8b4fe;position:relative;z-index:1">🏆 By the end: a live game you can share today</div>
+    <button class="skip-btn" onclick="goLevel(4)" style="position:relative;z-index:1"><i class="ti ti-player-skip-forward" style="font-size:12px"></i> Already built a game — skip to Level 4</button>
+  </div>
+  <!-- Game preview -->
+  <div style="margin:16px 22px 0;border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--purple)">
+    <div style="background:#2d1458;padding:8px 14px;display:flex;align-items:center;justify-content:space-between"><div style="font-size:12px;font-weight:600;color:#d8b4fe">🎮 Chef's Chaos — what you're building</div><div style="font-size:10px;background:rgba(167,139,250,.2);color:#d8b4fe;padding:2px 8px;border-radius:10px">preview</div></div>
+    <div style="background:#0d0d1a;padding:16px;height:90px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div style="display:flex;gap:20px;font-size:24px;animation:gfall 2s ease-in-out infinite alternate">🍅 🧅 🧄 🌶️</div>
+        <div style="font-size:28px">🍲</div>
+      </div>
+      <div style="position:absolute;top:10px;right:14px;font-family:monospace;font-size:11px;color:#a78bfa">Score: 42 | ❤️❤️❤️</div>
+    </div>
+    <div style="background:#1a0a2e;padding:7px 14px;font-size:11px;color:rgba(255,255,255,.45);text-align:center">Catch right ingredients → wrong ones cost a life → speed increases → beat your score</div>
+  </div>
+  <style>@keyframes gfall{0%{transform:translateY(-8px)}100%{transform:translateY(8px)}}</style>
+  <div style="padding:14px 22px 0">
+    <div class="wyb-grid">
+      <div class="wyb-card"><div class="wyb-ico">🎯</div><div class="wyb-t">Game loop</div><div class="wyb-d">Falling items, moving pot</div></div>
+      <div class="wyb-card"><div class="wyb-ico">⚡</div><div class="wyb-t">Live scoring</div><div class="wyb-d">Points, lives, speed</div></div>
+      <div class="wyb-card"><div class="wyb-ico">🔄</div><div class="wyb-t">Live update</div><div class="wyb-d">Add a feature after publishing</div></div>
+      <div class="wyb-card"><div class="wyb-ico">🌍</div><div class="wyb-t">Published</div><div class="wyb-d">Real URL, anyone can play</div></div>
+    </div>
+  </div>
+  <div class="prog-row"><div class="prog-track"><div class="prog-bar" id="pb-3" style="background:var(--purple);width:0%"></div></div><div class="prog-lbl" id="pl-3">0 / 7 dishes</div></div>
+  <div class="missions-wrap" id="ml-3"></div>
+  <div class="cheatsheet" id="cs-3">
+    <div class="cs-t">🕹️ Level 3 complete — your cheatsheet</div>
+    <div class="cs-s">You shipped a real game. Here's what you now know.</div>
+    <div class="cs-grid">
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--purple)">design a game in plain language</div><div class="cs-desc">Brief Claude Code before writing any code</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--purple)">build a single HTML game file</div><div class="cs-desc">Everything in one file, works in any browser</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--purple)">add [feature] to the game</div><div class="cs-desc">Iterate on a live game in plain language</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--purple)">push to GitHub + enable Pages</div><div class="cs-desc">Publish the game to a real URL</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--purple)">commit + push after update</div><div class="cs-desc">Live game updates in under 60 seconds</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--purple)">observe → improve → ship</div><div class="cs-desc">The real-time product feedback loop</div></div>
+    </div>
+    <div id="fw-3"></div>
+    <div class="cs-actions" style="margin-top:16px">
+      <button class="cs-btn-p" style="background:var(--purple)" onclick="goLevel(4)">Go to Level 4 →</button>
+      <button class="cs-btn-s" style="color:var(--purple);border-color:var(--purple)" onclick="retryLevel(3)">↩ Try it solo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCREEN 4 — KITCHEN BRIGADE
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-4">
+  <div class="time-badge" style="background:var(--amber)">
+    <span>⏱️</span><span class="tb-txt">Total time for this level</span><span class="tb-val">~45–60 minutes</span>
+  </div>
+  <div class="clr-banner" style="background:#1C1500;border-color:#78350F">
+    <span style="font-size:16px">🧹</span>
+    <div class="clr-txt" style="color:#FDE68A">Fresh kitchen before we start:<br>In Claude Code type <span class="clr-cmd" style="background:#292400;color:#FCD34D;border-color:#78350F">/clear</span> and press Enter</div>
+  </div>
+  <div class="hero" style="background:linear-gradient(135deg,#1C1000,#3B1E00,#1C1000);padding:24px 24px 20px">
+    <span class="hero-ico">👨‍🍳🤝👨‍🍳</span>
+    <div class="hero-t">The Kitchen Brigade</div>
+    <div class="hero-s">In a professional kitchen, no one cooks alone. This level has the most moving parts — three tools, two tracks, and the full collaboration loop.</div>
+  </div>
+  <div style="padding:14px 22px;display:flex;flex-direction:column;gap:8px;border-bottom:0.5px solid var(--border)">
+    <div class="opt-acc" id="opt-diff">
+      <div class="opt-head" onclick="toggleAcc('opt-diff')"><span style="font-size:15px">⚠️</span><span class="opt-lbl">What makes this level different? <span style="font-size:10px;color:var(--text2)">(optional)</span></span><span class="opt-arr">▶</span></div>
+      <div class="opt-body">
+        <div class="og-grid">
+          <div class="og-card"><div class="og-ico">🌐</div><div class="og-t">Three tools</div><div class="og-d">VS Code, GitHub website, and this guide — all labelled clearly.</div></div>
+          <div class="og-card"><div class="og-ico">📸</div><div class="og-t">GitHub screenshots</div><div class="og-d">Every GitHub step has a visual guide — click the green 📸 button.</div></div>
+          <div class="og-card"><div class="og-ico">🗺️</div><div class="og-t">Two deep dives</div><div class="og-d">Optional visual explanations inside Dish 2 and Dish 3.</div></div>
+          <div class="og-card"><div class="og-ico">🔀</div><div class="og-t">Two tracks</div><div class="og-d">Real Chef or Chef Claude — same skills, switch anytime.</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="opt-acc" id="opt-players">
+      <div class="opt-head" onclick="toggleAcc('opt-players')"><span style="font-size:15px">👥</span><span class="opt-lbl">Who are the three players? <span style="font-size:10px;color:var(--text2)">(optional)</span></span><span class="opt-arr">▶</span></div>
+      <div class="opt-body">
+        <div class="pc you"><span class="pc-ico">👤</span><div><div class="pc-nm">You — the Head Chef</div><span class="pc-where">Everywhere</span><div class="pc-d">You make all decisions. Both other players answer to you.</div></div></div>
+        <div class="pc cc"><span class="pc-ico">🤖</span><div><div class="pc-nm">Chef Claude — your second chef</div><span class="pc-where">🗣️ In this chat only</span><div class="pc-d">I play the collaborator. Talk to me here. <b style="color:#FCD34D">Never mention me to Claude Code in VS Code.</b></div></div></div>
+        <div class="pc cv"><span class="pc-ico">⚡</span><div><div class="pc-nm">Claude Code — kitchen assistant</div><span class="pc-where">⚡ In VS Code terminal only</span><div class="pc-d">Executes real commands on your machine. Every command is labelled so you always know where to type it.</div></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Track chooser -->
+  <div id="l4-chooser" style="padding:16px 22px">
+    <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">🎮 Choose your brigade</div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:14px;line-height:1.6">Same skills, same GitHub mechanics. Switch at any point.</div>
+    <div class="tracks">
+      <div class="tc" id="tc-h" onclick="l4Sel('h')">
+        <span class="tc-ico">👤</span><div class="tc-nm">Real Chef</div>
+        <div class="tc-r"><span class="tc-rl">Who</span><span class="tc-rv">A real person you invite</span></div>
+        <div class="tc-r"><span class="tc-rl">Pace</span><span class="tc-rv">When they're available</span></div>
+        <span class="tc-bg bh">Most realistic</span>
+        <div class="tc-sel h">✓ Selected</div>
+      </div>
+      <div class="tc" id="tc-a" onclick="l4Sel('a')">
+        <span class="tc-ico">🤖</span><div class="tc-nm">Chef Claude</div>
+        <div class="tc-r"><span class="tc-rl">Who</span><span class="tc-rv">I play the second chef</span></div>
+        <div class="tc-r"><span class="tc-rl">Pace</span><span class="tc-rv">Instant — always here</span></div>
+        <span class="tc-bg ba2">Solo friendly</span>
+        <div class="tc-sel a">✓ Selected</div>
+      </div>
+    </div>
+    <button class="sbtn sbh" id="sb-h" onclick="l4Go('h')"><i class="ti ti-users" style="font-size:14px"></i> Start with a Real Chef</button>
+    <button class="sbtn sba" id="sb-a" onclick="l4Go('a')"><i class="ti ti-robot" style="font-size:14px"></i> Start with Chef Claude</button>
+    <div class="sw-note">You can switch tracks at any point.</div>
+  </div>
+  <div class="prog-row" id="pb-row-4" style="display:none"><div class="prog-track"><div class="prog-bar" id="pb-4" style="background:var(--amber);width:0%"></div></div><div class="prog-lbl" id="pl-4">0 / 5 dishes</div></div>
+  <div class="missions-wrap" id="ml-4" style="display:none"></div>
+  <div class="cheatsheet" id="cs-4">
+    <div class="cs-t">🤝 Level 4 complete — your cheatsheet</div>
+    <div class="cs-s">You ran the full collaboration loop. Here's what you now know.</div>
+    <div class="cs-grid">
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">git checkout -b feature/name</div><div class="cs-desc">Open a new prep station (branch)</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">git push origin feature/name</div><div class="cs-desc">Push your branch to GitHub</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">Compare & pull request</div><div class="cs-desc">Submit your dish for tasting on GitHub</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">Merge pull request</div><div class="cs-desc">Bring your dish to the main menu</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">git pull origin main</div><div class="cs-desc">Update your local main after a merge</div></div>
+      <div class="cs-card"><div class="cs-cmd" style="color:var(--amber)">&lt;&lt;&lt; === &gt;&gt;&gt; markers</div><div class="cs-desc">Conflict markers — choose the final version</div></div>
+    </div>
+    <div id="fw-4"></div>
+    <div class="cs-actions" style="margin-top:16px">
+      <button class="cs-btn-p" style="background:var(--amber)" onclick="goLevel(5)">Go to Level 5 →</button>
+      <button class="cs-btn-s" style="color:var(--amber);border-color:var(--amber)" onclick="retryLevel(4)">↩ Try it solo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCREEN 5 — YOUR KITCHEN
+═══════════════════════════════════════ -->
+<div class="screen" id="screen-5">
+  <div class="hero" style="background:linear-gradient(135deg,#051C12,#0A3020,#051C12)">
+    <span class="hero-ico">🍽️✨</span>
+    <div class="hero-t">Your Kitchen, Your Menu</div>
+    <div class="hero-s">You've learned to cook. Now you design your own restaurant. Level 5 is personal — we build something real for your actual life or work. Four questions, then you fly.</div>
+    <div class="hero-badge" style="background:rgba(61,214,140,.15);border:1px solid rgba(61,214,140,.3);color:#3DD68C">🎓 The graduation level</div>
+  </div>
+  <!-- Discovery -->
+  <div id="l5-discovery" class="section-pad">
+    <div class="disc-progress">
+      <div class="dp active-dp" id="dp-0"></div>
+      <div class="dp" id="dp-1"></div>
+      <div class="dp" id="dp-2"></div>
+      <div class="dp" id="dp-3"></div>
+    </div>
+    <div class="question show" id="l5-q0">
+      <div class="q-num">Question 1 of 4</div>
+      <div class="q-text">What kind of kitchen are we opening?</div>
+      <div class="q-sub">This shapes everything — the project, the scope, the prompt.</div>
+      <div class="opt-btns">
+        <div class="opt-b" onclick="l5Sel(0,0)"><span class="opt-b-ico">💼</span><div class="opt-b-body"><div class="opt-b-label">Work</div><div class="opt-b-desc">Something that helps me do my job better</div></div><div class="opt-b-check"></div></div>
+        <div class="opt-b" onclick="l5Sel(0,1)"><span class="opt-b-ico">🏠</span><div class="opt-b-body"><div class="opt-b-label">Personal life</div><div class="opt-b-desc">Something for home, hobbies, or family</div></div><div class="opt-b-check"></div></div>
+        <div class="opt-b" onclick="l5Sel(0,2)"><span class="opt-b-ico">🎮</span><div class="opt-b-body"><div class="opt-b-label">Just for fun</div><div class="opt-b-desc">A game, experiment, or creative project</div></div><div class="opt-b-check"></div></div>
+      </div>
+      <button class="next-q-btn" id="nq-0" style="background:var(--green)" onclick="l5Next(0)">Next <i class="ti ti-arrow-right" style="font-size:12px"></i></button>
+    </div>
+    <div class="question" id="l5-q1">
+      <div class="q-num">Question 2 of 4</div>
+      <div class="q-text">What's driving this?</div>
+      <div class="q-sub">Pick what feels most true right now.</div>
+      <div class="opt-btns">
+        <div class="opt-b" onclick="l5Sel(1,0)"><span class="opt-b-ico">😤</span><div class="opt-b-body"><div class="opt-b-label">Something that wastes my time</div><div class="opt-b-desc">A task I repeat that should be faster or automated</div></div><div class="opt-b-check"></div></div>
+        <div class="opt-b" onclick="l5Sel(1,1)"><span class="opt-b-ico">💡</span><div class="opt-b-body"><div class="opt-b-label">An idea I've had but never built</div><div class="opt-b-desc">Something I've been meaning to make</div></div><div class="opt-b-check"></div></div>
+        <div class="opt-b" onclick="l5Sel(1,2)"><span class="opt-b-ico">🎁</span><div class="opt-b-body"><div class="opt-b-label">Something useful for someone else</div><div class="opt-b-desc">A tool or resource I want to share</div></div><div class="opt-b-check"></div></div>
+        <div class="opt-b" onclick="l5Sel(1,3)"><span class="opt-b-ico">🧪</span><div class="opt-b-body"><div class="opt-b-label">I just want to explore</div><div class="opt-b-desc">No specific goal — let's see what we can do</div></div><div class="opt-b-check"></div></div>
+      </div>
+      <button class="next-q-btn" id="nq-1" style="background:var(--green)" onclick="l5Next(1)">Next <i class="ti ti-arrow-right" style="font-size:12px"></i></button>
+    </div>
+    <div class="question" id="l5-q2">
+      <div class="q-num">Question 3 of 4</div>
+      <div class="q-text">How much time do you have today?</div>
+      <div class="q-sub">Be honest — a small thing that works beats a big thing that doesn't.</div>
+      <div class="opt-btns">
+        <div class="opt-b" onclick="l5Sel(2,0)"><span class="opt-b-ico">🥗</span><div class="opt-b-body"><div class="opt-b-label">30 to 45 minutes</div><div class="opt-b-desc">Small, useful, done today.</div></div><div class="opt-b-check"></div></div>
+        <div class="opt-b" onclick="l5Sel(2,1)"><span class="opt-b-ico">🍽️</span><div class="opt-b-body"><div class="opt-b-label">60 to 90 minutes</div><div class="opt-b-desc">Something with real substance.</div></div><div class="opt-b-check"></div></div>
+        <div class="opt-b" onclick="l5Sel(2,2)"><span class="opt-b-ico">🍱</span><div class="opt-b-body"><div class="opt-b-label">As long as it takes</div><div class="opt-b-desc">I'm fully committed today.</div></div><div class="opt-b-check"></div></div>
+      </div>
+      <button class="next-q-btn" id="nq-2" style="background:var(--green)" onclick="l5Next(2)">Next <i class="ti ti-arrow-right" style="font-size:12px"></i></button>
+    </div>
+    <div class="question" id="l5-q3">
+      <div class="q-num">Question 4 of 4 — the important one</div>
+      <div class="q-text" id="l5-q4t">Describe it in one sentence</div>
+      <div class="q-sub" id="l5-q4s">Don't overthink it. Rough is fine — I'll shape it into a starting prompt.</div>
+      <div class="q4-box">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:10px">Some examples to spark ideas:</div>
+        <div class="q4-examples" id="l5-examples"></div>
+        <textarea class="q4-input" id="l5-sentence" placeholder="Type your one sentence here..."></textarea>
+      </div>
+      <button class="next-q-btn show" style="background:var(--green)" onclick="l5Submit()"><i class="ti ti-sparkles" style="font-size:13px"></i> Generate my starting prompt</button>
+    </div>
+  </div>
+  <!-- Waiting -->
+  <div class="waiting-state" id="l5-waiting">
+    <div class="waiting-ico">👨‍🍳</div>
+    <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px">Writing your starting prompt</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:20px">Reading your answers and crafting a prompt tailored to your exact situation.</div>
+    <div class="waiting-note"><b>Check the chat above ↑</b><br>My reply will include 3 tailored project options and a ready-to-paste Claude Code prompt. Once you've chosen one, come back here — click "I have my prompt" below.</div>
+    <button class="btn-big" style="background:var(--green);margin-top:12px" onclick="l5ShowLaunch()"><i class="ti ti-rocket" style="font-size:14px"></i> I have my prompt — launch</button>
+  </div>
+  <!-- Launchpad -->
+  <div class="launchpad" id="l5-launchpad">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <span style="font-size:32px">🚀</span>
+      <div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:3px">Your kitchen is ready</div>
+        <div style="font-size:12px;color:var(--text2)">Two steps — then VS Code takes over</div>
+      </div>
+    </div>
+    <div class="lp-step">
+      <div class="lp-step-head"><div class="lp-step-num">1</div><div class="lp-step-lbl">Clear your terminal</div></div>
+      <div class="lp-step-body">
+        <div class="lp-step-txt">In VS Code, open the terminal and type:</div>
+        <div class="prompt-box" style="margin-bottom:0"><div class="prompt-text">/clear</div><button class="prompt-copy" onclick="cpText(this,'/clear')">Copy</button></div>
+      </div>
+    </div>
+    <div class="lp-step">
+      <div class="lp-step-head"><div class="lp-step-num">2</div><div class="lp-step-lbl">Paste your starting prompt into Claude Code</div></div>
+      <div class="lp-step-body">
+        <div class="lp-step-txt">Read it before pasting — <b>it's yours to own.</b> Claude Code will ask clarifying questions, propose a plan, and work in stages. You direct — it cooks.</div>
+        <div class="prompt-box">
+          <div class="prompt-label">Your starting prompt — paste this into Claude Code</div>
+          <div class="prompt-text" id="l5-prompt-text">Come back here after getting your suggestions from the chat above and click "I have my prompt — launch".</div>
+          <button class="prompt-copy" onclick="cpText(this, document.getElementById('l5-prompt-text').textContent)">Copy</button>
+        </div>
+      </div>
+    </div>
+    <div class="flying-box">
+      <div class="flying-t">🛫 You're flying solo now</div>
+      <div class="flying-s">Everything from here happens in VS Code between you and Claude Code. This is exactly how real developers work.</div>
+      <div class="flying-rules">
+        <div class="fr"><span>✅</span> Say yes to approve each step</div>
+        <div class="fr"><span>✏️</span> Describe changes before it moves on</div>
+        <div class="fr"><span>🛑</span> Say "stop — let's reconsider" if something feels wrong</div>
+        <div class="fr"><span>💬</span> Ask me below if you get genuinely stuck</div>
+      </div>
+    </div>
+    <!-- Inline chat -->
+    <div class="chat-section">
+      <div class="chat-head"><span style="font-size:15px">💬</span> Open chat — ask the chef anything</div>
+      <div class="chat-msgs" id="l5-chat-msgs">
+        <div class="cmsg ai">I'm here if you need me. But try to solve it in VS Code first — that's the whole point of this level. Ask me when you're really stuck.</div>
+      </div>
+      <div class="chat-in-row">
+        <textarea class="chat-in" id="l5-chat-in" placeholder="Describe what's happening..." rows="1" onkeydown="l5ChatKey(event)"></textarea>
+        <button class="chat-send" onclick="l5SendChat()">Send</button>
+      </div>
+    </div>
+    <div class="done-solo-btn" onclick="showGrad()">
+      <i class="ti ti-check" style="font-size:14px"></i> I finished it — show me the graduation
+    </div>
+  </div>
+  <!-- Graduation -->
+  <div class="grad-screen" id="l5-grad" style="display:none">
+    <span class="grad-ico">🎓</span>
+    <div class="grad-t">Chef. Not student. Chef.</div>
+    <div class="grad-s">You went from zero to shipping real software in five levels.<br>You built websites, games, collaborated on GitHub, and flew solo.<br><br>Most people who start learning to code never get here.<br>You did — and you did it by cooking.</div>
+    <button class="btn-big" style="background:var(--green)" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="ti ti-home" style="font-size:14px"></i> Back to the beginning</button>
+  </div>
+</div>
+
+</div><!-- end app -->
+</div><!-- end app-wrap -->
+
+<script>
+// ═══════════════════════════════════════
+// DATA — MISSION CONTENT
+// ═══════════════════════════════════════
+
+const MISSIONS = {
+  1: [
+    {t:"Take stock of the kitchen",tag:"First note 🎵",
+     why:"🍳 Every chef starts service by walking the kitchen. Your first mission: ask your sous-chef to do exactly that.",
+     do:"In VS Code, open the Claude Code panel (click the ✦ sparkle icon). Type this and press Enter:",
+     say:"what files and folders are in my current directory?",
+     res:"<b>What to expect:</b> Claude Code lists everything it sees. That's your sous-chef doing the first walk of the kitchen.",
+     wi:"🎵",wt:"First note played!",ws:"You asked an AI to inventory your workspace. That's how every developer starts a new project."},
+    {t:"Prep your first ingredient",tag:"Second note 🎵",
+     why:"🍳 Time to make something. Your sous-chef will create a real file — and will ask your permission before touching anything.",
+     do:"Type this in Claude Code:",
+     say:"create a file called my-notes.md and write a short summary of what Claude Code is",
+     res:"<b>What to expect:</b> Claude Code describes what it's about to do and asks for confirmation. Say yes. To verify it worked — look at the <b>Explorer panel</b> (📁 icon in the left sidebar). You should see my-notes.md appear there.",
+     wi:"🎵🎵",wt:"Second note!",ws:"A real file exists on your machine, created by AI from a plain English instruction. That never gets old."},
+    {t:"Taste and adjust",tag:"Song 1 🎸",
+     why:"🍳 A great chef doesn't just cook — they taste, critique, and improve. Two steps: get feedback, then act on one suggestion.",
+     do:"<b>Step 1</b> — ask for a review:",
+     say:"read my-notes.md and tell me 2 things you'd improve about it",
+     do2:"<b>Step 2</b> — act on the first suggestion:",
+     say2:"now make the first improvement to the file",
+     res:"<b>What to expect:</b> First it critiques its own writing. Then it rewrites part of the file. Check the Explorer — the file is updated.",
+     wi:"🎸",wt:"First song — dish of the day!",ws:"You ran a full creative loop: create → review → improve. Real professionals do this every single day."},
+    {t:"Plan the week's menu",tag:"Third note 🎵",
+     why:"🍳 Give your sous-chef something bigger. Ask it to look at your whole kitchen and suggest what to build — then do one of them.",
+     do:"<b>Step 1</b> — get suggestions first:",
+     say:"look at my current folder and suggest 3 things I could build or organize this week. Do NOT start building yet — just give me the suggestions first.",
+     do2:"<b>Step 2</b> — pick one and start:",
+     say2:"let's do the first one — go ahead and build it",
+     res:"<b>What to expect:</b> Suggestions based on what's actually in your folder. Then your sous-chef starts on whichever you choose.",
+     wi:"🎵🎵🎵",wt:"Third note!",ws:"Claude Code knows your kitchen now — suggestions based on YOUR ingredients, not a template."},
+    {t:"File the recipe (save to GitHub)",tag:"Song 2 🎸",
+     why:"🍳 After a good service, you file the recipes so any chef can recreate them. We'll create a dedicated project folder first — never push from Claude's config folder.",
+     do:"<b>Step 1</b> — set up a clean station:",
+     say:"create a new folder called my-first-claude-project in my Documents folder and initialize it as a git repository",
+     do2:"<b>Step 2</b> — add a README and push to a public repo:",
+     say2:"create a README.md in this folder that says: 'This is my first Claude Code project.' Then commit everything and push to a new public GitHub repository called my-first-claude-project",
+     res:"<b>What to expect:</b> Claude Code will ask permission at each step. At the end, you get a GitHub link you can share.",
+     warn:"<b>Why a new folder?</b> Claude Code's config folder contains your private credentials. Never push that to GitHub. Always work in a dedicated project folder.",
+     perm:"<b>Why public?</b> Public repos get GitHub Pages for free — no premium account needed.",
+     wi:"🎸🎸",wt:"Song 2 — recipe is in the vault!",ws:"Your project is on GitHub. That link works from any device, anywhere in the world. Welcome to the cloud."},
+    {t:"Daily closing routine",tag:"Full performance 🎼",
+     why:"🍳 Every great kitchen has a closing routine — update the logbook, clean the station, prep for tomorrow.",
+     do:"At the end of every session, type this:",
+     say:"summarize what we cooked today, save it to my-notes.md in my-first-claude-project, and commit everything to GitHub with a note about today's session",
+     res:"<b>What to expect:</b> Your sous-chef writes a session summary, saves it, and commits to GitHub in one go.",
+     wi:"🎼",wt:"Full service — kitchen closed!",ws:"You have a daily workflow now. Open VS Code → Claude Code → cook → confirm → save. It gets more natural every session."}
+  ],
+  2: [
+    {t:"Design the menu",tag:"Dish 1 🍽️",
+     why:"🍽️ No great restaurant opens without a menu. Before writing a single line, you and your sous-chef plan exactly what to build.",
+     do:"Tell Claude Code what you want to build. Add 'do NOT start building yet':",
+     say:"I want to build a simple personal webpage. Help me plan what it should include — who I am, what I do, and how people can reach me. Ask me what you need to know. Do NOT start building yet — just ask your questions first.",
+     do2:"Answer its questions, then ask for a plan:",
+     say2:"based on what I told you, write a brief plan for the page — sections, content, and visual style",
+     res:"<b>What to expect:</b> Claude Code interviews you about your vision, then produces a written plan. No code yet — just the menu.",
+     wi:"🍽️",wt:"Menu designed!",ws:"You just briefed your AI like a creative director. That's how real product teams start every project."},
+    {t:"Cook the first dish",tag:"Dish 2 🍳",
+     why:"🍳 Your sous-chef has the plan. Now it cooks. Claude Code writes all the HTML and CSS — you review what comes out.",
+     do:"Ask Claude Code to build it:",
+     say:"build the webpage we planned. Create an index.html file with all the HTML and CSS in one file. Keep it clean and simple.",
+     do2:"Once it's done, open it:",
+     say2:"open index.html in my default browser so I can see it",
+     res:"<b>What to expect:</b> Claude Code creates a real HTML file. When you open it you'll see your webpage in the browser — no internet needed yet, just a local preview.",
+     wi:"🍳🍳",wt:"First dish is plated!",ws:"A real webpage exists on your machine. You described it — your AI wrote it. That's not magic, that's a new skill."},
+    {t:"Taste and adjust",tag:"Dish 3 🧑‍🍳",
+     why:"🧑‍🍳 Even the best sous-chef needs feedback. Look at what was built and tell it what to change.",
+     do:"Look at your page in the browser. Come back and describe what you want to change:",
+     say:"I want to change the following things about the page: [describe what you want different — colour, text, layout, anything]",
+     do2:"Keep going until it feels right:",
+     say2:"[describe the next change you want]",
+     res:"<b>What to expect:</b> Every change gets applied immediately. Refresh your browser tab to see it.",
+     wi:"🧑‍🍳",wt:"Tasting complete — it looks right!",ws:"You just directed a design revision in plain language. No Figma, no CSS knowledge needed."},
+    {t:"Set the table",tag:"Dish 4 🍽️",
+     why:"🍽️ Before the restaurant opens, the table needs to be set. Publishing to GitHub Pages requires your project on GitHub.",
+     do:"Commit all your current files:",
+     say:"commit all my current files to GitHub with the message 'ready to publish'",
+     do2:"Then enable GitHub Pages:",
+     say2:"tell me step by step exactly how to enable GitHub Pages for my repository so my index.html becomes a live website",
+     res:"<b>What to expect:</b> Claude Code commits your files, then gives you exact click-by-click instructions for enabling GitHub Pages.",
+     wi:"🍽️",wt:"Table is set!",ws:"Your project is connected to GitHub Pages. The doors open next."},
+    {t:"Open the doors",tag:"⭐ The big moment",
+     why:"🌍 This is the dish everything has been building toward. Your website goes live — a real URL on the internet.",
+     do:"After enabling GitHub Pages (takes 1-2 minutes), verify your URL:",
+     say:"what is the GitHub Pages URL for my project? Help me verify it is live.",
+     do2:"Once it's live — share it:",
+     say2:"my site is live — help me write a short message to share it with someone",
+     res:"<b>What to expect:</b> Your site will be live at a real URL. Open it on your phone. Send it to a friend.",
+     wi:"🌍",wt:"The restaurant is open!",ws:"You shipped a website to the internet. No hosting fees, no developer, no agency. Just you, Claude Code, and a terminal."},
+    {t:"Daily service",tag:"Full menu 🎼",
+     why:"🔁 A restaurant that opens once and never changes doesn't last. This dish sets up your update habit.",
+     do:"Make one small update to your page, then push it live:",
+     say:"add a new section to my page called 'What I'm working on' and write one sentence about something I'm currently doing. Then commit and push to GitHub.",
+     res:"<b>What to expect:</b> Within 30-60 seconds of pushing, your live site updates. Refresh the URL and the new section is there.",
+     wi:"🎼",wt:"Daily service — the restaurant stays open!",ws:"Every update you make from now on: describe it, push it, it's live. That's the complete web publishing workflow."}
+  ],
+  3: [
+    {t:"Design the game",tag:"Dish 1 🎮",
+     why:"🎮 Every great game starts with a brief. Before a single line of code, you're the creative director.",
+     do:"Tell Claude Code what kind of game you want. Add 'do NOT start building yet':",
+     say:"I want to build a browser game called Chef's Chaos. Ingredients fall from the top of the screen and I move a pot left and right to catch the right ones. Wrong ingredients cost a life. Speed increases over time. Ask me anything you need to know. Do NOT start building yet — just ask your questions first.",
+     do2:"Answer its questions, then ask for a game plan:",
+     say2:"based on what I told you, write a short game design doc — rules, ingredients list, scoring, and visual style",
+     res:"<b>What to expect:</b> Claude Code asks clarifying questions, then produces a game design document that becomes your blueprint.",
+     wi:"🎮",wt:"Game design locked in!",ws:"You just wrote a game design document. That's the first thing every studio does before writing a single line of code."},
+    {t:"Cook the engine",tag:"Dish 2 ⚙️",
+     why:"🍳 The design is ready. Now your sous-chef builds the engine — falling ingredients, a moving pot, collision detection.",
+     do:"Ask Claude Code to build the core game:",
+     say:"build the core Chef's Chaos game based on our design doc. Create a single index.html file with all the HTML, CSS and JavaScript inside it. The pot moves with arrow keys. Make it playable but rough — we'll polish next.",
+     do2:"Once done, open it:",
+     say2:"open the game in my browser so I can test it",
+     res:"<b>What to expect:</b> A working game opens in your browser. It will look rough. The only question: does it move? Can you catch things? Does the score go up?",
+     wi:"⚙️⚙️",wt:"The engine is running!",ws:"You went from a conversation to a playable game in one dish. Most game devs spend weeks just getting here."},
+    {t:"Add the drama",tag:"Dish 3 🎭",
+     why:"🎭 A working game is not yet a fun game. Drama is what makes people keep playing.",
+     do:"Test the game, then ask Claude Code to add tension:",
+     say:"add the following to the game: 3 lives shown as heart emojis, a game over screen with my final score and a play again button, speed that increases every 10 points, and one special golden ingredient worth 5 points",
+     do2:"If something doesn't feel right:",
+     say2:"the game feels [too fast / too slow / too easy / too hard] — adjust it so it feels satisfying to play",
+     res:"<b>What to expect:</b> Each addition makes the game feel more real. Describe what feels off in plain language — it gets fixed.",
+     wi:"🎭",wt:"Now it's actually fun to play!",ws:"You just added 'game juice' — the emotional layer that turns a mechanic into a real experience."},
+    {t:"Plate it beautifully",tag:"Dish 4 🎨",
+     why:"🎨 The game works. Now make it look like something you'd actually want to play.",
+     do:"Describe the visual style you want:",
+     say:"make the game look polished and fun. Add: a start screen with the game title and a big play button, a kitchen background, emoji ingredients that wiggle as they fall, and a sound effect when you catch something correctly. Keep it fast to load.",
+     do2:"Keep adjusting until it feels right:",
+     say2:"change the [colour / font / background / animation speed] to [what you want]",
+     res:"<b>What to expect:</b> The game starts looking like a real product. These are the details that make someone say 'did you actually build this?'",
+     wi:"🎨",wt:"It looks like a real game!",ws:"Visual polish is 10% of the work and 90% of the first impression. People will think you hired a designer."},
+    {t:"Open the arcade",tag:"Dish 5 🌍",
+     why:"🌍 The game is ready. Time to publish. GitHub Pages gives it a real URL in under 5 minutes.",
+     do:"<b>Step 1</b> — push to a new public repo:",
+     say:"create a new public GitHub repository called chefs-chaos, add all my game files, commit with the message 'launch: Chef's Chaos v1', and push",
+     do2:"<b>Step 2</b> — enable GitHub Pages:",
+     say2:"tell me how to enable GitHub Pages for my chefs-chaos repository so the game goes live",
+     res:"<b>What to expect:</b> Claude Code pushes the files, walks you through GitHub Pages. Within 1-2 minutes your game is live. Open it on your phone.",
+     wi:"🌍",wt:"The arcade is open!",ws:"Go open it on your phone right now. That URL works for anyone, anywhere on earth. You made that."},
+    {t:"Add a secret ingredient",tag:"Dish 6 🧪",
+     why:"🧪 The most important lesson: shipping is not the end — it's the beginning. Add a feature and watch it appear on the live URL.",
+     do:"Pick one thing to add:",
+     say:"add a [high score that saves between sessions / a bomb ingredient that ends the game instantly / an easy-medium-hard difficulty selector] to the game",
+     do2:"Push the update live:",
+     say2:"commit this update with the message 'feat: [your feature]' and push to GitHub",
+     res:"<b>What to expect:</b> Refresh your live URL 30-60 seconds after pushing. The new feature is there.",
+     wi:"🧪",wt:"Live update shipped!",ws:"You changed a live product in real time. That feedback loop is the most addictive thing in software. You're in it now."},
+    {t:"First player",tag:"Dish 7 🏆",
+     why:"🏆 A game no one plays is just a file. Send it to one real person today.",
+     do:"Ask Claude Code to help you write the launch message:",
+     say:"help me write a short fun message to send my first player — include the game URL, a one-line description of how to play, and a challenge to beat a score of 50",
+     do2:"After they play, improve one thing based on what you saw:",
+     say2:"my first player [struggled with X / loved Y / asked about Z] — update the game based on this",
+     res:"<b>What to expect:</b> You'll notice something the moment someone else plays. That feedback is your next improvement — and now you know exactly how to ship it.",
+     wi:"🏆",wt:"First player in the books!",ws:"You observed a real user, spotted a problem, and shipped a fix. That's the complete product cycle — the one the best teams in the world run every day."}
+  ]
+};
+
+const L4_MISSIONS = {
+  h: [
+    {t:"Set the kitchen rules",tg:"Dish 1 🤝",
+     why:"🤝 Branch protection means nobody can push directly to main — every change must go through a pull request.",
+     info:"🍳 <b>Solo repo note:</b> GitHub requires a second person to approve your own PRs. Set branch protection to require PRs but leave approvals at 0.",
+     ghSteps:[{k:'settings',n:1,l:"Go to Settings",txt:'Go to your repo on GitHub → click the <b>Settings</b> tab in the top navigation'},{k:'branches',n:2,l:"Find Branches",txt:'In the left sidebar click <b>Branches</b> → click <span class="gh-btn-i blue">Add branch protection rule</span>'},{k:'protection',n:3,l:"Configure the rule",txt:'Type <b>main</b> → check <b>"Require a pull request before merging"</b> → leave approvals at 0 → click <span class="gh-btn-i">Create</span>'}],
+     cv_cmd:"confirm that branch protection is now set on main and explain what it means in plain language",
+     cv_label:"⚡ Claude Code — verify it worked",
+     res:"<b>What to expect:</b> Direct pushes to main are blocked. Everything goes through a PR.",
+     wi:"🤝",wt:"Kitchen rules are set!",ws:"Branch protection live. Every real team starts exactly here."},
+    {t:"Open prep stations",tg:"Dish 2 🍴",
+     why:"🍴 Two chefs. Two separate prep stations. Neither touches the other's work until both submit for tasting.",
+     deep1:true,
+     cv_cmd:"create a new branch called feature/my-improvement and switch to it",
+     cv_label:"⚡ Claude Code",
+     cv_cmd2:"VS Code's Source Control may already show the branch. To verify:",
+     cv_cmd2_say:"list all branches in this repository",
+     res:"<b>What to expect:</b> Two branches exist — yours and your collaborator's. Neither has touched main.",
+     wi:"🍴🍴",wt:"Two prep stations open!",ws:"Cooking in parallel. That's the fundamental move of every collaborative team on earth."},
+    {t:"Cook and submit for tasting",tg:"Dish 3 🍽️",
+     why:"🍽️ You make your change, push it, then open a pull request — this is how you say 'my dish is ready for tasting'.",
+     deep2:true,
+     cv_cmd:"make a meaningful improvement to my project on this branch, commit with a clear descriptive message, and push to GitHub",
+     cv_label:"⚡ Claude Code",
+     ghSteps2:[{k:'banner',n:1,l:"Open the PR",txt:'Go to your repo on GitHub. Click <span class="gh-btn-i">Compare & pull request</span> in the yellow banner'},{k:'createpr',n:2,l:"Fill in the PR form",txt:'Write a clear title, add a description, click <span class="gh-btn-i">Create pull request</span>'}],
+     cv_cmd2:"I am reviewing a pull request from my collaborator. They changed: [describe what you see]. I want to approve it but suggest one specific improvement. Help me write a short, kind review comment.",
+     cv_cmd2_label:"⚡ Claude Code — help writing your review comment",
+     res:"<b>What to expect:</b> Two PRs on GitHub. You review theirs, they review yours.",
+     wi:"🍽️",wt:"Dishes are on the pass!",ws:"You gave and received a real code review. Most people never formally learn this skill."},
+    {t:"Merge to the menu",tg:"Dish 4 ✅",
+     why:"✅ Both dishes reviewed. Now they join the main menu — the official live version of the project.",
+     ghSteps:[{k:'merge',n:1,l:"Merge both PRs",txt:'Open your PR on GitHub → click <span class="gh-btn-i">Merge pull request</span> → <span class="gh-btn-i">Confirm merge</span>. Then do the same for your collaborator\'s PR.'}],
+     cv_cmd:"my pull request was merged — pull the latest changes so my local main is up to date",
+     cv_label:"⚡ Claude Code",
+     cv_cmd2:"See the full shared history:",
+     cv_cmd2_say:"show me the git log so I can see all commits from both collaborators in order",
+     res:"<b>What to expect:</b> The git log shows two contributors — a permanent record of who built what.",
+     wi:"✅",wt:"Both dishes are on the menu!",ws:"A project built by two people, merged cleanly. You'll never email files back and forth again."},
+    {t:"Resolve a conflict",tg:"Dish 5 🔀",
+     why:"🔀 Two chefs edited the same recipe card. Git asks you to decide which version to keep.",
+     info:"<b>Merge conflict = two chefs, same recipe card.</b> Git marks both versions with symbols and waits for your decision.",
+     ghSteps:[{k:'conflict',n:1,l:"Find the conflict on GitHub",txt:'When you tried to merge, GitHub showed: <b>"This branch has conflicts that must be resolved"</b>. Note which file is conflicting.'}],
+     cv_cmd:"I have a merge conflict. Show me exactly what the file looks like and explain in plain language what each side changed",
+     cv_label:"⚡ Claude Code",
+     cv_cmd2:"Once you understand both sides, resolve it:",
+     cv_cmd2_say:"help me resolve this conflict — I want the best of both versions. Show me the resolution before committing.",
+     res:"<b>What to expect:</b> Claude Code explains both sides and helps you write the clean resolution.",
+     wi:"🔀",wt:"Conflict resolved — kitchen harmony!",ws:"Every developer dreads their first conflict. You just handled one calmly. It really is just a choice."}
+  ],
+  a: [
+    {t:"Set the kitchen rules",tg:"Dish 1 🤝",
+     why:"🤝 Before Chef Claude touches anything, we set ground rules. Branch protection means every change must go through a pull request.",
+     chef:"Hey — I'm Chef Claude. Opinionated, direct, experienced. Let's set the rules before anyone starts cooking.",
+     info:"🍳 <b>Solo repo note:</b> Set branch protection to require PRs but leave approvals at 0 — you can't approve your own PRs.",
+     ghSteps:[{k:'settings',n:1,l:"Go to Settings",txt:'Go to your repo on GitHub → click the <b>Settings</b> tab'},{k:'branches',n:2,l:"Find Branches",txt:'In the left sidebar click <b>Branches</b> → click <span class="gh-btn-i blue">Add branch protection rule</span>'},{k:'protection',n:3,l:"Configure the rule",txt:'Type <b>main</b> → check <b>"Require a pull request before merging"</b> → leave approvals at 0 → click <span class="gh-btn-i">Create</span>'}],
+     cv_cmd:"confirm that branch protection is now set on main",
+     cv_label:"⚡ Claude Code",
+     res:"<b>What to expect:</b> Direct pushes to main are blocked.",
+     wi:"🤝",wt:"Kitchen rules are set!",ws:"Rules in place. Chef Claude is ready. The brigade can begin."},
+    {t:"Chef Claude opens a prep station",tg:"Dish 2 🍴",
+     why:"🍴 Chef Claude spotted an improvement and opens their own branch. Your main project stays clean until you review it.",
+     chef:"I've looked at your project. The README could be clearer. Opening my branch now — nothing reaches main until you say so.",
+     deep1:true,
+     cv_cmd:"create a new branch called feature/improve-readme, make a meaningful improvement to the README, commit with a clear message, and push to GitHub",
+     cv_label:"⚡ Claude Code — simulating Chef Claude's push",
+     cv_cmd2:"VS Code's Source Control may already show the branch. To inspect what changed:",
+     cv_cmd2_say:"show me exactly what is different in feature/improve-readme compared to main",
+     res:"<b>What to expect:</b> Chef Claude's branch on GitHub with clear changes. You can read every line before it touches your project.",
+     wi:"🍴🍴",wt:"Chef Claude's station is open!",ws:"You can inspect someone else's work before it touches your project. That's the whole point of branches."},
+    {t:"You cook — both submit for tasting",tg:"Dish 3 🍽️",
+     why:"🍽️ While Chef Claude worked on the README, you add something. Then both of you open pull requests.",
+     chef:"While I wait for your review — add a contact section on your own branch. Then we both open PRs and review each other.",
+     deep2:true,
+     cv_cmd:"create a new branch called feature/add-contact-section, add a contact section to the main page, commit with a clear message, and push to GitHub",
+     cv_label:"⚡ Claude Code — your own branch",
+     ghSteps2:[{k:'banner',n:1,l:"Open Chef Claude's PR",txt:'Go to your repo on GitHub. Click <span class="gh-btn-i">Compare & pull request</span> next to feature/improve-readme'},{k:'createpr',n:2,l:"Open your PR",txt:'Go back to the repo. Click <span class="gh-btn-i">Compare & pull request</span> next to your branch. Fill in a title and click <span class="gh-btn-i">Create pull request</span>'}],
+     cv_cmd2:"I am reviewing a GitHub pull request where Chef Claude rewrote my README. The changes I see are: [describe what you see]. Help me write a short clear review comment suggesting one specific improvement.",
+     cv_cmd2_label:"⚡ Claude Code — help writing your review",
+     res:"<b>What to expect:</b> Two PRs on GitHub. You review Chef Claude's and open yours.",
+     wi:"🍽️",wt:"The review is live!",ws:"You gave real feedback to a collaborator. That skill is rarely formally taught. You just practiced it."},
+    {t:"Merge to the menu",tg:"Dish 4 ✅",
+     why:"✅ Both dishes reviewed and approved. Now they join the main menu.",
+     chef:"Good review. Merge mine first, then yours. Let's see what happens when two branches land on main together.",
+     ghSteps:[{k:'merge',n:1,l:"Merge both PRs",txt:'Go to Pull requests → open feature/improve-readme → <span class="gh-btn-i">Merge pull request</span> → <span class="gh-btn-i">Confirm merge</span>. Then merge yours the same way.'}],
+     cv_cmd:"both pull requests were merged — update my local main branch to include all the changes",
+     cv_label:"⚡ Claude Code",
+     cv_cmd2:"See the full shared history:",
+     cv_cmd2_say:"show me the git log so I can see all commits from both contributors together",
+     res:"<b>What to expect:</b> The git log shows two contributors' commits interleaved.",
+     wi:"✅",wt:"Both dishes are on the menu!",ws:"A project built by two people, merged cleanly. You'll never email files back and forth again."},
+    {t:"Resolve a conflict",tg:"Dish 5 🔀",
+     why:"🔀 Chef Claude and you both touched overlapping sections. Git finds a conflict. Two chefs, same recipe card.",
+     chef:"I noticed we both touched the README intro area. There's a conflict on a few lines. Let me explain both sides, and you decide what the final version looks like.",
+     info:"<b>Merge conflict = two chefs, same recipe card.</b> Git marks it and waits for your decision.",
+     ghSteps:[{k:'conflict',n:1,l:"Find the conflict on GitHub",txt:'When you tried to merge the second PR, GitHub showed a conflict warning. Note which file is conflicting.'}],
+     cv_cmd:"I have a merge conflict. Show me exactly what both sides changed and explain the conflict clearly in plain language",
+     cv_label:"⚡ Claude Code",
+     cv_cmd2:"Resolve it:",
+     cv_cmd2_say:"help me resolve this conflict — I want the best of both versions. Show me the resolution before committing.",
+     res:"<b>What to expect:</b> Claude Code explains both sides and writes the clean resolution.",
+     wi:"🔀",wt:"Conflict resolved — brigade in sync!",ws:"Every developer dreads their first conflict. You just handled it calmly. It really is just a choice."}
+  ]
+};
+
+const GH_SCREENS = {
+  settings:{title:"Settings tab — where to find it",html:`<div class="gh-screen"><div class="gh-topnav"><span class="gh-topnav-logo">⬡</span></div><div class="gh-repo-header"><div class="gh-repo-name">👤 yourusername / my-project</div><div class="gh-repo-tabs"><div class="gh-tab active">Code</div><div class="gh-tab">Issues</div><div class="gh-tab">Pull requests</div><div style="padding:4px 2px"><div class="hl-box" style="border-radius:5px;padding:3px 10px"><span style="font-size:12px;color:#e6edf3">⚙️ Settings</span></div></div></div></div><div class="gh-page-body"><div class="callout-arrow">↑</div><div class="callout" style="margin-top:4px">Click "Settings" — the last tab in your repository's top navigation bar</div></div></div>`},
+  branches:{title:"Branches — inside Settings",html:`<div class="gh-screen"><div class="gh-topnav"><span class="gh-topnav-logo">⬡</span></div><div class="gh-settings-layout"><div class="gh-settings-nav"><div class="gh-nav-item">General</div><div class="gh-nav-item">Collaborators</div><div class="gh-nav-item hl-nav">📋 Branches</div><div class="gh-nav-item">Pages</div></div><div class="gh-settings-body"><div style="font-size:14px;color:#e6edf3;font-weight:600;margin-bottom:10px">Branch protection rules</div><div class="hl-box hl-blue" style="border-radius:6px"><button class="gh-btn-sm blue" style="font-size:12px;padding:7px 14px">Add branch protection rule</button></div><div style="display:flex;gap:6px;margin-top:8px"><div class="callout-arrow">↑</div><div class="callout">Click "Branches" in the sidebar, then this blue button</div></div></div></div></div>`},
+  protection:{title:"Branch protection — what to fill in",html:`<div class="gh-screen"><div class="gh-topnav"><span class="gh-topnav-logo">⬡</span></div><div class="gh-page-body"><div style="font-size:14px;color:#e6edf3;font-weight:600;margin-bottom:12px">Branch protection rule</div><div style="margin-bottom:12px"><div class="gh-form-label">Branch name pattern</div><div class="hl-box hl-blue" style="display:block;border-radius:5px"><div class="gh-form-input">main</div></div><div style="display:flex;gap:6px;margin-top:5px"><div class="callout-arrow" style="font-size:16px">↑</div><div class="callout">Type exactly: main</div></div></div><div class="gh-checkbox-row"><div class="hl-box" style="border-radius:3px;flex-shrink:0"><div class="gh-checkbox checked">✓</div></div><div><div class="gh-checkbox-lbl">Require a pull request before merging</div><div class="gh-checkbox-desc">Leave approvals at 0 for solo repos.</div></div></div><div style="display:flex;gap:6px;margin-bottom:12px"><div class="callout-arrow" style="font-size:16px">↑</div><div class="callout">Check this box only</div></div><div class="hl-box hl-green" style="border-radius:5px"><button class="gh-btn-sm" style="font-size:12px;padding:7px 14px">Create</button></div><div style="display:flex;gap:6px;margin-top:6px"><div class="callout-arrow" style="font-size:16px">↑</div><div class="callout">Scroll down and click Create</div></div></div></div>`},
+  banner:{title:"The yellow banner — how to open a PR",html:`<div class="gh-screen"><div class="gh-topnav"><span class="gh-topnav-logo">⬡</span></div><div class="gh-repo-header"><div class="gh-repo-name">👤 yourusername / my-project</div><div class="gh-repo-tabs"><div class="gh-tab active">Code</div><div class="gh-tab">Pull requests</div></div></div><div class="gh-page-body"><div class="hl-box hl-green" style="display:block;border-radius:6px;margin-bottom:6px"><div class="gh-banner"><span class="gh-banner-txt">🔀 feature/my-branch had recent pushes 3 minutes ago</span><button class="gh-btn-sm" style="cursor:default">Compare & pull request</button></div></div><div style="display:flex;gap:6px"><div class="callout-arrow" style="font-size:16px">↑</div><div class="callout">This banner appears automatically after you push a branch. Click the green button to open the PR form.</div></div></div></div>`},
+  createpr:{title:"Create pull request — what to fill in",html:`<div class="gh-screen"><div class="gh-topnav"><span class="gh-topnav-logo">⬡</span></div><div class="gh-page-body"><div style="font-size:14px;color:#e6edf3;font-weight:600;margin-bottom:12px">Open a pull request</div><div style="margin-bottom:10px"><div class="gh-form-label">Title</div><div class="hl-box hl-blue" style="display:block;border-radius:5px"><div class="gh-form-input" style="color:#e6edf3">Add contact section to homepage</div></div><div style="display:flex;gap:6px;margin-top:5px"><div class="callout-arrow" style="font-size:16px">↑</div><div class="callout">Write a clear title describing what you changed</div></div></div><div class="gh-form-label">Description</div><div class="gh-form-textarea">Added a contact section with email and social links.</div><div class="hl-box hl-green" style="border-radius:5px;margin-top:8px"><button class="gh-btn-sm" style="font-size:12px;padding:7px 14px">Create pull request</button></div><div style="display:flex;gap:6px;margin-top:6px"><div class="callout-arrow" style="font-size:16px">↑</div><div class="callout">Click to submit your dish for tasting</div></div></div></div>`},
+  merge:{title:"Merging — two clicks to join the menu",html:`<div class="gh-screen"><div class="gh-topnav"><span class="gh-topnav-logo">⬡</span></div><div class="gh-page-body"><div style="font-size:13px;color:#e6edf3;font-weight:600;margin-bottom:12px">🔀 Add contact section</div><div style="background:#161b22;border:1px solid #238636;border-radius:6px;padding:12px"><div style="font-size:12px;color:#3fb950;margin-bottom:10px">✅ No conflicts — ready to merge</div><div class="hl-box hl-green" style="display:block;border-radius:5px;margin-bottom:5px"><button class="gh-btn-sm" style="font-size:12px;padding:7px 14px;width:100%;text-align:center">Merge pull request</button></div><div style="display:flex;gap:6px;margin-bottom:10px"><div class="callout-arrow" style="font-size:16px">↑</div><div class="callout">Click here first</div></div><div class="hl-box hl-green" style="display:block;border-radius:5px"><button class="gh-btn-sm" style="font-size:12px;padding:7px 14px;width:100%;text-align:center">Confirm merge</button></div><div style="display:flex;gap:6px;margin-top:5px"><div class="callout-arrow" style="font-size:16px">↑</div><div class="callout">Then Confirm merge — done. Dish joins the main menu.</div></div></div></div></div>`},
+  conflict:{title:"Conflict warning — what you'll see",html:`<div class="gh-screen"><div class="gh-topnav"><span class="gh-topnav-logo">⬡</span></div><div class="gh-page-body"><div style="font-size:13px;color:#e6edf3;font-weight:600;margin-bottom:10px">🔀 Add contact section</div><div class="hl-box" style="display:block;border-radius:6px;margin-bottom:5px"><div class="gh-conflict-box"><div class="gh-conflict-title">⚠️ This branch has conflicts that must be resolved</div><div class="gh-conflict-txt">Conflicting files: README.md</div></div></div><div style="display:flex;gap:6px;margin-bottom:12px"><div class="callout-arrow" style="font-size:16px">↑</div><div class="callout">Two people edited the same lines. Go to Claude Code — ask it to help you resolve it.</div></div><div style="background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px;opacity:.5"><button class="gh-btn-sm grey" style="font-size:11px">Merge pull request (disabled until resolved)</button></div></div></div>`}
+};
+
+const MAP1_HTML = `<div class="mm-flow"><div class="mm-node main-n">main<br><span style="font-size:9px">main counter</span></div><div class="mm-arrow">→</div><div class="mm-node branch-n">branch<br><span style="font-size:9px">prep station</span></div><div class="mm-arrow">→</div><div class="mm-node branch-n">make changes</div><div class="mm-arrow">→</div><div class="mm-node pr-n">pull request</div><div class="mm-arrow">→</div><div class="mm-node branch-n">review</div><div class="mm-arrow">→</div><div class="mm-node main-n">merge</div></div><div class="mm-legend"><div class="mm-leg-row"><div class="mm-dot" style="background:var(--green)"></div><b>main</b> = the official menu. Nobody cooks directly on main.</div><div class="mm-leg-row"><div class="mm-dot" style="background:var(--blue)"></div><b>branch</b> = your prep station. Cook freely — nothing affects main until you submit.</div><div class="mm-leg-row"><div class="mm-dot" style="background:var(--amber)"></div><b>pull request</b> = submit for tasting. Head chef reviews before anything goes live.</div></div>`;
+
+const L5_EXAMPLES = {
+  work:{waste:["I waste time scheduling large meetings across teams","Every week I manually format the same report","I copy data between tools every Monday morning"],idea:["I want a dashboard showing my team's weekly progress","I've always wanted a personal knowledge base for my notes","I need a tool that summarises long documents for me"],others:["My team needs a simple onboarding checklist","I want to build something that helps my manager see my work","A colleague needs a tool to generate client reports"],explore:["I have a folder of project files — curious what Claude Code makes of it","I want to see what we can automate in my workflow","No idea — surprise me"]},
+  personal:{waste:["I spend too long planning meals for the week","I manually track spending in a messy spreadsheet","I always forget to follow up on things I promised"],idea:["I want a simple app to track my reading","I've been meaning to build something for a hobby I care about","I want a page where I can share my photos or writing"],others:["I want to make a game for my kid based on something they love","A family recipe page we can all add to","My friend needs a simple site for their side project"],explore:["I have lots of personal files — curious what could be built","Just want to experiment and see what happens","Let's find something worth building together"]},
+  fun:{waste:["N/A — I'm here for fun"],idea:["I've always wanted to make a game","I want to build something that feels magical","Curious what I can make in one focused session"],others:["I want to surprise someone with something I built","A game for someone specific in my life","Something shareable and fun"],explore:["Total blank canvas — what can we do?","I want the full Claude Code creative experience","Surprise me with something interesting"]}
+};
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let currentLevel = 0;
+const levelState = {
+  1:{phase:1,step:0,cur:0,done:new Set()},
+  2:{cur:0,done:new Set()},
+  3:{cur:0,done:new Set()},
+  4:{track:null,cur:0,done:new Set()},
+  5:{answers:[null,null,null,null]}
+};
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function goLevel(n) {
+  // Allow going back to previous levels or current
+  const maxUnlocked = getMaxUnlocked();
+  if(n > maxUnlocked) return;
+  currentLevel = n;
+  document.querySelectorAll('.screen').forEach(s=>s.className='screen');
+  document.getElementById('screen-'+n).className='screen show';
+  updateNavBar();
+  updateFAB(n);
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(n>0) Analytics.levelStart(n);
+}
+
+function getMaxUnlocked() {
+  // Always allow going back, allow going to next if current level started
+  for(let l=5;l>=1;l--) {
+    const s=levelState[l];
+    if(!s) continue;
+    if(s.done && s.done.size>0) return l+1;
+  }
+  return 1; // level 1 always unlocked
+}
+
+function updateNavBar() {
+  const levels = [0,1,2,3,4,5];
+  levels.forEach(l => {
+    const lvi = document.getElementById('lvi-'+l);
+    const lvc = document.getElementById('lvc-'+l);
+    if(!lvi) return;
+    lvi.className = 'lvi';
+    if(l===currentLevel) {
+      lvi.className = 'lvi active';
+    } else {
+      const s=levelState[l];
+      const isDone = s && s.done && s.done.size>0 && s.done.size>=(MISSIONS[l]?MISSIONS[l].length:(l===4?5:0));
+      if(isDone || l < currentLevel) {
+        lvi.className = 'lvi done';
+        if(l>0) lvc.textContent='✓';
+      } else if(l <= getMaxUnlocked()) {
+        lvi.className = 'lvi';
+      } else {
+        lvi.className = 'lvi locked';
+      }
+    }
+  });
+  // Update connector lines
+  for(let l=0;l<5;l++) {
+    const ln = document.getElementById('lvl-'+l+(l+1));
+    if(ln) ln.className = 'lv-ln'+(l<currentLevel?' done':'');
+  }
+}
+
+function updateFAB(level) {
+  const fab = document.getElementById('stuck-fab');
+  const send = document.getElementById('stuck-send');
+  const colors = {0:'#185FA5',1:'#185FA5',2:'#0E6B4F',3:'#6D28D9',4:'#B45309',5:'#0E6B4F'};
+  fab.style.background = colors[level]||'#185FA5';
+  send.style.background = colors[level]||'#185FA5';
+}
+
+// ═══════════════════════════════════════
+// LEVEL 1 LOGIC
+// ═══════════════════════════════════════
+function setPhase1(n) {
+  [1,2,3,4].forEach(i=>{
+    const ph=document.getElementById('l1-ph'+i);
+    if(ph) ph.style.display=i===n?'block':'none';
+    const btn=document.getElementById('pn1-'+i);
+    if(btn){btn.style.borderBottomColor=i===n?'var(--blue)':'transparent';btn.style.color=i===n?'var(--blue)':'var(--text2)';}
+  });
+  if(n===4) renderMissions(1);
+}
+function l1Step(from, to) {
+  const f=document.getElementById('l1-s'+from);
+  if(f){f.className='step dn';const ico=f.querySelector('.step-ico');if(ico)ico.textContent='✓';}
+  const t=document.getElementById('l1-s'+to);
+  if(t) t.className='step cur';
+}
+function vscZone(z) {
+  ['ab','sb','ed','term','cc'].forEach(x=>{
+    const h=document.getElementById('hs-'+x);
+    const it=document.getElementById('it-'+x);
+    const ib=document.getElementById('ib-'+x);
+    if(h) h.className='hs'+(x==='cc'?' hs-cc':'')+(x===z?' sel':'');
+    if(it) it.className='itab'+(x===z?' on':'');
+    if(ib) ib.className='ib'+(x===z?' show':'');
+  });
+  document.getElementById('ib-w').className='ib';
+}
+function setOS(btn,os) {
+  document.querySelectorAll('.os-tab').forEach(b=>b.className='os-tab');
+  btn.className='os-tab on';
+  document.getElementById('os-win').style.display=os==='win'?'block':'none';
+  document.getElementById('os-mac').style.display=os==='mac'?'block':'none';
+}
+
+// ═══════════════════════════════════════
+// GENERIC MISSION RENDERER
+// ═══════════════════════════════════════
+const WIN_MSGS = {
+  1:[{wi:"🎵",wt:"First note played!",ws:"You asked an AI to inventory your workspace. That's how every developer starts a new project."},{wi:"🎵🎵",wt:"Second note!",ws:"A real file exists on your machine, created by AI from a plain English instruction."},{wi:"🎸",wt:"First song!",ws:"You ran a full creative loop: create → review → improve. Real professionals do this every single day."},{wi:"🎵🎵🎵",wt:"Third note!",ws:"Claude Code knows your kitchen now — suggestions based on YOUR ingredients, not a template."},{wi:"🎸🎸",wt:"Song 2 — recipe in the vault!",ws:"Your project is on GitHub. That link works from any device, anywhere in the world."},{wi:"🎼",wt:"Full service — kitchen closed!",ws:"You have a daily workflow now. It gets more natural every session."}],
+  2:[{wi:"🍽️",wt:"Menu designed!",ws:"You just briefed your AI like a creative director. That's how real product teams start every project."},{wi:"🍳🍳",wt:"First dish is plated!",ws:"A real webpage exists on your machine. You described it — your AI wrote it."},{wi:"🧑‍🍳",wt:"Tasting complete!",ws:"You directed a design revision in plain language. No Figma, no CSS knowledge needed."},{wi:"🍽️",wt:"Table is set!",ws:"Your project is connected to GitHub Pages. The doors open next."},{wi:"🌍",wt:"The restaurant is open!",ws:"You shipped a website to the internet. No hosting fees, no developer needed."},{wi:"🎼",wt:"Daily service — the restaurant stays open!",ws:"Every update: describe it, push it, it's live. That's the complete web publishing workflow."}],
+  3:[{wi:"🎮",wt:"Game design locked in!",ws:"You just wrote a game design document. That's the first thing every studio does."},{wi:"⚙️⚙️",wt:"The engine is running!",ws:"You went from a conversation to a playable game in one dish."},{wi:"🎭",wt:"Now it's actually fun to play!",ws:"You just added 'game juice' — the emotional layer that makes a mechanic feel like an experience."},{wi:"🎨",wt:"It looks like a real game!",ws:"Visual polish is 10% of the work and 90% of the first impression."},{wi:"🌍",wt:"The arcade is open!",ws:"Go open it on your phone right now. That URL works for anyone, anywhere on earth."},{wi:"🧪",wt:"Live update shipped!",ws:"You changed a live product in real time. That feedback loop is the most addictive thing in software."},{wi:"🏆",wt:"First player in the books!",ws:"You observed a real user, spotted a problem, and shipped a fix. That's the complete product cycle."}]
+};
+const L4_WINS = [
+  {wi:"🤝",wt:"Kitchen rules are set!",ws:"Branch protection live. Every real team starts exactly here."},
+  {wi:"🍴🍴",wt:"Two prep stations open!",ws:"Cooking in parallel. That's the fundamental move of every collaborative team on earth."},
+  {wi:"🍽️",wt:"Dishes are on the pass!",ws:"You gave and received a real code review. Most people never formally learn this skill."},
+  {wi:"✅",wt:"Both dishes are on the menu!",ws:"A project built by two people, merged cleanly. You'll never email files back and forth again."},
+  {wi:"🔀",wt:"Conflict resolved — kitchen harmony!",ws:"Every developer dreads their first conflict. You just handled one calmly. It really is just a choice."}
+];
+
+function renderMissions(level) {
+  const mdata = MISSIONS[level];
+  if(!mdata) return;
+  const st = levelState[level];
+  const list = document.getElementById('ml-'+level);
+  list.innerHTML='';
+  mdata.forEach((m,i)=>{
+    const isDone=st.done.has(i);
+    const isCur=i===st.cur&&!isDone;
+    const div=document.createElement('div');
+    const color = ['','var(--blue)','var(--green)','var(--purple)'][level]||'var(--blue)';
+    div.className='ms'+(isDone?' dn':isCur?' cur':' lk');
+    if(isCur){div.style.borderColor=color;}
+    if(isDone){
+      div.style.borderColor='var(--green)';
+      div.innerHTML=`<div class="mh" style="background:var(--green-lt)"><div class="mn" style="background:var(--green);border-color:var(--green);color:white">✓</div><div class="mt">${m.t}</div><div class="mtg" style="background:var(--green-lt);color:#0A4A38">✓ Done</div></div>`;
+    } else {
+      const s2=m.do2&&m.say2?`<div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">${m.do2}</div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.say2}</span><button class="say-cp" onclick="cpText(this,'${esc(m.say2)}')">Copy</button></div>`:'';
+      const warn=m.warn?`<div class="warn-box">⚠️ ${m.warn}</div>`:'';
+      const perm=m.perm?`<div class="info-box">💡 ${m.perm}</div>`:'';
+      const mhBg=isCur?`background:${color}20`:isDone?'background:var(--green-lt)':'';
+      div.innerHTML=`<div class="mh" style="${mhBg}"><div class="mn" style="${isCur?`background:${color};border-color:${color};color:white`:''}">${i+1}</div><div class="mt">${m.t}</div><div class="mtg" style="${isCur?`background:${color}20;color:${color}`:''}">${m.tag}</div></div>
+      <div class="mb"><div class="m-why" style="background:${color}12;border:0.5px solid ${color}40;color:${color}">${m.why}</div>
+      <div class="m-do">${m.do}</div>
+      <div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.say}</span><button class="say-cp" onclick="cpText(this,'${esc(m.say)}');Analytics.commandCopied(${level},${i+1})">Copy</button></div>
+      ${s2}${warn}${perm}
+      <div class="m-res">${m.res}</div>
+      <button class="btn-dn" style="background:${color}" onclick="completeMission(${level},${i})"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div>`;
+    }
+    list.appendChild(div);
+  });
+  updateProg(level);
+  Analytics.missionStart(level, st.cur+1);
+}
+
+function renderL4Missions() {
+  const track = levelState[4].track;
+  const mdata = L4_MISSIONS[track];
+  const st = levelState[4];
+  const list = document.getElementById('ml-4');
+  list.innerHTML='';
+  mdata.forEach((m,i)=>{
+    const isDone=st.done.has(i);
+    const isCur=i===st.cur&&!isDone;
+    const div=document.createElement('div');
+    div.className='ms'+(isDone?' dn':isCur?' cur':' lk');
+    if(isCur) div.style.borderColor='var(--amber)';
+    if(isDone){
+      div.style.borderColor='var(--green)';
+      div.innerHTML=`<div class="mh" style="background:var(--green-lt)"><div class="mn" style="background:var(--green);border-color:var(--green);color:white">✓</div><div class="mt">${m.t}</div><div class="mtg" style="background:var(--green-lt);color:#0A4A38">✓ Done</div></div>`;
+    } else {
+      const tl=`<div class="tl-b ${track==='h'?'tl-h':'tl-a'}">${track==='h'?'👤 Real Chef track':'🤖 Chef Claude track'}<span class="tl-sw" onclick="swL4Track()">switch</span></div>`;
+      const chef=m.chef?`<div class="chef-bub"><div class="chef-hd"><div class="chef-av">🤖</div><div><div class="chef-nm">Chef Claude <span style="font-size:9px;font-weight:400;color:var(--amber)">— talk to me in this chat</span></div><div class="chef-rl">Your AI collaborator</div></div></div><div class="chef-txt">"${m.chef}"</div></div>`:'';
+      const info=m.info?`<div class="info-box">💡 ${m.info}</div>`:'';
+      const d1id='d1_'+i, d2id='d2_'+i;
+      const deep1=m.deep1?`<div class="deep" id="${d1id}"><div class="deep-head" onclick="toggleDeep('${d1id}')"><span>🗺️</span><span class="deep-lbl">How do branches work? (visual explanation)</span><span class="deep-arr">▶</span></div><div class="deep-body">${MAP1_HTML}</div></div>`:'';
+      const deep2=m.deep2?`<div class="deep" id="${d2id}"><div class="deep-head" onclick="toggleDeep('${d2id}')"><span>🌐</span><span class="deep-lbl">Where do I click on GitHub? (visual guide)</span><span class="deep-arr">▶</span></div><div class="deep-body"><div style="font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:8px">After pushing your branch, GitHub shows a yellow banner. Click the 📸 screenshot buttons on each step to see exactly where to click.</div></div></div>`:'';
+      let ghHtml='';
+      (m.ghSteps||[]).forEach(s=>{ghHtml+=`<div class="gh-step"><div class="gh-num">${s.n}</div><div class="gh-step-body"><button class="gh-step-label" onclick="openGHModal('${s.k}')">📸 🌐 ${s.l}</button><div class="gh-step-text">${s.txt}</div></div></div>`;});
+      let gh2Html='';
+      (m.ghSteps2||[]).forEach(s=>{gh2Html+=`<div class="gh-step"><div class="gh-num">${s.n}</div><div class="gh-step-body"><button class="gh-step-label" onclick="openGHModal('${s.k}')">📸 🌐 ${s.l}</button><div class="gh-step-text">${s.txt}</div></div></div>`;});
+      const mainCmd=m.cv_cmd?`<div><span class="where-tag wt-cv">⚡ ${m.cv_label||'Claude Code'}</span></div><div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.cv_cmd}</span><button class="say-cp" onclick="cpText(this,'${esc(m.cv_cmd)}');Analytics.commandCopied(4,${i+1})">Copy</button></div>`:'';
+      const s2lbl=m.cv_cmd2_label?`<div><span class="where-tag wt-cv">⚡ ${m.cv_cmd2_label}</span></div>`:`<div><span class="where-tag wt-cv">⚡ Claude Code</span></div>`;
+      const s2=m.cv_cmd2&&m.cv_cmd2_say?`<div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">${m.cv_cmd2}</div>${s2lbl}<div class="say-box"><span class="say-l">TYPE&nbsp;→</span><span class="say-t">${m.cv_cmd2_say}</span><button class="say-cp" onclick="cpText(this,'${esc(m.cv_cmd2_say)}')">Copy</button></div>`:m.cv_cmd2&&!m.cv_cmd2_say?`<div class="step-div"><div class="step-div-l"></div><span class="step-div-t">Then</span><div class="step-div-l"></div></div><div class="m-do">${m.cv_cmd2}</div>${gh2Html}`:'';
+      div.innerHTML=`<div class="mh" style="${isCur?'background:var(--amber-lt)':''}"><div class="mn" style="${isCur?'background:var(--amber);border-color:var(--amber);color:white':''}">${i+1}</div><div class="mt">${m.t}</div><div class="mtg" style="${isCur?'background:var(--amber-lt);color:var(--amber)':''}">${m.tg}</div></div>
+      <div class="mb">${tl}<div class="m-why" style="background:var(--amber-lt);border:0.5px solid var(--amber);color:var(--amber)">${m.why}</div>${chef}${info}${deep1}${ghHtml}${mainCmd}${deep2}${s2}
+      <div class="m-res">${m.res}</div>
+      <button class="btn-dn" style="background:var(--amber)" onclick="completeL4Mission(${i})"><i class="ti ti-check" style="font-size:13px"></i> Dish served — next</button></div>`;
+    }
+    list.appendChild(div);
+  });
+  updateProg(4);
+  Analytics.missionStart(4, st.cur+1);
+}
+
+function completeMission(level, i) {
+  const st = levelState[level];
+  st.done.add(i); st.cur=i+1;
+  Analytics.missionComplete(level, i+1);
+  const wins=WIN_MSGS[level];
+  const w=wins?wins[Math.min(i,wins.length-1)]:{wi:'✨',wt:'Dish served!',ws:'Keep going.'};
+  showWin(w.wi, w.wt, w.ws, ()=>{
+    if(st.done.size===MISSIONS[level].length) {
+      document.getElementById('ml-'+level).style.display='none';
+      document.getElementById('cs-'+level).style.display='block';
+      renderFeedback(level);
+      Analytics.levelComplete(level);
+      Analytics.cheatsheetViewed(level);
+    } else {
+      renderMissions(level);
+      setTimeout(()=>{const c=document.querySelector('.ms.cur');if(c)c.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+    }
+  });
+}
+
+function completeL4Mission(i) {
+  const st=levelState[4];
+  st.done.add(i); st.cur=i+1;
+  Analytics.missionComplete(4, i+1);
+  const w=L4_WINS[Math.min(i,L4_WINS.length-1)];
+  showWin(w.wi, w.wt, w.ws, ()=>{
+    if(st.done.size===L4_MISSIONS[st.track].length) {
+      document.getElementById('ml-4').style.display='none';
+      document.getElementById('cs-4').style.display='block';
+      renderFeedback(4);
+      Analytics.levelComplete(4);
+    } else {
+      renderL4Missions();
+      setTimeout(()=>{const c=document.querySelector('.ms.cur');if(c)c.scrollIntoView({behavior:'smooth',block:'nearest'});},100);
+    }
+  });
+}
+
+function updateProg(level) {
+  const st=levelState[level];
+  const total=level===4?L4_MISSIONS[st.track||'h'].length:MISSIONS[level].length;
+  const pct=Math.round(st.done.size/total*100);
+  const pb=document.getElementById('pb-'+level);
+  const pl=document.getElementById('pl-'+level);
+  if(pb) pb.style.width=pct+'%';
+  if(pl) pl.textContent=st.done.size+' / '+total+' dishes';
+}
+
+function retryLevel(level) {
+  const st=levelState[level];
+  st.cur=0; st.done=new Set();
+  document.getElementById('cs-'+level).style.display='none';
+  const ml=document.getElementById('ml-'+level);
+  ml.style.display='flex'; ml.style.flexDirection='column';
+  if(level===4){document.getElementById('cs-4').style.display='none';document.getElementById('ml-4').style.display='flex';renderL4Missions();}
+  else{renderMissions(level);}
+  Analytics.soloRetry(level);
+}
+
+// ═══════════════════════════════════════
+// LEVEL 4
+// ═══════════════════════════════════════
+function l4Sel(t){
+  levelState[4].track=t;
+  document.getElementById('tc-h').className='tc'+(t==='h'?' sh':'');
+  document.getElementById('tc-a').className='tc'+(t==='a'?' sa':'');
+  document.getElementById('sb-h').className='sbtn sbh'+(t==='h'?' vis':'');
+  document.getElementById('sb-a').className='sbtn sba'+(t==='a'?' vis':'');
+}
+function l4Go(t){
+  levelState[4].track=t; levelState[4].cur=0; levelState[4].done=new Set();
+  document.getElementById('l4-chooser').style.display='none';
+  document.getElementById('pb-row-4').style.display='flex';
+  const ml=document.getElementById('ml-4');ml.style.display='flex';ml.style.flexDirection='column';
+  renderL4Missions();
+  Analytics.trackSelected(t);
+}
+function swL4Track(){
+  const cur=levelState[4].track;
+  l4Sel(cur==='h'?'a':'h');
+  renderL4Missions();
+}
+function toggleDeep(id){document.getElementById(id).classList.toggle('open');}
+function toggleAcc(id){document.getElementById(id).classList.toggle('open');}
+
+// ═══════════════════════════════════════
+// LEVEL 5
+// ═══════════════════════════════════════
+function l5Sel(q,i){
+  levelState[5].answers[q]=i;
+  document.querySelectorAll('#l5-q'+q+' .opt-b').forEach((b,j)=>{
+    b.className='opt-b'+(j===i?' selected':'');
+    b.querySelector('.opt-b-check').textContent=j===i?'✓':'';
+  });
+  document.getElementById('nq-'+q).className='next-q-btn show';
+}
+function l5Next(q){
+  document.getElementById('dp-'+q).className='dp done-dp';
+  document.getElementById('l5-q'+q).className='question';
+  const n=q+1;
+  document.getElementById('dp-'+n).className='dp active-dp';
+  document.getElementById('l5-q'+n).className='question show';
+  if(n===3){
+    const ctx=levelState[5].answers[0]===0?'work':levelState[5].answers[0]===1?'personal':'fun';
+    const pain=levelState[5].answers[1]===0?'waste':levelState[5].answers[1]===1?'idea':levelState[5].answers[1]===2?'others':'explore';
+    const qs={work:{waste:"What's the task that wastes your time?",idea:"What's the idea you've been sitting on?",others:"What would you build for them?",explore:"What would you like to explore?"},personal:{waste:"What takes too long in your personal life?",idea:"What personal project have you been putting off?",others:"What would you build for them?",explore:"What would you like to try?"},fun:{waste:"What would make life more fun?",idea:"What have you always wanted to build?",others:"Who is it for, and what would they love?",explore:"What are you curious about?"}};
+    document.getElementById('l5-q4t').textContent=qs[ctx][pain]||"Describe it in one sentence";
+    const exs=(L5_EXAMPLES[ctx]||{})[pain]||L5_EXAMPLES[ctx]?.explore||[];
+    const el=document.getElementById('l5-examples');el.innerHTML='';
+    exs.forEach(e=>{
+      const d=document.createElement('div');d.className='q4-ex';
+      d.innerHTML=`<div class="ex-lbl">Example</div>${e}`;
+      d.onclick=()=>document.getElementById('l5-sentence').value=e;
+      el.appendChild(d);
+    });
+  }
+}
+function l5Submit(){
+  const inp=document.getElementById('l5-sentence').value.trim();
+  if(!inp){document.getElementById('l5-sentence').focus();return;}
+  const a=levelState[5].answers;
+  const ctxL=['work','personal life','fun'];
+  const painL=['something that wastes their time','a long-time idea','something for someone else','pure exploration'];
+  const sizeL=['30-45 minutes','60-90 minutes','as long as it takes'];
+  document.getElementById('l5-discovery').style.display='none';
+  document.getElementById('l5-waiting').style.display='block';
+  Analytics.level5Discovery(ctxL[a[0]]||'',painL[a[1]]||'',sizeL[a[2]]||'',inp);
+  // Send to chat (in artifact context this would use the API directly)
+  const prompt=`I'm on Level 5 of my Claude Code learning — the solo graduation level. I answered 3 setup questions:\n- Context: ${ctxL[a[0]]||'work'}\n- Motivation: ${painL[a[1]]||'an idea'}\n- Time available: ${sizeL[a[2]]||'60 minutes'}\n- In one sentence: "${inp}"\n\nPlease suggest 3 concrete, scoped projects I could build with Claude Code today. For the best-fit one, write me a ready-to-paste starting prompt for Claude Code that:\n- Tells it what I want to build and the constraints\n- Instructs it to ask me clarifying questions before starting\n- Tells it to work in stages\n- Keeps version 1 simple — no backends or APIs unless essential\n- Ends with: "Ask me your first question."\n\nI'll paste this into Claude Code in VS Code and work from there.`;
+  if(typeof sendPrompt==='function') sendPrompt(prompt);
+}
+function l5ShowLaunch(){
+  document.getElementById('l5-waiting').style.display='none';
+  document.getElementById('l5-launchpad').style.display='block';
+}
+async function l5SendChat(){
+  const inp=document.getElementById('l5-chat-in');
+  const msg=inp.value.trim();if(!msg)return;
+  inp.value='';
+  const msgs=document.getElementById('l5-chat-msgs');
+  const u=document.createElement('div');u.className='cmsg user';u.textContent=msg;msgs.appendChild(u);
+  const t=document.createElement('div');t.className='cmsg thinking';t.textContent='Thinking...';msgs.appendChild(t);
+  msgs.scrollTop=msgs.scrollHeight;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:'You are a supportive chef mentor helping a non-developer work solo with Claude Code for the first time. They are on Level 5 — the graduation level — flying solo. Be encouraging but brief (3-4 lines max). Use the kitchen metaphor. English only.',messages:[{role:'user',content:msg}]})});
+    const data=await res.json();
+    const text=data.content?.[0]?.text||'Try asking in the main chat.';
+    t.className='cmsg ai';t.textContent=text;
+  }catch(e){t.className='cmsg ai';t.textContent='Connection issue — try the chat above.';}
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function l5ChatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();l5SendChat();}}
+function showGrad(){
+  document.getElementById('l5-launchpad').style.display='none';
+  document.getElementById('l5-grad').style.display='block';
+}
+
+// ═══════════════════════════════════════
+// WIN OVERLAY
+// ═══════════════════════════════════════
+let winCallback = null;
+function showWin(ico, title, sub, cb) {
+  document.getElementById('win-ico').textContent=ico;
+  document.getElementById('win-t').textContent=title;
+  document.getElementById('win-s').textContent=sub;
+  winCallback=cb;
+  document.getElementById('win-overlay').className='win-overlay show';
+}
+function closeWin() {
+  document.getElementById('win-overlay').className='win-overlay';
+  if(winCallback){winCallback();winCallback=null;}
+}
+
+// ═══════════════════════════════════════
+// FEEDBACK WIDGET
+// ═══════════════════════════════════════
+function renderFeedback(level){
+  const colors={1:'var(--blue)',2:'var(--green)',3:'var(--purple)',4:'var(--amber)',5:'var(--green)'};
+  const c=colors[level]||'var(--blue)';
+  const el=document.getElementById('fw-'+level);
+  if(!el)return;
+  let rating=0;
+  el.innerHTML=`<div class="feedback-widget">
+    <div class="fw-t">How was Level ${level}? <span style="font-size:11px;color:var(--text2);font-weight:400">(optional)</span></div>
+    <div class="star-row" id="stars-${level}">
+      ${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setRating(${level},${n})" data-val="${n}">⭐</button>`).join('')}
+    </div>
+    <textarea class="fw-ta" id="fw-ta-${level}" placeholder="Anything you'd change? Any moment that was confusing? (optional)"></textarea>
+    <button class="fw-send" style="background:${c}" onclick="submitFeedback(${level})">Send feedback</button>
+    <div class="fw-thanks" id="fw-thanks-${level}">✅ Thank you — this helps improve the course!</div>
+  </div>`;
+}
+const ratings={};
+function setRating(level,n){
+  ratings[level]=n;
+  document.querySelectorAll(`#stars-${level} .star-btn`).forEach(b=>{
+    b.className='star-btn'+(parseInt(b.dataset.val)<=n?' active':'');
+  });
+}
+function submitFeedback(level){
+  const r=ratings[level]||0;
+  const c=document.getElementById('fw-ta-'+level).value.trim();
+  Analytics.feedback(level,r,c);
+  document.getElementById('fw-thanks-'+level).style.display='block';
+}
+
+// ═══════════════════════════════════════
+// GH MODAL
+// ═══════════════════════════════════════
+function openGHModal(k){
+  const s=GH_SCREENS[k];if(!s)return;
+  document.getElementById('gh-modal-title').textContent='📸 '+s.title;
+  document.getElementById('gh-modal-body').innerHTML=s.html;
+  document.getElementById('gh-modal').className='modal-overlay show';
+}
+function closeGHModal(){document.getElementById('gh-modal').className='modal-overlay';}
+function bgCloseModal(e){if(e.target===document.getElementById('gh-modal'))closeGHModal();}
+
+// ═══════════════════════════════════════
+// STUCK
+// ═══════════════════════════════════════
+function openStuck(){document.getElementById('stuck-modal').className='stuck-modal show';setTimeout(()=>document.getElementById('stuck-in').focus(),100);}
+function closeStuck(){document.getElementById('stuck-modal').className='stuck-modal';}
+function sendStuck(){
+  const inp=document.getElementById('stuck-in');
+  const msg=inp.value.trim();if(!msg)return;
+  const lvlNames=['Start','Level 1','Level 2','Level 3','Level 4','Level 5'];
+  const m=`🍳 Stuck on ${lvlNames[currentLevel]}: ${msg}`;
+  if(typeof sendPrompt==='function') sendPrompt(m);
+  else alert('Please describe your issue in the main chat above.');
+  Analytics.stuckClicked(currentLevel, levelState[currentLevel]?.cur||0);
+  inp.value='';closeStuck();
+}
+
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+function cpText(btn,text){
+  navigator.clipboard.writeText(text).then(()=>{const o=btn.textContent;btn.textContent='Copied!';setTimeout(()=>btn.textContent=o,1500);}).catch(()=>{});
+}
+function esc(s){return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+window.addEventListener('DOMContentLoaded', ()=>{
+  // Start on invitation screen
+  updateNavBar();
+  updateFAB(0);
+  // Render all level missions (hidden)
+  renderMissions(1);
+  renderMissions(2);
+  renderMissions(3);
+});
+</script>
+</body>
+</html>

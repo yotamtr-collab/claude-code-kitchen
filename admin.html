@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitchen Analytics — Admin</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;
+  --border:#30363d;--text:#e6edf3;--text2:#8b949e;
+  --blue:#58a6ff;--green:#3fb950;--amber:#d29922;
+  --red:#f85149;--purple:#bc8cff;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:24px}
+.app{max-width:1100px;margin:0 auto}
+
+/* login */
+.login{display:flex;align-items:center;justify-content:center;min-height:80vh}
+.login-box{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:32px;width:360px;text-align:center}
+.login-box h1{font-size:20px;margin-bottom:6px}
+.login-box p{font-size:13px;color:var(--text2);margin-bottom:24px}
+.login-input{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-size:14px;color:var(--text);font-family:inherit;outline:none;margin-bottom:12px}
+.login-input:focus{border-color:var(--blue)}
+.login-btn{width:100%;padding:10px;background:var(--blue);color:white;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.login-btn:hover{opacity:.88}
+.login-error{color:var(--red);font-size:12px;margin-top:8px;display:none}
+
+/* header */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.header h1{font-size:22px;font-weight:700}
+.header-sub{font-size:13px;color:var(--text2);margin-top:3px}
+.refresh-btn{background:var(--bg2);border:1px solid var(--border);color:var(--text2);border-radius:6px;padding:7px 14px;font-size:12px;cursor:pointer;font-family:inherit}
+.refresh-btn:hover{color:var(--text);border-color:var(--text2)}
+
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px}
+.stat-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.stat-value{font-size:28px;font-weight:700;color:var(--text)}
+.stat-sub{font-size:11px;color:var(--text2);margin-top:4px}
+
+/* section */
+.section{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:20px}
+.section-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:8px}
+.funnel-row{display:flex;align-items:center;gap:12px}
+.funnel-label{font-size:12px;color:var(--text2);width:160px;flex-shrink:0}
+.funnel-bar-wrap{flex:1;background:var(--bg3);border-radius:4px;height:22px;overflow:hidden}
+.funnel-bar{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:600;color:white;transition:width .8s ease;min-width:30px}
+.funnel-count{font-size:12px;color:var(--text2);width:50px;text-align:right;flex-shrink:0}
+.funnel-pct{font-size:11px;color:var(--text2);width:36px;text-align:right;flex-shrink:0}
+
+/* mission table */
+.table{width:100%;border-collapse:collapse;font-size:12px}
+.table th{text-align:left;color:var(--text2);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+.table td{padding:8px 10px;border-bottom:1px solid var(--bg3);color:var(--text)}
+.table tr:last-child td{border-bottom:none}
+.table tr:hover td{background:var(--bg3)}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
+.badge-green{background:rgba(63,185,80,.15);color:var(--green)}
+.badge-amber{background:rgba(210,153,34,.15);color:var(--amber)}
+.badge-red{background:rgba(248,81,73,.15);color:var(--red)}
+
+/* stars */
+.stars{color:var(--amber);font-size:14px;letter-spacing:2px}
+
+/* comments */
+.comment-list{display:flex;flex-direction:column;gap:10px}
+.comment{background:var(--bg3);border-radius:8px;padding:12px;border-left:3px solid var(--border)}
+.comment.high{border-left-color:var(--green)}
+.comment.mid{border-left-color:var(--amber)}
+.comment.low{border-left-color:var(--red)}
+.comment-meta{font-size:10px;color:var(--text2);margin-bottom:5px;display:flex;gap:10px}
+.comment-text{font-size:13px;color:var(--text);line-height:1.6}
+
+/* level5 */
+.l5-chips{display:flex;flex-wrap:wrap;gap:6px}
+.l5-chip{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:11px;color:var(--text2);line-height:1.5}
+
+/* two-col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* donut placeholder */
+.donut-wrap{display:flex;align-items:center;gap:20px}
+.donut-legend{display:flex;flex-direction:column;gap:6px}
+.dl-row{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2)}
+.dl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+
+/* loading / error */
+.loading{text-align:center;padding:60px;color:var(--text2);font-size:14px}
+.error-msg{color:var(--red);font-size:13px;text-align:center;padding:40px}
+
+.dashboard{display:none}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login" id="login-screen">
+  <div class="login-box">
+    <h1>🍳 Kitchen Analytics</h1>
+    <p>Admin dashboard — enter your password to continue</p>
+    <input class="login-input" type="password" id="pwd-input" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <button class="login-btn" onclick="doLogin()">Enter the kitchen →</button>
+    <div class="login-error" id="login-error">Wrong password — try again</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="app dashboard" id="dashboard">
+  <div class="header">
+    <div>
+      <h1>🍳 Kitchen Analytics</h1>
+      <div class="header-sub" id="last-updated">Loading...</div>
+    </div>
+    <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+  </div>
+
+  <div id="loading" class="loading">Loading data from Google Sheets...</div>
+  <div id="error" class="error-msg" style="display:none"></div>
+
+  <div id="data-content" style="display:none">
+
+    <!-- Top stats -->
+    <div class="grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Sessions</div>
+        <div class="stat-value" id="stat-sessions">—</div>
+        <div class="stat-sub">unique learners</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Reached Level 2+</div>
+        <div class="stat-value" id="stat-l2">—</div>
+        <div class="stat-sub">continued past setup</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Avg Stuck / Session</div>
+        <div class="stat-value" id="stat-stuck">—</div>
+        <div class="stat-sub">ask-the-chef clicks</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Level 5 Reached</div>
+        <div class="stat-value" id="stat-l5">—</div>
+        <div class="stat-sub">graduation level</div>
+      </div>
+    </div>
+
+    <!-- Funnel -->
+    <div class="section">
+      <div class="section-title">📊 Level funnel — where do people drop off?</div>
+      <div class="funnel" id="funnel"></div>
+    </div>
+
+    <!-- Two columns: mission table + feedback ratings -->
+    <div class="two-col">
+
+      <!-- Mission completion -->
+      <div class="section">
+        <div class="section-title">✅ Mission completion rates</div>
+        <table class="table" id="mission-table">
+          <thead><tr><th>Level</th><th>Mission</th><th>Completions</th><th>Stuck</th><th>Avg time</th></tr></thead>
+          <tbody id="mission-tbody"></tbody>
+        </table>
+      </div>
+
+      <!-- Feedback ratings -->
+      <div class="section">
+        <div class="section-title">⭐ Average ratings per level</div>
+        <div id="ratings-list"></div>
+
+        <div class="section-title" style="margin-top:20px">🎮 Level 4 track split</div>
+        <div class="donut-wrap" id="track-split">
+          <div class="donut-legend" id="track-legend"></div>
+        </div>
+
+        <div class="section-title" style="margin-top:20px">📱 Device breakdown</div>
+        <div class="donut-legend" id="device-legend"></div>
+      </div>
+
+    </div>
+
+    <!-- Level 5 insights -->
+    <div class="section">
+      <div class="section-title">🍽️ Level 5 — what do people want to build?</div>
+      <div style="display:flex;gap:20px;margin-bottom:14px;flex-wrap:wrap">
+        <div class="stat-card" style="flex:1;min-width:120px">
+          <div class="stat-label">Work</div>
+          <div class="stat-value" id="l5-work">—</div>
+        </div>
+        <div class="stat-card" style="flex:1;min-width:120px">
+          <div class="stat-label">Personal</div>
+          <div class="stat-value" id="l5-personal">—</div>
+        </div>
+        <div class="stat-card" style="flex:1;min-width:120px">
+          <div class="stat-label">Fun</div>
+          <div class="stat-value" id="l5-fun">—</div>
+        </div>
+      </div>
+      <div class="section-title" style="font-size:12px;margin-bottom:10px">What they wrote (last 30 sentences)</div>
+      <div class="l5-chips" id="l5-sentences"></div>
+    </div>
+
+    <!-- Comments -->
+    <div class="section">
+      <div class="section-title">💬 Recent feedback comments</div>
+      <div class="comment-list" id="comments-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const ENDPOINT = 'https://script.google.com/a/macros/wix.com/s/AKfycbx__mLxC5EwsdxUqQkLRd2bNLGxNUhgF2LH25erpSC3KYsNEyCWqsy61t-abBCyQONW/exec';
+let adminPassword = '';
+
+const LEVEL_NAMES = {
+  1: 'Setup the Kitchen',
+  2: 'Open the Restaurant',
+  3: "Chef's Night Off",
+  4: 'Kitchen Brigade',
+  5: 'Your Kitchen'
+};
+
+const LEVEL_COLORS = {
+  1: '#185FA5', 2: '#0F6E56', 3: '#7B4FD4',
+  4: '#D97706', 5: '#0F6E56'
+};
+
+function doLogin() {
+  const pwd = document.getElementById('pwd-input').value.trim();
+  if (!pwd) return;
+  adminPassword = pwd;
+  document.getElementById('login-error').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  loadData();
+}
+
+async function loadData() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('error').style.display = 'none';
+  document.getElementById('data-content').style.display = 'none';
+
+  try {
+    const url = `${ENDPOINT}?password=${encodeURIComponent(adminPassword)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (!data.ok) {
+      if (data.error === 'Unauthorized') {
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('login-screen').style.display = 'flex';
+        document.getElementById('dashboard').style.display = 'none';
+        return;
+      }
+      throw new Error(data.error);
+    }
+
+    renderDashboard(data);
+    document.getElementById('last-updated').textContent =
+      'Last updated: ' + new Date().toLocaleTimeString();
+
+  } catch (err) {
+    document.getElementById('error').textContent = 'Error loading data: ' + err.message;
+    document.getElementById('error').style.display = 'block';
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+  }
+}
+
+function renderDashboard(d) {
+  // Top stats
+  document.getElementById('stat-sessions').textContent = d.totalSessions || 0;
+  document.getElementById('stat-l2').textContent = d.funnel[2] || 0;
+  document.getElementById('stat-stuck').textContent = d.avgStuckPerSession || 0;
+  document.getElementById('stat-l5').textContent = d.funnel[5] || 0;
+
+  // Funnel
+  const funnelEl = document.getElementById('funnel');
+  funnelEl.innerHTML = '';
+  const maxSessions = d.totalSessions || 1;
+  for (let l = 1; l <= 5; l++) {
+    const count = d.funnel[l] || 0;
+    const pct = Math.round((count / maxSessions) * 100);
+    const color = LEVEL_COLORS[l];
+    funnelEl.innerHTML += `
+      <div class="funnel-row">
+        <div class="funnel-label">Level ${l} — ${LEVEL_NAMES[l]}</div>
+        <div class="funnel-bar-wrap">
+          <div class="funnel-bar" style="width:${pct}%;background:${color}">${pct > 10 ? pct+'%' : ''}</div>
+        </div>
+        <div class="funnel-count">${count}</div>
+        <div class="funnel-pct">${pct}%</div>
+      </div>`;
+  }
+
+  // Mission table
+  const tbody = document.getElementById('mission-tbody');
+  tbody.innerHTML = '';
+  const missionDef = {
+    '1': ['Take stock','Prep ingredient','Taste & adjust','Plan menu','File recipe','Daily routine'],
+    '2': ['Design menu','Cook dish','Taste & adjust','Set table','Open doors','Daily service'],
+    '3': ['Design game','Cook engine','Add drama','Plate it','Open arcade','Secret ingredient','First player'],
+    '4': ['Set rules','Open stations','Cook & submit','Merge menu','Resolve conflict'],
+    '5': ['Discovery','Build project']
+  };
+  for (let l = 1; l <= 5; l++) {
+    const missions = missionDef[l] || [];
+    missions.forEach((name, idx) => {
+      const m = idx + 1;
+      const key = `${l}_${m}`;
+      const completions = d.missionCounts[key] || 0;
+      const stuck = d.stuckCounts[key] || 0;
+      const avg = d.avgTimes[key] ? `${Math.round(d.avgTimes[key]/60)}m` : '—';
+      const stuckBadge = stuck === 0
+        ? `<span class="badge badge-green">0</span>`
+        : stuck < 5
+        ? `<span class="badge badge-amber">${stuck}</span>`
+        : `<span class="badge badge-red">${stuck}</span>`;
+      tbody.innerHTML += `<tr>
+        <td><span style="color:${LEVEL_COLORS[l]};font-weight:600">L${l}</span></td>
+        <td>${name}</td>
+        <td>${completions}</td>
+        <td>${stuckBadge}</td>
+        <td>${avg}</td>
+      </tr>`;
+    });
+  }
+
+  // Ratings
+  const ratingsList = document.getElementById('ratings-list');
+  ratingsList.innerHTML = '';
+  for (let l = 1; l <= 5; l++) {
+    const avg = d.avgRatings[l];
+    if (!avg) continue;
+    const stars = '★'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+    ratingsList.innerHTML += `<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <span style="font-size:12px;color:var(--text2);width:24px">L${l}</span>
+      <span class="stars">${stars}</span>
+      <span style="font-size:13px;color:var(--text);font-weight:600">${avg}</span>
+      <span style="font-size:11px;color:var(--text2)">${LEVEL_NAMES[l]}</span>
+    </div>`;
+  }
+
+  // Track split
+  const ts = d.trackSplit || { h: 0, a: 0 };
+  const total = ts.h + ts.a || 1;
+  document.getElementById('track-legend').innerHTML = `
+    <div class="dl-row"><div class="dl-dot" style="background:#185FA5"></div>Real Chef: ${ts.h} (${Math.round(ts.h/total*100)}%)</div>
+    <div class="dl-row"><div class="dl-dot" style="background:#D97706"></div>Chef Claude: ${ts.a} (${Math.round(ts.a/total*100)}%)</div>`;
+
+  // Devices
+  const dc = d.deviceCounts || {};
+  const deviceColors = { desktop:'#58a6ff', mobile:'#3fb950', tablet:'#bc8cff', unknown:'#8b949e' };
+  const devLegend = document.getElementById('device-legend');
+  devLegend.innerHTML = '';
+  Object.keys(dc).forEach(dev => {
+    devLegend.innerHTML += `<div class="dl-row"><div class="dl-dot" style="background:${deviceColors[dev]||'#8b949e'}"></div>${dev}: ${dc[dev]}</div>`;
+  });
+
+  // Level 5
+  const ctx = d.level5Contexts || {};
+  document.getElementById('l5-work').textContent = ctx.work || 0;
+  document.getElementById('l5-personal').textContent = ctx.personal || 0;
+  document.getElementById('l5-fun').textContent = ctx.fun || 0;
+
+  const sentences = d.level5Sentences || [];
+  const chipsEl = document.getElementById('l5-sentences');
+  chipsEl.innerHTML = '';
+  sentences.forEach(s => {
+    chipsEl.innerHTML += `<div class="l5-chip">"${s}"</div>`;
+  });
+
+  // Comments
+  const comments = d.allComments || [];
+  const commentsEl = document.getElementById('comments-list');
+  commentsEl.innerHTML = '';
+  if (!comments.length) {
+    commentsEl.innerHTML = '<div style="color:var(--text2);font-size:13px">No feedback yet.</div>';
+  }
+  comments.slice().reverse().slice(0, 20).forEach(c => {
+    const cls = c.rating >= 4 ? 'high' : c.rating >= 3 ? 'mid' : 'low';
+    const stars = '★'.repeat(c.rating || 0) + '☆'.repeat(5-(c.rating||0));
+    commentsEl.innerHTML += `<div class="comment ${cls}">
+      <div class="comment-meta">
+        <span style="color:${LEVEL_COLORS[c.level]||'#8b949e'}">Level ${c.level} — ${LEVEL_NAMES[c.level]||''}</span>
+        <span class="stars" style="font-size:12px">${stars}</span>
+      </div>
+      <div class="comment-text">${c.comment}</div>
+    </div>`;
+  });
+
+  document.getElementById('data-content').style.display = 'block';
+}
+</script>
+</body>
+</html>
