@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0047)file:///C:/Users/yotamtr/Downloads/admin_2.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kitchen Analytics — Admin</title>
 <style>
@@ -103,7 +103,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   <div class="login-box">
     <h1>🍳 Kitchen Analytics</h1>
     <p>Admin dashboard — enter your password to continue</p>
-    <input class="login-input" type="password" id="pwd-input" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
+    <input class="login-input" type="password" id="pwd-input" placeholder="Password" onkeydown="if(event.key===&#39;Enter&#39;)doLogin()">
     <button class="login-btn" onclick="doLogin()">Enter the kitchen →</button>
     <div class="login-error" id="login-error">Wrong password — try again</div>
   </div>
@@ -213,7 +213,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 </div>
 
 <script>
-const ENDPOINT = 'https://script.google.com/a/macros/wix.com/s/AKfycbxkJCi4--EP33Cz64nhtgTz40OjUGZ3RxYYa10ydkA_IdfgmusCCWWv15XypussSr5U/exec';
+const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzAtpARD2ccClZew086xs89wrEoDvbkUJNueQ0kbzKR3jILjFDpToVWJlKSfvPd9PZMyw/exec';
 let adminPassword = '';
 
 const LEVEL_NAMES = {
@@ -396,5 +396,6 @@ function renderDashboard(d) {
   document.getElementById('data-content').style.display = 'block';
 }
 </script>
-</body>
-</html>
+
+
+</body></html>
