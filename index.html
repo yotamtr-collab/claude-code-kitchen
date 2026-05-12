@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_22.html -->
+<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_24.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -737,19 +737,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         </div>
         <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
         <div id="stuck-claude-wrap" style="display:none">
-          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_22.html#" target="_blank">Open Claude.ai with my question</a>
+          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_24.html#" target="_blank">Open Claude.ai with my question</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div id="debug-bar" style="position:fixed;top:0;left:0;right:0;background:#1C1500;color:#FDE68A;font-size:12px;padding:8px 16px;z-index:999;display:flex;align-items:center;gap:10px">
-  <span>🧪 Debug mode</span>
-  <button onclick="testFeedback()" style="background:#B45309;color:white;border:none;border-radius:5px;padding:4px 12px;cursor:pointer;font-size:12px">Send test feedback now</button>
-  <span id="debug-status" style="color:#FCD34D"></span>
-  <button onclick="document.getElementById(&#39;debug-bar&#39;).remove()" style="margin-left:auto;background:none;border:none;color:#FDE68A;cursor:pointer;font-size:16px">✕</button>
-</div>
+
 <div class="app-wrap">
 <div class="app" id="main-app">
 
@@ -2333,36 +2328,6 @@ function cpText(btn,text){
   navigator.clipboard.writeText(text).then(()=>{const o=btn.textContent;btn.textContent='Copied!';setTimeout(()=>btn.textContent=o,1500);}).catch(()=>{});
 }
 function esc(s){return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
-
-// ── DEBUG TEST ───────────────────────────
-async function testFeedback() {
-  const status = document.getElementById('debug-status');
-  status.textContent = 'Sending...';
-  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzAtpARD2ccClZew086xs89wrEoDvbkUJNueQ0kbzKR3jILjFDpToVWJlKSfvPd9PZMyw/exec';
-  const payload = {
-    type: 'feedback',
-    session_id: 'debug-test-' + Date.now(),
-    level: 1,
-    rating: 5,
-    comment: 'DEBUG TEST — if you see this in the sheet, the connection works',
-    track: '',
-    level5_context: '',
-    level5_sentence: ''
-  };
-  try {
-    const r = await fetch(ENDPOINT, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    status.textContent = '✅ Request sent (no-cors — check your sheet now)';
-    status.style.color = '#3DD68C';
-  } catch(e) {
-    status.textContent = '❌ Error: ' + e.message;
-    status.style.color = '#f85149';
-  }
-}
 
 // ═══════════════════════════════════════
 // INIT
