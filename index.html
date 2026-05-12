@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_18.html -->
+<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_19.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -737,7 +737,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         </div>
         <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
         <div id="stuck-claude-wrap" style="display:none">
-          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_18.html#" target="_blank">Open Claude.ai with my question</a>
+          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_19.html#" target="_blank">Open Claude.ai with my question</a>
         </div>
       </div>
     </div>
@@ -2165,7 +2165,7 @@ function renderFeedback(level){
       </div>
     </div>
     <div class="star-row" id="stars-${level}" style="margin-bottom:12px">
-      ${[1,2,3,4,5].map(n=>`<button class="star-btn" onclick="setRating(${level},${n})" data-val="${n}" title="${['','Did not help','OK','Good','Great','Loved it'][n]}">⭐</button>`).join('')}
+      <span id="star-placeholder-${level}"></span>
       <span id="star-lbl-${level}" style="font-size:12px;color:var(--text2);margin-left:8px;align-self:center"></span>
     </div>
     <textarea class="fw-ta" id="fw-ta-${level}" placeholder="What was the clearest moment? What was the most confusing? Any command that felt wrong? (optional — but really helpful)"></textarea>
@@ -2175,6 +2175,21 @@ function renderFeedback(level){
     </div>
     <div class="fw-thanks" id="fw-thanks-${level}">✅ Feedback sent — thank you! Every response makes the course better.</div>
   </div>`;
+  // Create star buttons as real DOM elements
+  const starPlaceholder = el.querySelector('#star-placeholder-'+level);
+  if(starPlaceholder) {
+    const starLabels = ['','Did not help','OK','Good','Great','Loved it'];
+    [1,2,3,4,5].forEach(n => {
+      const star = document.createElement('button');
+      star.className = 'star-btn';
+      star.textContent = '⭐';
+      star.title = starLabels[n];
+      star.dataset.val = n;
+      star.addEventListener('click', () => setRating(level, n));
+      starPlaceholder.parentNode.insertBefore(star, starPlaceholder);
+    });
+    starPlaceholder.remove();
+  }
   // Create send button as real DOM element — no innerHTML parsing
   const placeholder = el.querySelector('#fw-send-placeholder-'+level);
   if(placeholder) {
