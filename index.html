@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_27.html -->
+<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_28.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -737,7 +737,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         </div>
         <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
         <div id="stuck-claude-wrap" style="display:none">
-          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_27.html#" target="_blank">Open Claude.ai with my question</a>
+          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_28.html#" target="_blank">Open Claude.ai with my question</a>
         </div>
       </div>
     </div>
@@ -883,7 +883,7 @@ function copyMobileUrl() {
         <div style="font-size:12px;color:var(--text2);margin-bottom:8px;text-align:center">📬 Get notified when new levels launch <span style="color:var(--text3)">(optional)</span></div>
         <div style="display:flex;gap:8px">
           <input type="email" id="email-input" placeholder="your@email.com" style="flex:1;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text);outline:none">
-          <button id="email-notify-btn" style="padding:9px 16px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);font-size:12px;color:var(--text2);cursor:pointer;font-family:inherit;white-space:nowrap">Notify me</button>
+          <button id="email-notify-btn" style="padding:9px 16px;background:var(--blue);border:none;border-radius:var(--radius);font-size:12px;color:white;cursor:pointer;font-family:inherit;white-space:nowrap;font-weight:500">Notify me</button>
         </div>
         <div id="email-thanks" style="display:none;font-size:12px;color:var(--green);margin-top:6px;text-align:center">✅ You are on the list!</div>
       </div>
@@ -2382,12 +2382,14 @@ function esc(s){return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 // ═══════════════════════════════════════
 function submitEmail() {
   const inp = document.getElementById('email-input');
+  if(!inp) return;
   const email = inp.value.trim();
   if(!email || !email.includes('@')) {
     inp.style.borderColor = 'var(--amber)';
     setTimeout(() => inp.style.borderColor = '', 1500);
     return;
   }
+  const sid = localStorage.getItem('cck_session') || 'sess_' + Date.now();
   const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzAtpARD2ccClZew086xs89wrEoDvbkUJNueQ0kbzKR3jILjFDpToVWJlKSfvPd9PZMyw/exec';
   fetch(ENDPOINT, {
     method: 'POST',
@@ -2396,14 +2398,15 @@ function submitEmail() {
     body: JSON.stringify({
       type: 'email',
       email: email,
-      session_id: getSessionId(),
+      session_id: sid,
       timestamp: new Date().toISOString()
     })
   }).catch(() => {});
-  // Show thanks regardless — no-cors means we can't read the response
-  document.getElementById('email-thanks').style.display = 'block';
-  document.getElementById('email-input').style.display = 'none';
-  document.querySelector('#email-collect button').style.display = 'none';
+  // Hide the whole input row, show thanks
+  const collectDiv = document.getElementById('email-collect');
+  if(collectDiv) {
+    collectDiv.innerHTML = '<div style="font-size:13px;color:var(--green);text-align:center;padding:8px 0">✅ You are on the list! We will reach out when new levels launch.</div>';
+  }
 }
 
 // ═══════════════════════════════════════
