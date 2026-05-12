@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_24.html -->
+<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_25.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -737,13 +737,52 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         </div>
         <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
         <div id="stuck-claude-wrap" style="display:none">
-          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_24.html#" target="_blank">Open Claude.ai with my question</a>
+          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_25.html#" target="_blank">Open Claude.ai with my question</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+
+<div id="mobile-wall" style="display:none;position:fixed;inset:0;background:#0C0F14;z-index:9999;flex-direction:column;align-items:center;justify-content:center;padding:32px;text-align:center">
+  <div style="font-size:56px;margin-bottom:20px">🍳</div>
+  <div style="font-size:22px;font-weight:700;color:white;margin-bottom:10px;line-height:1.3">This kitchen needs a bigger counter</div>
+  <div style="font-size:14px;color:rgba(255,255,255,.65);line-height:1.8;max-width:320px;margin-bottom:28px">Claude Code runs on a laptop or desktop — you'll need VS Code open side by side with this guide to actually cook anything.</div>
+  <div style="background:#161b22;border:1px solid #30363d;border-radius:10px;padding:16px 20px;margin-bottom:24px;width:100%;max-width:340px">
+    <div style="font-size:11px;color:#8b949e;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;font-weight:600">Open this on your laptop</div>
+    <div id="mobile-url" style="font-family:monospace;font-size:13px;color:#79c0ff;word-break:break-all;line-height:1.6">yotamtr-collab.github.io/claude-code-kitchen</div>
+    <button onclick="copyMobileUrl()" id="mobile-copy-btn" style="margin-top:12px;width:100%;padding:9px;background:#185FA5;color:white;border:none;border-radius:7px;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500">Copy link</button>
+  </div>
+  <button onclick="document.getElementById(&#39;mobile-wall&#39;).style.display=&#39;none&#39;" style="background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);border-radius:7px;padding:8px 20px;font-size:12px;cursor:pointer;font-family:inherit">Continue anyway (tablet / large screen)</button>
+</div>
+
+<script>
+// Mobile detection — runs immediately before anything else
+(function() {
+  const w = window.innerWidth;
+  const isMobile = w < 768;
+  if(isMobile) {
+    document.getElementById('mobile-wall').style.display = 'flex';
+  }
+})();
+
+function copyMobileUrl() {
+  const url = window.location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('mobile-copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.textContent = 'Copy link', 2000);
+  }).catch(() => {
+    // fallback — select the text
+    const el = document.getElementById('mobile-url');
+    const range = document.createRange();
+    range.selectNode(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+  });
+}
+</script>
 
 <div class="app-wrap">
 <div class="app" id="main-app">
