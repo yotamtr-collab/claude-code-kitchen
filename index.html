@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_26.html -->
+<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_27.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -737,7 +737,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         </div>
         <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
         <div id="stuck-claude-wrap" style="display:none">
-          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_26.html#" target="_blank">Open Claude.ai with my question</a>
+          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_27.html#" target="_blank">Open Claude.ai with my question</a>
         </div>
       </div>
     </div>
@@ -882,10 +882,10 @@ function copyMobileUrl() {
       <div id="email-collect" style="margin-bottom:16px">
         <div style="font-size:12px;color:var(--text2);margin-bottom:8px;text-align:center">📬 Get notified when new levels launch <span style="color:var(--text3)">(optional)</span></div>
         <div style="display:flex;gap:8px">
-          <input type="email" id="email-input" placeholder="your@email.com" style="flex:1;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text);outline:none" onkeydown="if(event.key===&#39;Enter&#39;)submitEmail()">
-          <button onclick="submitEmail()" style="padding:9px 16px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);font-size:12px;color:var(--text2);cursor:pointer;font-family:inherit;white-space:nowrap">Notify me</button>
+          <input type="email" id="email-input" placeholder="your@email.com" style="flex:1;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text);outline:none">
+          <button id="email-notify-btn" style="padding:9px 16px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);font-size:12px;color:var(--text2);cursor:pointer;font-family:inherit;white-space:nowrap">Notify me</button>
         </div>
-        <div id="email-thanks" style="display:none;font-size:12px;color:var(--green);margin-top:6px;text-align:center">✅ You're on the list!</div>
+        <div id="email-thanks" style="display:none;font-size:12px;color:var(--green);margin-top:6px;text-align:center">✅ You are on the list!</div>
       </div>
       <button class="cta" style="background:var(--blue)" onclick="goLevel(1)"><i class="ti ti-chef-hat" style="font-size:16px"></i> Start cooking — Level 1</button>
       <div class="cta-sub">No coding experience needed · Takes about 2 hours total</div>
@@ -2417,6 +2417,11 @@ window.addEventListener('DOMContentLoaded', ()=>{
   renderMissions(1);
   renderMissions(2);
   renderMissions(3);
+  // Wire email collection buttons
+  const emailBtn = document.getElementById('email-notify-btn');
+  const emailInp = document.getElementById('email-input');
+  if(emailBtn) emailBtn.addEventListener('click', submitEmail);
+  if(emailInp) emailInp.addEventListener('keydown', e => { if(e.key === 'Enter') submitEmail(); });
   // Wire hover colors on level nav circles
   const NAV_COLORS = {
     'lvc-0':'#185FA5','lvc-1':'#185FA5','lvc-2':'#0E6B4F',
