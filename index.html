@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_13.html -->
+<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_15.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -737,7 +737,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         </div>
         <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
         <div id="stuck-claude-wrap" style="display:none">
-          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_13.html#" target="_blank">Open Claude.ai with my question</a>
+          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_15.html#" target="_blank">Open Claude.ai with my question</a>
         </div>
       </div>
     </div>
@@ -763,7 +763,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
     </div>
     <div class="lv-ln" id="lvl-12" style="background: rgba(255, 255, 255, 0.08);"></div>
     <div class="lvi" id="lvi-2" onclick="goLevel(2)">
-      <div class="lvc" id="lvc-2" style="opacity: 1;">2</div>
+      <div class="lvc" id="lvc-2" style="background: transparent; border-color: rgba(255, 255, 255, 0.15); color: rgba(255, 255, 255, 0.3); opacity: 1;">2</div>
       <div class="lv-lbl">Open the Restaurant</div>
     </div>
     <div class="lv-ln" id="lvl-23" style="background: rgba(255, 255, 255, 0.08);"></div>
@@ -2248,11 +2248,14 @@ function renderFeedback(level){
     </div>
     <textarea class="fw-ta" id="fw-ta-${level}" placeholder="What was the clearest moment? What was the most confusing? Any command that felt wrong? (optional — but really helpful)"></textarea>
     <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
-      <button class="fw-send" style="background:${c}" onclick="submitFeedback(${level})">Send feedback →</button>
+      <button class="fw-send" id="fw-send-${level}" style="background:${c}">Send feedback →</button>
       <div style="font-size:11px;color:var(--text2)">Goes directly to the course author</div>
     </div>
     <div class="fw-thanks" id="fw-thanks-${level}">✅ Feedback sent — thank you! Every response makes the course better.</div>
   </div>`;
+  // Wire send button with addEventListener — avoids onclick HTML parsing issues
+  const sendBtn = el.querySelector('#fw-send-'+level);
+  if(sendBtn) sendBtn.addEventListener('click', () => submitFeedback(level));
 }
 const ratings={};
 const STAR_LABELS=['','Did not help','It was OK','Pretty good','Great level','Loved it — keep going!'];
