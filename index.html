@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_30.html -->
+<!-- saved from url=(0048)file:///C:/Users/yotamtr/Downloads/index_31.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -737,7 +737,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg2);color:var
         </div>
         <div class="stuck-copied" id="stuck-copied">Copied to clipboard - paste into Claude.ai</div>
         <div id="stuck-claude-wrap" style="display:none">
-          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_30.html#" target="_blank">Open Claude.ai with my question</a>
+          <a class="stuck-claude-link" id="stuck-claude-link" href="file:///C:/Users/yotamtr/Downloads/index_31.html#" target="_blank">Open Claude.ai with my question</a>
         </div>
       </div>
     </div>
@@ -808,7 +808,7 @@ function copyMobileUrl() {
     </div>
     <div class="lv-ln" id="lvl-23" style="background: rgba(255, 255, 255, 0.08);"></div>
     <div class="lvi" id="lvi-3" onclick="goLevel(3)">
-      <div class="lvc" id="lvc-3" style="background: transparent; border-color: rgba(255, 255, 255, 0.15); color: rgba(255, 255, 255, 0.3); opacity: 1;">3</div>
+      <div class="lvc" id="lvc-3" style="opacity: 1;">3</div>
       <div class="lv-lbl">Chef's Night Off</div>
     </div>
     <div class="lv-ln" id="lvl-34" style="background: rgba(255, 255, 255, 0.08);"></div>
@@ -2380,9 +2380,9 @@ function esc(s){return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 // ═══════════════════════════════════════
 // EMAIL COLLECTION
 // ═══════════════════════════════════════
-async function submitEmail() {
+function submitEmail() {
   const inp = document.getElementById('email-input');
-  if(!inp) { alert('DEBUG: input not found'); return; }
+  if(!inp) return;
   const email = inp.value.trim();
   if(!email || !email.includes('@')) {
     inp.style.borderColor = 'var(--amber)';
@@ -2391,26 +2391,15 @@ async function submitEmail() {
   }
   const sid = localStorage.getItem('cck_session') || 'sess_' + Date.now();
   const ENDPOINT = 'https://script.google.com/macros/s/AKfycbwN9nzLlMzPEXzK8IGOnsndSVjRZJhZQEc9Ok5BgjZLJaHdeUKDFU3VNcvW7-Krbq6rgQ/exec';
-  const payload = {
-    type: 'email',
-    email: email,
-    session_id: sid,
-    timestamp: new Date().toISOString()
-  };
-  try {
-    await fetch(ENDPOINT, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    alert('DEBUG: fetch completed — check sheet now. Email was: ' + email);
-  } catch(e) {
-    alert('DEBUG: fetch ERROR — ' + e.message);
-  }
+  fetch(ENDPOINT, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: 'email', email, session_id: sid, timestamp: new Date().toISOString() })
+  }).catch(() => {});
   const collectDiv = document.getElementById('email-collect');
   if(collectDiv) {
-    collectDiv.innerHTML = '<div style="font-size:13px;color:var(--green);text-align:center;padding:8px 0">You are on the list!</div>';
+    collectDiv.innerHTML = '<div style="font-size:13px;color:var(--green);text-align:center;padding:8px 0">✅ You are on the list! We will reach out when new levels launch.</div>';
   }
 }
 
